@@ -1,18 +1,12 @@
 var m = require('mithril');
 
-var userList = require('./views/userList');
-var userForm = require('./views/userForm');
+var belegformular = require('./views/belegformular');
 var layout = require('./views/layout');
 
-m.route(document.body, '/list', {
-    '/list': {
+m.route(document.body, '/belegformular', {
+    '/belegformular': {
         render: function() {
-            return m(layout, m(userList))
-        }
-    },
-    '/edit/:id': {
-        render: function(vnode) {
-            return m(layout, m(userForm, vnode.attrs))
+            return m(layout, m(belegformular))
         }
     }
 });
