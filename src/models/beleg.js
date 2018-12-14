@@ -6,7 +6,7 @@ var beleg = {
     type_id: 0,
     description: '',
     category_id: 0,
-    budgetitem_id: '',
+    budgetitem_id: 0,
     account_id: 0,
     is_valid: true,
     amount: 0,
@@ -17,11 +17,10 @@ var beleg = {
     submit: function() {
         return m.request({
             method: 'POST',
-            url: 'http://127.0.0.1/Transaction/',
+            url: 'http://127.0.0.1:5000/Transaction/',
             data: beleg,
             headers: {
                 'X-AMIV-API-TOKEN': 'quaestor',
-                'Access-Control-Allow-Origin': '*',
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }

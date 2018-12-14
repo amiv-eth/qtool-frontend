@@ -23,6 +23,7 @@ module.exports = {
                 onchange: m.withAttr('value', function(value) {
                     beleg.category_id = value
                 })}, [
+                    m('option', {value: 0}, ''),
                     m('option', {value: 4100}, 'Allgemeiner Materialeinkauf'),
                     m('option', {value: 4101}, 'Eintritte, Bilette'),
                 ]
@@ -32,15 +33,17 @@ module.exports = {
                 onchange: m.withAttr('value', function(value) {
                     beleg.budgetitem_id = value
                 })}, [
-                    m('option', {value: '107A'}, 'Merchandising'),
-                    m('option', {value: '106A'}, 'Infrastruktur Aufenthaltsraum'),
+                    m('option', {value: 0}, ''),
+                    m('option', {value: 1}, 'Merchandising'),
+                    m('option', {value: 2}, 'Infrastruktur Aufenthaltsraum'),
                 ]
             ),
             m('label.control-label', 'Zahlungsart'),
             m('select.form-control', {
                 onchange: m.withAttr('value', function(value) {
-                    beleg.type = value
+                    beleg.type_id = value
                 })}, [
+                    m('option', {value: 0}, ''),
                     m('option', {value: 101}, 'Einzahlung Hauptkasse'),
                     m('option', {value: 203}, 'Rückerstattung'),
                 ]
@@ -50,6 +53,7 @@ module.exports = {
                 onchange: m.withAttr('value', function(value) {
                     beleg.account_id = value
                 })}, [
+                    m('option', {value: 0}, ''),
                     m('option', {value: 1000}, 'Hauptkasse'),
                     m('option', {value: 1010}, 'Postkonto'),
                 ]
@@ -59,6 +63,7 @@ module.exports = {
                 onchange: m.withAttr('value', function(value) {
                     beleg.currency_id = value
                 })}, [
+                    m('option', {value: 0}, ''),
                     m('option', {value: 1}, 'CHF'),
                     m('option', {value: 2}, 'EUR'),
                     m('option', {value: 3}, 'USD'),
