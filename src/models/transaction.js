@@ -1,6 +1,6 @@
 var m = require('mithril');
 
-var beleg = {
+var Transaction = {
     financial_year: 2018,
     date: new Date(),
     type_id: 0,
@@ -18,7 +18,7 @@ var beleg = {
         return m.request({
             method: 'POST',
             url: 'http://127.0.0.1:5000/Transaction/',
-            data: beleg,
+            data: Transaction,
             headers: {
                 'X-AMIV-API-TOKEN': 'quaestor',
                 'Accept': 'application/json',
@@ -28,5 +28,4 @@ var beleg = {
     }
 }
 
-module.exports = beleg;
-
+module.exports = Transaction;
