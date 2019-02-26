@@ -1,8 +1,8 @@
 var m = require('mithril');
 
 var Account = {
-    list: [],
-    loadList: function () {
+    items: [],
+    fetch: function () {
         return m.request({
             method: 'GET', 
             url: 'http://127.0.0.1:5000/utility/account',
@@ -12,7 +12,7 @@ var Account = {
             }
         })
         .then(function (result) {
-            Account.list = result.items
+            Account.items = result.items
         })
     }
 }
