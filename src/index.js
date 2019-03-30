@@ -8,32 +8,32 @@ var Layout = require('./views/layout');
 var Home = require('./views/home');
 var Belegformular = require('./views/belegformular');
 var Belegliste = require('./views/belegliste');
-var Transactionliste = require('./views/transactionliste')
+var Transactionliste = require('./views/transactionliste');
 
 m.route(document.body, '/', {
-    '/': {
-        render: function() {
-            return m(Layout, m(Home))
-        }
+  '/': {
+    render: function() {
+      return m(Layout, m(Home));
     },
-    '/belegformular': {
-        render: function() {
-            return m(Layout, m(Belegformular))
-        }
+  },
+  '/belegformular': {
+    render: function() {
+      return m(Layout, m(Belegformular));
     },
-    '/belegformular/:id': {
-        render: function(vnode) {
-            return m(Layout, m(Belegformular, vnode.attrs))
-        }
+  },
+  '/belegformular/:id': {
+    render: function(vnode) {
+      return m(Layout, m(Belegformular, vnode.attrs));
     },
-    '/belegliste': {
-        render: function() {
-            return m(Layout, m(Belegliste))
-        }
+  },
+  '/belegliste': {
+    render: function() {
+      return m(Layout, m(Belegliste));
     },
-    '/transactionliste': {
-        render: function() {
-            return m(Layout, m(Transactionliste))
-        }
-    }
+  },
+  '/transactionliste': {
+    render: function() {
+      return m(Layout, m(Transactionliste));
+    },
+  },
 });

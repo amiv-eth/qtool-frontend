@@ -33,9 +33,7 @@ const config = {
             loader: 'babel-loader',
             options: {
               presets: [['@babel/preset-env', { targets: 'last 2 years' }]],
-              plugins: [
-                '@babel/plugin-proposal-object-rest-spread'
-              ],
+              plugins: ['@babel/plugin-proposal-object-rest-spread'],
             },
           },
         ],
@@ -46,7 +44,7 @@ const config = {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
       },
-      
+
       {
         test: /\.html$/,
         use: [
@@ -60,7 +58,6 @@ const config = {
       },
     ],
   },
-
 
   // Dynamically include config
   resolve: {
@@ -90,9 +87,8 @@ const config = {
       title: 'AMIV an der ETH',
       filename: 'index.html',
       template: 'index.html',
-    })
+    }),
   ],
 };
 
 module.exports = config;
-
