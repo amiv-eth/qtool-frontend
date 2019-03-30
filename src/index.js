@@ -8,6 +8,7 @@ var Layout = require('./views/layout');
 var Home = require('./views/home');
 var Belegformular = require('./views/belegformular');
 var Belegliste = require('./views/belegliste');
+var Transactionliste = require('./views/transactionliste')
 
 m.route(document.body, '/', {
     '/': {
@@ -28,6 +29,11 @@ m.route(document.body, '/', {
     '/belegliste': {
         render: function() {
             return m(Layout, m(Belegliste))
+        }
+    },
+    '/transactionliste': {
+        render: function() {
+            return m(Layout, m(Transactionliste))
         }
     }
 });

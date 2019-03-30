@@ -5,6 +5,8 @@ var Category = require('../models/category');
 var Account = require('../models/account');
 var Type = require('../models/type');
 var Currency = require('../models/currency');
+var BudgetItem = require('../models/budgetitem');
+
 
 var Belegformular = {
     data: {
@@ -19,7 +21,8 @@ var Belegformular = {
         amount: 0,
         currency_id: 0,
         user_id: 50,  
-        comment: ''
+        comment: '',
+        amount_in_chf: 0
     },
     view: function(vnode) {
         return m('form.col-md-8.col-md-offset-2', {
@@ -43,50 +46,15 @@ var Belegformular = {
                 value: Belegformular.data.description
             }),
             m('label.control-label', 'Kategorie'),
-            m('select.form-control', {
-                oninit: Category.fetch,
-                onchange: m.withAttr('value', function(value) { Belegformular.data.category_id = value }),
-            },
-                Category.items.map(function (category) {
-                    return m('option', {value: category['category']}, category['category_name'])
-                })
-            ),
+            dropDownMenu(Category,'category_id', 'category', ['category_name']),
             m('label.control-label', 'Budgetposten'),
-            m('select.form-control', {
-                onchange: m.withAttr('value', function(value) { Belegformular.data.budgetitem_id = value})
-            }, [
-                    m('option', {value: 0}, ''),
-                    m('option', {value: 1}, 'Merchandising'),
-                    m('option', {value: 2}, 'Infrastruktur Aufenthaltsraum'),
-                ]
-            ),
+            dropDownMenu(BudgetItem, 'budgetitem_id', 'budgetitem_id', ['budgetitem_code', 'budgetitem_name']),
             m('label.control-label', 'Zahlungsart'),
-            m('select.form-control', {
-                oninit: Type.fetch,
-                onchange: m.withAttr('value', function(value) { Belegformular.data.type_id = value }),
-            },
-                Type.items.map(function (transaction_type) {
-                    return m('option', {value: transaction_type['type_id']}, transaction_type['type_name'])
-                })
-            ),
+            dropDownMenu(Type, 'type_id', 'type_id', ['type_name']),
             m('label.control-label', 'Konto'),
-            m('select.form-control', {
-                oninit: Account.fetch,
-                onchange: m.withAttr('value', function(value) { Belegformular.data.account_id = value }),
-            },
-                Account.items.map(function (account) {
-                    return m('option', {value: account['account']}, account['account_name'])
-                })
-            ),
+            dropDownMenu(Account, 'account_id', 'account', ['account_name']),
             m('label.control-label', 'Betrag'),
-            m('select.form-control', {
-                oninit: Currency.fetch,
-                onchange: m.withAttr('value', function(value) { Belegformular.data.currency_id = value }),
-            },
-                Currency.items.map(function (currency) {
-                    return m('option', {value: currency['currency_id']}, currency['currency_shortcut'])
-                })
-            ),
+            dropDownMenu(Currency, 'currency_id', 'currency_id', ['currency_shortcut']),
             m('input.form-control[type=number]', {
                 oninput: m.withAttr('value', function(value) { Belegformular.data.amount = value }),
                 value: Belegformular.data.amount
@@ -99,6 +67,36 @@ var Belegformular = {
             m('button.button[type=submit]', 'Submit')
         ])
     }
+}
+
+
+function dropDownMenu(Endpoint, belegformularAttrName, valueKey, textKeys){
+    return m('select.form-control', {
+            oninit: Endpoint.fetch,
+            onchange: m.withAttr('value', function(value) { Belegformular.data[belegformularAttrName] = value }),
+        },
+        populateDropDown(Endpoint, belegformularAttrName, valueKey, textKeys)
+    );
+}
+
+function populateDropDown(Endpoint, belegformularAttrName, valueKey, textKeys){
+    if (Endpoint.items.length == 0){
+        return
+    }
+    const firstItem = Endpoint.items[0];
+    const firstValue = firstItem[valueKey];
+    Belegformular.data[belegformularAttrName] = firstItem[valueKey];
+    return Endpoint.items.map(function(item){
+        var text = '';
+        for (let idx in textKeys){
+            text = text + item[textKeys[idx]] + ' ';
+        }
+        if (item[valueKey] == firstValue){
+            return m('option', {selected: "selected", value: item[valueKey]}, text);
+        } else {
+            return m('option', {value: item[valueKey]}, text);
+        }
+    })
 }
 
 module.exports = Belegformular
