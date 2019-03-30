@@ -1,11 +1,12 @@
 var m = require('mithril');
+var api = require('./api_config');
 
 var Account = {
     items: [],
     fetch: function () {
         return m.request({
             method: 'GET', 
-            url: 'http://127.0.0.1:5000/utility/account',
+            url: api.address() + '/utility/account',
             headers: {
                 'X-AMIV-API-TOKEN': 'quaestor',
                 'Accept': 'application/json'

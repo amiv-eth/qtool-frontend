@@ -1,4 +1,5 @@
 var m = require('mithril');
+var api = require('./api_config');
 
 var Transaction = {
     items: [],
@@ -14,7 +15,7 @@ var Transaction = {
         }
         return m.request({
             method: 'GET', 
-            url: 'http://127.0.0.1:5000/Transaction/transaction?sort=' + Transaction.sort + '&page=' + Transaction.page + searchString,
+            url: api.address() + '/Transaction/transaction?sort=' + Transaction.sort + '&page=' + Transaction.page + searchString,
             headers: {
                 'X-AMIV-API-TOKEN': 'quaestor',
                 'Accept': 'application/json'
@@ -29,7 +30,7 @@ var Transaction = {
     fetchId: function(id) {
         return m.request({
             method: 'GET', 
-            url: `http://127.0.0.1:5000/Transaction/transaction/${id}`,
+            url: api.address() + '/Transaction/transaction/${id}',
             headers: {
                 'X-AMIV-API-TOKEN': 'quaestor',
                 'Accept': 'application/json'
@@ -43,7 +44,7 @@ var Transaction = {
     submit: function(data) {
         return m.request({
             method: 'POST',
-            url: 'http://127.0.0.1:5000/Transaction/transaction',
+            url: api.address() + '/Transaction/transaction',
             data: data,
             headers: {
                 'X-AMIV-API-TOKEN': 'quaestor',

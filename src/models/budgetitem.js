@@ -1,4 +1,5 @@
 var m = require('mithril');
+var api = require('./api_config');
 
 var BudgetItem = {
     items: [],
@@ -8,7 +9,7 @@ var BudgetItem = {
     fetchPage: function () {
         return m.request({
             method: 'GET', 
-            url: 'http://127.0.0.1:5000/Budget/item?sort=budgetitem_code.asc&page=' + BudgetItem.page,
+            url: api.address() + '/Budget/item?sort=budgetitem_code.asc&page=' + BudgetItem.page,
             headers: {
                 'X-AMIV-API-TOKEN': 'quaestor',
                 'Accept': 'application/json'
