@@ -4,9 +4,11 @@ var Menu = require('./menu');
 
 var Layout = {
     view: function(vnode) {
-        return m('main.layout', [
+        return m('div', [
             m(Menu),
-            m('section', vnode.children)
+            m('main',
+                m('div.container.container-fluid.fs', vnode.children)
+            )
         ])
     }
 }

@@ -1,4 +1,8 @@
-body,.input,.button {font:normal 16px Verdana;margin:0;}
+
+.fs {
+    max-width: 100%;
+    width: 100%;
+}
 
 .layout {
     margin:10px auto;
