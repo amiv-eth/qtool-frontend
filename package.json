@@ -9,7 +9,8 @@
     "server": "webpack-dev-server --hot --inline",
     "lint": "npm run eslint && npm run stylelint",
     "eslint": "eslint src/*.js src/**/*.js",
-    "stylelint": "stylelint 'src/**/*.css' --syntax css"
+    "stylelint": "stylelint 'src/**/*.css' --syntax css", 
+    "format": "prettier --write '**/*.{js,jsx}'"
   },
   "keywords": [],
   "author": "AMIV an der ETH",
