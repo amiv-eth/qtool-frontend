@@ -27,6 +27,7 @@ function searchString(string){
         if(Transaction.where == ''){ return }
         else{
             Transaction.where = ''
+            Transaction.page = 1
             Transaction.fetch()
             return
         }
@@ -37,6 +38,7 @@ function searchString(string){
         search = search + '{\'' + fields[idx] + '.in\': \'' + string + '\'}, '
     }
     search = search + ']}'
+    Transaction.page = 1
     Transaction.where = search
     Transaction.fetch()
 }
