@@ -1,3 +1,7 @@
+import './styles/styles.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap';
+
 var m = require('mithril');
 
 var Layout = require('./views/layout');
