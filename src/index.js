@@ -2,37 +2,37 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 import './styles/styles.css';
 
-var m = require('mithril');
+const m = require('mithril');
 
-var Layout = require('./views/layout');
-var Home = require('./views/home');
-var Belegformular = require('./views/belegformular');
-var Belegliste = require('./views/belegliste');
-var Transactionliste = require('./views/transactionliste');
+const Layout = require('./views/layout');
+const Home = require('./views/home');
+const Belegformular = require('./views/belegformular');
+const Belegliste = require('./views/belegliste');
+const Transactionliste = require('./views/transactionliste');
 
 m.route(document.body, '/', {
   '/': {
-    render: function() {
+    render() {
       return m(Layout, m(Home));
     },
   },
   '/belegformular': {
-    render: function() {
+    render() {
       return m(Layout, m(Belegformular));
     },
   },
   '/belegformular/:id': {
-    render: function(vnode) {
+    render(vnode) {
       return m(Layout, m(Belegformular, vnode.attrs));
     },
   },
   '/belegliste': {
-    render: function() {
+    render() {
       return m(Layout, m(Belegliste));
     },
   },
   '/transactionliste': {
-    render: function() {
+    render() {
       return m(Layout, m(Transactionliste));
     },
   },

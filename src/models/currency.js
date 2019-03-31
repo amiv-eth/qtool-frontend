@@ -1,19 +1,19 @@
-var m = require('mithril');
-var api = require('./api_config');
+const m = require('mithril');
+const api = require('./api_config');
 
-var Currency = {
+const Currency = {
   items: [],
-  fetch: function() {
+  fetch() {
     return m
       .request({
         method: 'GET',
-        url: api.address() + '/utility/currency',
+        url: `${api.address()}/utility/currency`,
         headers: {
           'X-AMIV-API-TOKEN': 'quaestor',
           Accept: 'application/json',
         },
       })
-      .then(function(result) {
+      .then(result => {
         Currency.items = result.items;
       });
   },

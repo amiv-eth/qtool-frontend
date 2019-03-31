@@ -1,8 +1,8 @@
-var API = {
+const API = {
   server: 'localhost',
   port: '5000',
-  address: function() {
-    return 'http://' + API.server + ':' + API.port;
+  address() {
+    return `http://${API.server}:${API.port}`;
   },
 };
 

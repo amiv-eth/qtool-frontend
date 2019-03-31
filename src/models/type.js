@@ -1,19 +1,19 @@
-var m = require('mithril');
-var api = require('./api_config');
+const m = require('mithril');
+const api = require('./api_config');
 
-var Type = {
+const Type = {
   items: [],
-  fetch: function() {
+  fetch() {
     return m
       .request({
         method: 'GET',
-        url: api.address() + '/utility/type',
+        url: `${api.address()}/utility/type`,
         headers: {
           'X-AMIV-API-TOKEN': 'quaestor',
           Accept: 'application/json',
         },
       })
-      .then(function(result) {
+      .then(result => {
         Type.items = result.items;
       });
   },

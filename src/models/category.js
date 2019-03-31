@@ -1,19 +1,19 @@
-var m = require('mithril');
-var api = require('./api_config');
+const m = require('mithril');
+const api = require('./api_config');
 
-var Category = {
+const Category = {
   items: [],
-  fetch: function() {
+  fetch() {
     return m
       .request({
         method: 'GET',
-        url: api.address() + '/utility/category',
+        url: `${api.address()}/utility/category`,
         headers: {
           'X-AMIV-API-TOKEN': 'quaestor',
           Accept: 'application/json',
         },
       })
-      .then(function(result) {
+      .then(result => {
         Category.items = result.items;
       });
   },
