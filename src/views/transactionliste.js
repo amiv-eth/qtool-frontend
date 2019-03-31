@@ -1,63 +1,62 @@
-var m = require('mithril');
+const m = require('mithril');
 
-var Transaction = require('../models/transaction');
+const Transaction = require('../models/transaction');
 
-var TransactionListe = {
-  view: function() {
+const TransactionListe = {
+  view() {
     return m('div', [tableNavigation(), table()]);
   },
 };
 
 function previousPage() {
-  Transaction.page--;
+  Transaction.page -= 1;
   Transaction.fetch();
 }
 
 function nextPage() {
-  Transaction.page++;
+  Transaction.page += 1;
   Transaction.fetch();
 }
 
 function searchString(string) {
   if (string.length < 3) {
-    if (Transaction.where == '') {
-      return;
-    } else {
-      Transaction.where = '';
-      Transaction.page = 1;
-      Transaction.fetch();
+    if (Transaction.where === '') {
       return;
     }
+    Transaction.where = '';
+    Transaction.page = 1;
+    Transaction.fetch();
+    return;
   }
-  fields = ['financial_year', 'date', 'description', 'amount', 'amount_in_chf', 'comment'];
+  const fields = ['financial_year', 'date', 'description', 'amount', 'amount_in_chf', 'comment'];
   let search = "{'or': [";
-  for (let idx in fields) {
-    search = search + "{'" + fields[idx] + ".in': '" + string + "'}, ";
+  for (const idx in fields) {
+    search = `${search}{'${fields[idx]}.in': '${string}'}, `;
   }
-  search = search + ']}';
+  search += ']}';
   Transaction.page = 1;
   Transaction.where = search;
   Transaction.fetch();
 }
 
 function tableNavigation() {
-  searchForm = m(
+  const searchForm = m(
     'form',
     m('input.form-control[type=text]', {
       placeholder: 'Suche',
-      oninput: m.withAttr('value', function(value) {
+      oninput: m.withAttr('value', value => {
         searchString(value);
       }),
     })
   );
-  searchNav = m('div', { style: { width: '67%', display: 'inline-block' } }, searchForm);
-  let navigation = [];
+  const searchNav = m('div', { style: { width: '67%', display: 'inline-block' } }, searchForm);
+  const navigation = [];
   if (Transaction.page > 1) {
     navigation.push(
       m(
         'button.btn.btn-outline-secondary',
         { onclick: previousPage, style: { width: '100px' } },
-        'Page ' + (Transaction.page - 1)
+        `Page ${Transaction.page - 1}`
       )
     );
   } else {
@@ -65,7 +64,7 @@ function tableNavigation() {
       m(
         'button.btn.btn-outline-secondary.disabled',
         { style: { width: '100px' } },
-        'Page ' + (Transaction.page - 1)
+        `Page ${Transaction.page - 1}`
       )
     );
   }
@@ -74,7 +73,7 @@ function tableNavigation() {
       m(
         'button.btn.btn-outline-secondary',
         { onclick: nextPage, style: { width: '100px' } },
-        'Page ' + (Transaction.page + 1)
+        `Page ${Transaction.page + 1}`
       )
     );
   } else {
@@ -82,11 +81,11 @@ function tableNavigation() {
       m(
         'button.btn.btn-outline-secondary.disabled',
         { style: { width: '100px' } },
-        'Page ' + (Transaction.page + 1)
+        `Page ${Transaction.page + 1}`
       )
     );
   }
-  pageNav = m(
+  const pageNav = m(
     'div',
     { align: 'right', style: { width: '33%', display: 'inline-block' } },
     navigation
@@ -99,15 +98,15 @@ function table() {
     'table.table.table-striped.table-responsive',
     {
       oninit: Transaction.fetch,
-      onclick: function(e) {
-        var prop = e.target.getAttribute('data-sort-by');
+      onclick(e) {
+        const prop = e.target.getAttribute('data-sort-by');
         if (prop == null) {
           return;
         }
-        if (Transaction.sort == prop + '.asc') {
-          Transaction.sort = prop + '.desc';
+        if (Transaction.sort === `${prop}.asc`) {
+          Transaction.sort = `${prop}.desc`;
         } else {
-          Transaction.sort = prop + '.asc';
+          Transaction.sort = `${prop}.asc`;
         }
         Transaction.page = 1;
         Transaction.fetch();
@@ -134,8 +133,8 @@ function table() {
       ),
       m(
         'tbody',
-        Transaction.items.map(function(transaction) {
-          var id = transaction.id;
+        Transaction.items.map(transaction => {
+          const { id } = transaction;
           return m('tr', [
             m(
               'th',
