@@ -2,12 +2,6 @@ const m = require('mithril');
 
 const Transaction = require('../models/transaction');
 
-const TransactionListe = {
-  view() {
-    return m('div', [tableNavigation(), table()]);
-  },
-};
-
 function previousPage() {
   Transaction.page -= 1;
   Transaction.fetch();
@@ -30,9 +24,9 @@ function searchString(string) {
   }
   const fields = ['financial_year', 'date', 'description', 'amount', 'amount_in_chf', 'comment'];
   let search = "{'or': [";
-  for (const idx in fields) {
-    search = `${search}{'${fields[idx]}.in': '${string}'}, `;
-  }
+  Object.values(fields).forEach(field => {
+    search = `${search}{'${field}.in': '${string}'}, `;
+  });
   search += ']}';
   Transaction.page = 1;
   Transaction.where = search;
@@ -110,7 +104,6 @@ function table() {
         }
         Transaction.page = 1;
         Transaction.fetch();
-        TransactionListe.view();
       },
     },
     [
@@ -158,5 +151,11 @@ function table() {
     ]
   );
 }
+
+const TransactionListe = {
+  view() {
+    return m('div', [tableNavigation(), table()]);
+  },
+};
 
 module.exports = TransactionListe;

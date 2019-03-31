@@ -7,22 +7,55 @@ const Type = require('../models/type');
 const Currency = require('../models/currency');
 const BudgetItem = require('../models/budgetitem');
 
+let TransactionData = {
+  financial_year: 2018,
+  date: new Date(),
+  type_id: 0,
+  description: '',
+  category_id: 0,
+  budgetitem_id: 0,
+  account_id: 0,
+  is_valid: true,
+  amount: 0,
+  currency_id: 0,
+  user_id: 50,
+  comment: '',
+  amount_in_chf: 0,
+};
+
+function populateDropDown(Endpoint, belegformularAttrName, valueKey, textKeys) {
+  if (Endpoint.items.length === 0) {
+    return m('option', 'None');
+  }
+  const firstItem = Endpoint.items[0];
+  const firstValue = firstItem[valueKey];
+  TransactionData[belegformularAttrName] = firstItem[valueKey];
+  return Endpoint.items.map(item => {
+    let text = '';
+    Object.values(textKeys).forEach(key => {
+      text = `${text + item[key]} `;
+    });
+    if (item[valueKey] === firstValue) {
+      return m('option', { selected: 'selected', value: item[valueKey] }, text);
+    }
+    return m('option', { value: item[valueKey] }, text);
+  });
+}
+
+function dropDownMenu(Endpoint, belegformularAttrName, valueKey, textKeys) {
+  return m(
+    'select.form-control',
+    {
+      oninit: Endpoint.fetch,
+      onchange: m.withAttr('value', value => {
+        TransactionData[belegformularAttrName] = value;
+      }),
+    },
+    populateDropDown(Endpoint, belegformularAttrName, valueKey, textKeys)
+  );
+}
+
 const Belegformular = {
-  data: {
-    financial_year: 2018,
-    date: new Date(),
-    type_id: 0,
-    description: '',
-    category_id: 0,
-    budgetitem_id: 0,
-    account_id: 0,
-    is_valid: true,
-    amount: 0,
-    currency_id: 0,
-    user_id: 50,
-    comment: '',
-    amount_in_chf: 0,
-  },
   view(vnode) {
     return m(
       'form.col-md-8.col-md-offset-2',
@@ -30,13 +63,13 @@ const Belegformular = {
         oninit() {
           if (vnode.attrs.id) {
             Transaction.fetchId(vnode.attrs.id).then(result => {
-              Belegformular.data = result;
+              TransactionData = result;
             });
           }
         },
         onsubmit(e) {
           e.preventDefault();
-          Transaction.submit(Belegformular.data);
+          Transaction.submit(TransactionData);
         },
       },
       [
@@ -44,9 +77,9 @@ const Belegformular = {
         m('label.control-label', 'Beschreibung'),
         m('input.form-control[type=text]', {
           oninput: m.withAttr('value', value => {
-            Belegformular.data.description = value;
+            TransactionData.description = value;
           }),
-          value: Belegformular.data.description,
+          value: TransactionData.description,
         }),
         m('label.control-label', 'Kategorie'),
         dropDownMenu(Category, 'category_id', 'category', ['category_name']),
@@ -63,53 +96,21 @@ const Belegformular = {
         dropDownMenu(Currency, 'currency_id', 'currency_id', ['currency_shortcut']),
         m('input.form-control[type=number]', {
           oninput: m.withAttr('value', value => {
-            Belegformular.data.amount = value;
+            TransactionData.amount = value;
           }),
-          value: Belegformular.data.amount,
+          value: TransactionData.amount,
         }),
         m('label.control-label', 'Kommentare'),
         m('input.form-control[type=text]', {
           oninput: m.withAttr('value', value => {
-            Belegformular.data.comment = value;
+            TransactionData.comment = value;
           }),
-          value: Belegformular.data.comment,
+          value: TransactionData.comment,
         }),
         m('button.button[type=submit]', 'Submit'),
       ]
     );
   },
 };
-
-function dropDownMenu(Endpoint, belegformularAttrName, valueKey, textKeys) {
-  return m(
-    'select.form-control',
-    {
-      oninit: Endpoint.fetch,
-      onchange: m.withAttr('value', value => {
-        Belegformular.data[belegformularAttrName] = value;
-      }),
-    },
-    populateDropDown(Endpoint, belegformularAttrName, valueKey, textKeys)
-  );
-}
-
-function populateDropDown(Endpoint, belegformularAttrName, valueKey, textKeys) {
-  if (Endpoint.items.length === 0) {
-    return;
-  }
-  const firstItem = Endpoint.items[0];
-  const firstValue = firstItem[valueKey];
-  Belegformular.data[belegformularAttrName] = firstItem[valueKey];
-  return Endpoint.items.map(item => {
-    let text = '';
-    for (const idx in textKeys) {
-      text = `${text + item[textKeys[idx]]} `;
-    }
-    if (item[valueKey] == firstValue) {
-      return m('option', { selected: 'selected', value: item[valueKey] }, text);
-    }
-    return m('option', { value: item[valueKey] }, text);
-  });
-}
 
 module.exports = Belegformular;
