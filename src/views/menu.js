@@ -1,7 +1,7 @@
-var m = require('mithril');
+const m = require('mithril');
 
-var Menu = {
-  view: function() {
+const Menu = {
+  view() {
     return m(
       'nav.navbar.navbar-light.navbar-expand-lg',
       m('ul.navbar-nav.mr-auto', [

@@ -1,9 +1,9 @@
-var m = require('mithril');
+const m = require('mithril');
 
-var Menu = require('./menu');
+const Menu = require('./menu');
 
-var Layout = {
-  view: function(vnode) {
+const Layout = {
+  view(vnode) {
     return m('div', [m(Menu), m('main', m('div.container.container-fluid.fs', vnode.children))]);
   },
 };
