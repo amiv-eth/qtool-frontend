@@ -1,13 +1,13 @@
-var m = require('mithril');
+const m = require('mithril');
 
-var Transaction = require('../models/transaction');
-var Category = require('../models/category');
-var Account = require('../models/account');
-var Type = require('../models/type');
-var Currency = require('../models/currency');
-var BudgetItem = require('../models/budgetitem');
+const Transaction = require('../models/transaction');
+const Category = require('../models/category');
+const Account = require('../models/account');
+const Type = require('../models/type');
+const Currency = require('../models/currency');
+const BudgetItem = require('../models/budgetitem');
 
-var Belegformular = {
+const Belegformular = {
   data: {
     financial_year: 2018,
     date: new Date(),
@@ -23,18 +23,18 @@ var Belegformular = {
     comment: '',
     amount_in_chf: 0,
   },
-  view: function(vnode) {
+  view(vnode) {
     return m(
       'form.col-md-8.col-md-offset-2',
       {
-        oninit: function() {
+        oninit() {
           if (vnode.attrs.id) {
-            Transaction.fetchId(vnode.attrs.id).then(function(result) {
+            Transaction.fetchId(vnode.attrs.id).then(result => {
               Belegformular.data = result;
             });
           }
         },
-        onsubmit: function(e) {
+        onsubmit(e) {
           e.preventDefault();
           Transaction.submit(Belegformular.data);
         },
@@ -43,7 +43,7 @@ var Belegformular = {
         m('div.alert', 'Bitte für jede Quittung ein Belegformular ausfüllen!'),
         m('label.control-label', 'Beschreibung'),
         m('input.form-control[type=text]', {
-          oninput: m.withAttr('value', function(value) {
+          oninput: m.withAttr('value', value => {
             Belegformular.data.description = value;
           }),
           value: Belegformular.data.description,
@@ -62,14 +62,14 @@ var Belegformular = {
         m('label.control-label', 'Betrag'),
         dropDownMenu(Currency, 'currency_id', 'currency_id', ['currency_shortcut']),
         m('input.form-control[type=number]', {
-          oninput: m.withAttr('value', function(value) {
+          oninput: m.withAttr('value', value => {
             Belegformular.data.amount = value;
           }),
           value: Belegformular.data.amount,
         }),
         m('label.control-label', 'Kommentare'),
         m('input.form-control[type=text]', {
-          oninput: m.withAttr('value', function(value) {
+          oninput: m.withAttr('value', value => {
             Belegformular.data.comment = value;
           }),
           value: Belegformular.data.comment,
@@ -85,7 +85,7 @@ function dropDownMenu(Endpoint, belegformularAttrName, valueKey, textKeys) {
     'select.form-control',
     {
       oninit: Endpoint.fetch,
-      onchange: m.withAttr('value', function(value) {
+      onchange: m.withAttr('value', value => {
         Belegformular.data[belegformularAttrName] = value;
       }),
     },
@@ -94,22 +94,21 @@ function dropDownMenu(Endpoint, belegformularAttrName, valueKey, textKeys) {
 }
 
 function populateDropDown(Endpoint, belegformularAttrName, valueKey, textKeys) {
-  if (Endpoint.items.length == 0) {
+  if (Endpoint.items.length === 0) {
     return;
   }
   const firstItem = Endpoint.items[0];
   const firstValue = firstItem[valueKey];
   Belegformular.data[belegformularAttrName] = firstItem[valueKey];
-  return Endpoint.items.map(function(item) {
-    var text = '';
-    for (let idx in textKeys) {
-      text = text + item[textKeys[idx]] + ' ';
+  return Endpoint.items.map(item => {
+    let text = '';
+    for (const idx in textKeys) {
+      text = `${text + item[textKeys[idx]]} `;
     }
     if (item[valueKey] == firstValue) {
       return m('option', { selected: 'selected', value: item[valueKey] }, text);
-    } else {
-      return m('option', { value: item[valueKey] }, text);
     }
+    return m('option', { value: item[valueKey] }, text);
   });
 }
 

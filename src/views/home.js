@@ -1,7 +1,7 @@
-var m = require('mithril');
+const m = require('mithril');
 
-var Main = {
-  view: function() {
+const Main = {
+  view() {
     return m('h1', 'Welcome to qtool!');
   },
 };

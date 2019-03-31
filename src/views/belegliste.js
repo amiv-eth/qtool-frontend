@@ -1,20 +1,27 @@
-var m = require('mithril');
+const m = require('mithril');
 
-var Transaction = require('../models/transaction');
+const Transaction = require('../models/transaction');
 
-var Belegliste = {
-  view: function() {
+const Belegliste = {
+  view() {
     return m(
       'table',
       {
         oninit: Transaction.fetch,
-        onclick: function(e) {
-          var prop = e.target.getAttribute('data-sort-by');
+        onclick(e) {
+          const prop = e.target.getAttribute('data-sort-by');
           if (prop) {
-            var list = Transaction.items;
-            var first = list[0];
-            list.sort(function(a, b) {
-              return a[prop] > b[prop] ? 1 : a[prop] < b[prop] ? -1 : 0;
+            const list = Transaction.items;
+            const first = list[0];
+            // list.sort((a, b) => (a[prop] > b[prop] ? 1 : a[prop] < b[prop] ? -1 : 0));
+            list.sort((a, b) => {
+              if (a[prop] > b[prop]) {
+                return 1;
+              }
+              if (a[prop] < b[prop]) {
+                return -1;
+              }
+              return 0;
             });
             if (first === list[0]) list.reverse();
           }
@@ -35,8 +42,8 @@ var Belegliste = {
           m('th[data-sort-by=financial_year]', 'Geschäftsjahr'),
           m('th[data-sort-by=date]', 'Date'),
         ]),
-        Transaction.items.map(function(transaction) {
-          var id = transaction.id;
+        Transaction.items.map(transaction => {
+          const { id } = transaction;
           return m('tr', [
             m(
               'td',
