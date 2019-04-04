@@ -18,6 +18,10 @@ const Menu = {
           'li.nav-item',
           m('a[href=/transactionliste].nav-link', { oncreate: m.route.link }, 'Transactionliste')
         ),
+        m(
+          'li.nav-item',
+          m('a[href=/testliste].nav-link', { oncreate: m.route.link }, 'Testliste')
+        ),
       ])
     );
   },

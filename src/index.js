@@ -9,6 +9,7 @@ const Home = require('./views/home');
 const Belegformular = require('./views/belegformular');
 const Belegliste = require('./views/belegliste');
 const Transactionliste = require('./views/transactionliste');
+import TransactionTableView from './transaction/transactionTableView'
 
 m.route(document.body, '/', {
   '/': {
@@ -34,6 +35,11 @@ m.route(document.body, '/', {
   '/transactionliste': {
     render() {
       return m(Layout, m(Transactionliste));
+    },
+  },
+  '/testliste': {
+    render() {
+      return m(Layout, m(TransactionTableView));
     },
   },
 });
