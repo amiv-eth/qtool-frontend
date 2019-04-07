@@ -43,14 +43,16 @@ export default class TableView {
       controller, 
       keys,
       titles,
-      tileContent
+      tileContent, 
+      clickOnTitles = (controller, title) => { controller.setSort([[title, 1]]); },
       //Filters
     },
   }) {
     this.controller = controller;
-    this.tablekeys = keys || [];
+    this.tableKeys = keys || [];
     this.tableTitles = titles;
     this.tileContent = tileContent;
+    this.clickOnTitles = clickOnTitles;
   }
 
   /*
@@ -61,8 +63,31 @@ export default class TableView {
     //send filter to controller
   }
 
+  arrowOrNot(controller, title) {
+    const titleText = title.width ? title.text : title;
+    if (!controller.sort) return false;
+    let i;
+    for (i = 0; i < this.tableTitles.length; i += 1) {
+      const tableTitlei = this.tableTitles[i].width ?
+        this.tableTitles[i].text : this.tableTitles[i];
+      if (tableTitlei === titleText) break;
+    }
+    return this.tableKeys[i] === controller.sort[0][0];
+  }
+
+
   getItemData(data) {//Loads Data if no specific method is defined in tile content.
-    console.log('Needs to be implemented') //default if tile content was not defined
+    //default if tile content was not defined
+    return this.tableKeys.map((key) => {
+      // Access a nested key, indicated by dot-notation
+      let nestedData = data;
+      key.split('.').forEach((subKey) => { nestedData = nestedData[subKey]; });
+      return m(
+        'div',
+        { style: { width: `${98 / this.tableKeys.length}%` } },
+        nestedData,
+      );
+    });
   }
 
   item() {    
@@ -89,7 +114,6 @@ export default class TableView {
     attrs: {
       controller,
       titles,
-      onAdd = false,
       tableHeight = false,
     },
   }) {
@@ -119,12 +143,6 @@ export default class TableView {
             },
             fullWidth: false,
           }),
-          onAdd ? m(Button, {
-            className: 'blue-button',
-            borders: true,
-            label: 'Add',
-            events: { onclick: () => { onAdd(); } },
-          }) : '',
         ],
       }),
       // please beare with this code, it is the only way possible to track the selection
@@ -140,7 +158,7 @@ export default class TableView {
         tiles: [
           m(ListTile, {
             className: 'tableTile',
-            //hoverable: this.clickOnTitles,
+            hoverable: this.clickOnTitles,
             content: m(
               'div',
               { style: { width: '100%', display: 'flex' } },
@@ -148,16 +166,16 @@ export default class TableView {
               // or it is a list of objects with text and width
               titles.map((title, i) => m(
                 'div', {
-                  /*onclick: () => {
+                  onclick: () => {
                     if (this.clickOnTitles && this.tableKeys[i]) {
                       this.clickOnTitles(controller, this.tableKeys[i]);
                     }
-                  },*/
+                  },
                   style: title.style ? title.style : { width: `${98 / this.tableKeys.length}%` },
                 },
                 [title.style.width ? title.text : title,
-                  /*this.arrowOrNot(controller, title) ?
-                    m(Icon, { svg: { content: m.trust(icons.sortingArrow) } }) : ''*/],
+                this.arrowOrNot(controller, title) ?
+                    m(Icon, { svg: { content: m.trust(icons.sortingArrow) } }) : ''],
               )),
             ),
           }),
