@@ -153,9 +153,9 @@ export default class TableView {
                       this.clickOnTitles(controller, this.tableKeys[i]);
                     }
                   },*/
-                  style: { width: title.width || `${98 / this.tableKeys.length}%` },
+                  style: title.style ? title.style : { width: `${98 / this.tableKeys.length}%` },
                 },
-                [title.width ? title.text : title,
+                [title.style.width ? title.text : title,
                   /*this.arrowOrNot(controller, title) ?
                     m(Icon, { svg: { content: m.trust(icons.sortingArrow) } }) : ''*/],
               )),

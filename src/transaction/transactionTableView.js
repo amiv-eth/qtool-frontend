@@ -1,84 +1,53 @@
 import m from 'mithril';
 import TableView from '../views/tableView';
-// import TransactionController from './transactionController';
 import TestTransactionController from './testTransactionController';
+
+const table_style = [
+  { key: 'id', title: 'ID', style: { width: '4em' } },
+  { key: 'description', title: 'Beschreibung', style: { width: 'calc(100% - 56em)' } },
+  { key: 'type_id', title: 'Type', style: { width: '4em' } },
+  { key: 'category_id', title: 'Category', style: { width: '4em' } },
+  { key: 'budgetitem_id', title: 'Budgetposten', style: { width: '10em' } },
+  { key: 'account_id', title: 'Account', style: { width: '4em' } },
+  { key: 'currency_id', title: 'Währung', style: { width: '4em' } },
+  { key: 'amount', title: 'Betrag', style: { width: '4em' } },
+  { key: 'amount_in_chf', title: 'Betrag CHF', style: { width: '4em' } },
+  { key: 'is_valid', title: 'Valid', style: { width: '4em' } },
+  { key: 'financial_year', title: 'Geschäftsjahr', style: { width: '10em' } },
+  { key: 'date', title: 'Date', style: { width: '4em' } },
+];
 
 /* Table of all studydocuments */
 export default class TransactionTableView {
   constructor() {
-    // this.ctrl = new TransactionController((query, search) => this.handler.get({ search, ...query }));
     this.ctrl = new TestTransactionController();
-    console.log('transactionTable');
   }
 
   getItemData(data) {
-    /*return [
-      m('td', data.id),
-      m('td', data.description),
-      m('td', data.type_id),
-      m('td', data.category_id),
-      m('td', data.budgetitem_id),
-      m('td', data.account_id),
-      m('td', data.currency_id),
-      m('td', data.amount),
-      m('td', data.amount_in_chf),
-      m('td', data.is_valid),
-      m('td', data.financial_year),
-      m('td', data.date),
-    ];*/
-    
-    return [
-      m('td', { style: { width: 'calc(100% - 36em)' } }, data.id),
-      m('td', { style: { width: '8em' } }, data.description),
-      m('td', { style: { width: '4em' } }, data.type_id),
-      m('td', { style: { width: '4em' } }, data.category_id),
-      m('td', { style: { width: '10em' } }, data.budgetitem_id),
-      m('td', { style: { width: '10em' } }, data.account_id),
-      m('td', { style: { width: '10em' } }, data.currency_id),
-      m('td', { style: { width: '10em' } }, data.amount),
-      m('td', { style: { width: '10em' } }, data.amount_in_chf),
-      m('td', { style: { width: '10em' } }, data.is_valid),
-      m('td', { style: { width: '10em' } }, data.financial_year),
-      m('td', { style: { width: '10em' } }, data.date),
-    ];
-    
+    const row = [];
+    this.table_style.forEach(pos => {
+      row.push(m('div', { style: pos.style }, data[pos.key]));
+    });
+    return row;
   }
 
   view() {
+    const title_arr = [];
+    const keys_arr = [];
+
+    table_style.forEach(pos => {
+      title_arr.push({
+        text: pos.title,
+        style: pos.style,
+      });
+      keys_arr.push(pos.key);
+    });
+
     return m(TableView, {
       controller: this.ctrl,
-      keys: ['title', 'author', 'course_year', 'semester', 'lecture'], //Only needed if data was not tilecontent was not defined
+      keys: keys_arr, // Only needed if data was not tilecontent was not defined properly
       tileContent: this.getItemData,
-      /*titles: [
-        { text: 'ID'},
-        { text: 'Beschreibung'},
-        { text: 'Type'},
-        { text: 'Category'},
-        { text: 'Budgetposten'},
-        { text: 'Account'},
-        { text: 'Währung'},
-        { text: 'Betrag'},
-        { text: 'Betrag CHF'},
-        { text: 'Valid'},
-        { text: 'Geschäftsjahr'},
-        { text: 'Date'}
-      ],
-      */
-      titles: [
-        { text: 'ID', width: 'calc(100% - 36em)' },
-        { text: 'Beschreibung', width: '8em' },
-        { text: 'Type', width: '4em' },
-        { text: 'Category', width: '4em' },
-        { text: 'Budgetposten', width: '10em' },
-        { text: 'Account', width: '10em' },
-        { text: 'Währung', width: '10em' },
-        { text: 'Betrag', width: '10em' },
-        { text: 'Betrag CHF', width: '10em' },
-        { text: 'Valid', width: '10em' },
-        { text: 'Geschäftsjahr', width: '10em' },
-        { text: 'Date', width: '10em' }
-      ],
-      
+      titles: title_arr,
     });
   }
 }

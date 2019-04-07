@@ -27,8 +27,8 @@ export default class TestTransactionController {
    */
   constructor(get, query = {}) {
     this.stateCounter = Stream(0);
-    /*this.refresh();
-    this.debouncedSearch = debounce((search) => {
+    this.refresh();
+    /*this.debouncedSearch = debounce((search) => {
       this.setSearch(search);
       this.refresh();
       m.redraw();
@@ -39,7 +39,7 @@ export default class TestTransactionController {
 
   /** Refresh the whole list */
   refresh() {
-    //this.stateCounter(this.stateCounter() + 1);
+    this.stateCounter(this.stateCounter() + 1);
   }
 
   infiniteScrollParams(item) {
@@ -48,7 +48,7 @@ export default class TestTransactionController {
       pageData: returnData, //pageNum => this.getPageData(pageNum),
       pageKey: pageNum => `${pageNum}-${this.stateCounter()}`,
       maxPages: this.totalPages ? this.totalPages : undefined,
-      //maxPages: 20
+      //maxPages: 200
     };
   }
 
