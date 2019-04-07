@@ -1,5 +1,25 @@
 import m from 'mithril';
 import infinite from 'mithril-infinite';
+import { List, ListTile, Toolbar, Search, Button, Icon } from 'polythene-mithril';
+import 'polythene-css';
+import { styler } from 'polythene-core-css';
+
+const tableStyles = [
+  {
+    '.toolbar': {
+      'grid-row': 1,
+      display: 'flex',
+    },
+    '.tableTile': {
+      padding: '10px',
+      'border-bottom': '1px solid rgba(0, 0, 0, 0.12)',
+      'align-items': 'center',
+    },
+  },
+];
+
+styler.add('tableview', tableStyles);
+
 
 
 export default class TableView {
@@ -41,14 +61,25 @@ export default class TableView {
     //send filter to controller
   }
 
-  getItemData(data) {
+  getItemData(data) {//Loads Data if no specific method is defined in tile content.
     console.log('Needs to be implemented') //default if tile content was not defined
   }
 
   item() {    
-    return data => m('th', 
-      this.tileContent ? this.tileContent(data) : this.getItemData(data)
-    );
+    return data => m(ListTile, {
+      className: 'themed-list-tile',
+      //hoverable: this.clickOnRows,
+      //compactFront: true,
+      //compact: true,
+      content: m('div', {
+        /*onclick: () => {
+          if (this.clickOnRows) this.clickOnRows(data);
+        },*/
+        className: 'tableTile',
+        style: { width: '100%', display: 'flex' },
+      }, this.tileContent ? this.tileContent(data) : this.getItemData(data)),
+    });
+
   }
 
   getSelectedFilterQuery() {
@@ -56,47 +87,83 @@ export default class TableView {
 
   view({
     attrs: {
-      //controller,
+      controller,
       titles,
+      onAdd = false,
+      tableHeight = false,
     },
   }) {
-    const searchForm = m(
-      'form',
-      m('input.form-control[type=text]', {
-        placeholder: 'Suche',
-        oninput: m.withAttr('value', value => {
-          //searchString(value); //TODO: searchString function
-        }),
-      })
-    );
-
-    return m(
-      'div.tabletool',
-      {
-        style: {
-          display: 'grid',
-          height: '100%',
-          'grid-template-rows': this.filters
-            ? '48px 40px calc(100% - 88px)'
-            : '48px calc(100% - 78px)',
-          'background-color': 'white',
-        },
+    return m('div.tabletool', {
+      style: {
+        display: 'grid',
+        height: '100%',
+        'grid-template-rows': this.filters ?
+          '48px 40px calc(100% - 88px)' : '48px calc(100% - 78px)',
+        'background-color': 'white',
       },
-      [m('div.search', { style: { width: '67%', display: 'inline-block' } }, searchForm), 
-        m('div.filter', []), 
-        m(
-        'table.table.table-striped.table-responsive',
-        [
-          m('thead',
-            m('tr',
-                titles.map((title) => m(
-                  'th', {style: {width: title.width}} ,title.text
-                ))
-              ),
-            m(infinite, this.controller.infiniteScrollParams(this.item())),
-          )
-        ]),
-      ]
-    );
+    }, [
+      m(Toolbar, {
+        className: 'toolbar',
+        compact: true,
+        content: [
+          m(Search, {
+            textfield: {
+              label: 'Search',
+              onChange: ({ value }) => {
+                // this is called not only if the value changes, but also the focus.
+                // we only want to change the search of the value is changed, therefore we
+                // have to track changes in the search value
+                //if (value !== this.searchValue) controller.debouncedSearch(value);
+                this.searchValue = value;
+              },
+            },
+            fullWidth: false,
+          }),
+          onAdd ? m(Button, {
+            className: 'blue-button',
+            borders: true,
+            label: 'Add',
+            events: { onclick: () => { onAdd(); } },
+          }) : '',
+        ],
+      }),
+      // please beare with this code, it is the only way possible to track the selection
+      // status of all the filters of the same group and make sure that they are really
+      // mutually exclusive (that way when you click on one filter in the group, the other
+      // ones in this group will be deselected)
+      m(List, {
+        className: 'scrollTable',
+        style: {
+          'grid-row': this.filters ? 3 : 2,
+          ...tableHeight ? { height: tableHeight } : {},
+        },
+        tiles: [
+          m(ListTile, {
+            className: 'tableTile',
+            //hoverable: this.clickOnTitles,
+            content: m(
+              'div',
+              { style: { width: '100%', display: 'flex' } },
+              // Either titles is a list of titles that are distributed equally,
+              // or it is a list of objects with text and width
+              titles.map((title, i) => m(
+                'div', {
+                  /*onclick: () => {
+                    if (this.clickOnTitles && this.tableKeys[i]) {
+                      this.clickOnTitles(controller, this.tableKeys[i]);
+                    }
+                  },*/
+                  style: { width: title.width || `${98 / this.tableKeys.length}%` },
+                },
+                [title.width ? title.text : title,
+                  /*this.arrowOrNot(controller, title) ?
+                    m(Icon, { svg: { content: m.trust(icons.sortingArrow) } }) : ''*/],
+              )),
+            ),
+          }),
+          m(infinite, controller.infiniteScrollParams(this.item())),
+        ],
+      }),
+    ]);
   }
 }

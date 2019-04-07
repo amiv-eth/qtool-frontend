@@ -17,12 +17,15 @@
   "license": "ISC",
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
-    "bootstrap": "^4.3.1",
+    "@material/drawer": "^0.30.0",
+    "@material/select": "^0.35.1",
     "html-webpack-plugin": "^3.2.0",
-    "jquery": "^3.3.1",
     "mithril": "^1.1.6",
     "mithril-infinite": "^1.2.4",
-    "popper.js": "^1.14.3",
+    "polythene-core-css": "^1.5.4",
+    "polythene-css": "^1.5.4",
+    "polythene-mithril": "^1.5.4",
+    "polythene-utilities": "^1.5.4",
     "robotstxt-webpack-plugin": "^4.0.1"
   },
   "devDependencies": {
