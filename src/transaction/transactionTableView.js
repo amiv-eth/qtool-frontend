@@ -4,7 +4,11 @@ import TestTransactionController from './testTransactionController';
 
 const table_setup = [
   { key: 'id', title: 'ID', style: { width: '4em' } },
-  { key: 'description', title: 'Beschreibung', style: { width: 'calc(100% - 56em)', minWidth: '10em'} },
+  {
+    key: 'description',
+    title: 'Beschreibung',
+    style: { width: 'calc(100% - 56em)', minWidth: '10em' },
+  },
   { key: 'type_id', title: 'Type', style: { width: '4em' } },
   { key: 'category_id', title: 'Category', style: { width: '4em' } },
   { key: 'budgetitem_id', title: 'Budgetposten', style: { width: '10em' } },
@@ -25,7 +29,7 @@ export default class TransactionTableView {
 
   getItemData(data) {
     const row = [];
-    table_setup.forEach(pos => {
+    this.setup.forEach(pos => {
       row.push(m('div', { style: pos.style }, data[pos.key]));
     });
     return row;
@@ -35,7 +39,7 @@ export default class TransactionTableView {
     const title_arr = [];
     const keys_arr = [];
 
-    table_setup.forEach(pos => {
+    setup.forEach(pos => {
       title_arr.push({
         text: pos.title,
         style: pos.style,

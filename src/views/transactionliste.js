@@ -1,6 +1,5 @@
-const m = require('mithril');
-
-const Transaction = require('../models/transaction');
+import m from 'mithril';
+import Transaction from '../models/transaction';
 
 function previousPage() {
   Transaction.page -= 1;
@@ -152,10 +151,8 @@ function table() {
   );
 }
 
-const TransactionListe = {
+export default class TransactionListe {
   view() {
     return m('div', [tableNavigation(), table()]);
-  },
-};
-
-module.exports = TransactionListe;
+  }
+}

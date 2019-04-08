@@ -1,9 +1,7 @@
-const m = require('mithril');
+import m from 'mithril';
 
-const Main = {
+export default class Main {
   view() {
     return m('h1', 'Welcome to qtool!');
-  },
-};
-
-module.exports = Main;
+  }
+}

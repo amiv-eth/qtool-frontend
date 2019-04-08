@@ -1,12 +1,9 @@
-//import './styles/styles.css';
-
 import m from 'mithril';
-
 import layout from './views/layout';
-const Home = require('./views/home');
-const Belegformular = require('./views/belegformular');
-const Belegliste = require('./views/belegliste');
-const Transactionliste = require('./views/transactionliste');
+import Home from './views/home';
+import Belegformular from './views/belegformular';
+import Belegliste from './views/belegliste';
+import Transactionliste from './views/transactionliste';
 import TransactionTableView from './transaction/transactionTableView';
 import './styles/base.less';
 
@@ -18,14 +15,13 @@ function layoutWith(view) {
   };
 }
 
-
 m.route.prefix('');
 m.route(document.body, '/', {
   '/': layoutWith(Home),
   '/belegformular': layoutWith(Belegformular),
   '/belegformular/:id': {
     render(vnode) {
-      return m(Layout, m(Belegformular, vnode.attrs));
+      return m(layout, m(Belegformular, vnode.attrs));
     },
   },
   '/belegliste': layoutWith(Belegliste),

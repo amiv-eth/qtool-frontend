@@ -1,4 +1,4 @@
-import m from 'mithril'
+import m from 'mithril';
 
 const mainNavigation = [
   {
@@ -28,23 +28,19 @@ const mainNavigation = [
   },
 ];
 
-
 export default class Header {
   view() {
     return m(
       'header',
-      m(
-        'nav',
-        [
-          /* LOGO-Stuff
+      m('nav', [
+        /* LOGO-Stuff
           m(
             'a.logo',
             { href: `/${currentLanguage()}/`, onupdate: m.route.link },
             m('img', { src: logos.amiv, alt: 'AMIV an der ETH' })
-          ),*/
-          this.constructor._mainMenu,
-        ]
-      )
+          ), */
+        this.constructor._mainMenu,
+      ])
     );
   }
 
@@ -65,7 +61,7 @@ export default class Header {
               },
               item.name
             ),
-            item.submenu
+            /* item.submenu
               ? [
                   m('div.phantomElement'),
                   m('ul.submenu', [
@@ -95,7 +91,7 @@ export default class Header {
                     ),
                   ]),
                 ]
-              : m(''),
+              : m(''),  */
           ]
         )
       )

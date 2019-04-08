@@ -1,21 +1,23 @@
-import m from 'mithril';
+// import m from 'mithril';
 import Stream from 'mithril/stream';
-import Transaction from '../models/transaction';
+// import Transaction from '../models/transaction';
 
-const returnData = () => [{
-      "id": 123,
-      "description": "Tole beschribig",
-      "type_id" : 4000,
-      "category_id" : 350,
-      "budgetitem_id" : 200,
-      "account_id": 23,
-      "currency_id" : 2,
-      "amount" : 250,
-      "amount_in_chf" : 250,
-      "is_valid" : 1,
-      "financial_year" : 2018,
-      "date" : 2019
-  }];
+const returnData = () => [
+  {
+    id: 123,
+    description: 'Tole beschribig',
+    type_id: 4000,
+    category_id: 350,
+    budgetitem_id: 200,
+    account_id: 23,
+    currency_id: 2,
+    amount: 250,
+    amount_in_chf: 250,
+    is_valid: 1,
+    financial_year: 2018,
+    date: 2019,
+  },
+];
 
 /** Controller for a list of data from a python-eve REST-API. */
 export default class TestTransactionController {
@@ -26,15 +28,15 @@ export default class TestTransactionController {
    *   string-matching that makes sense for the represented data
    * @param {object} query   any initial query
    */
-  constructor(get, query = {}) {
+  constructor(/* get, query = {} */) {
     this.stateCounter = Stream(0);
     this.refresh();
-    /*this.debouncedSearch = debounce((search) => {
+    /* this.debouncedSearch = debounce((search) => {
       this.setSearch(search);
       this.refresh();
       m.redraw();
     }, 100);
-    // keep track of the total number of pages*/
+    // keep track of the total number of pages */
     this.totalPages = null;
   }
 
@@ -46,9 +48,9 @@ export default class TestTransactionController {
   infiniteScrollParams(item) {
     return {
       item,
-      pageData: returnData, //pageNum => this.getPageData(pageNum),
+      pageData: returnData, // pageNum => this.getPageData(pageNum),
       pageKey: pageNum => `${pageNum}-${this.stateCounter()}`,
-      maxPages: 20 // this.totalPages ? this.totalPages : undefined,
+      maxPages: 20, // this.totalPages ? this.totalPages : undefined,
     };
   }
 
@@ -69,8 +71,8 @@ export default class TestTransactionController {
     // remove where again if it is empty
     if (Object.keys(query.where).length === 0) delete query.where;
 
-    return new Promise((resolve) => {
-      this.get(query, this.search).then((data) => {
+    return new Promise(resolve => {
+      this.get(query, this.search).then(data => {
         // update total number of pages
         this.totalPages = Math.ceil(data._meta.total / 10);
         resolve(data._items);
@@ -104,4 +106,3 @@ export default class TestTransactionController {
     this.refresh();
   }
 }
-

@@ -1,8 +1,7 @@
-const m = require('mithril');
+import m from 'mithril';
+import Transaction from '../models/transaction';
 
-const Transaction = require('../models/transaction');
-
-const Belegliste = {
+export default class Belegliste {
   view() {
     return m(
       'table',
@@ -65,7 +64,5 @@ const Belegliste = {
         }),
       ]
     );
-  },
-};
-
-module.exports = Belegliste;
+  }
+}

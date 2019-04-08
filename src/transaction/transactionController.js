@@ -1,4 +1,3 @@
-import m from 'mithril';
 import Stream from 'mithril/stream';
 
 /** Controller for a list of data from a python-eve REST-API. */
@@ -20,11 +19,11 @@ export default class TransactionController {
     // we can tell infinite scroll that the data-version has changed.
     this.stateCounter = Stream(0);
     this.refresh();
-    this.debouncedSearch = debounce((search) => {
+    /* this.debouncedSearch = debounce(search => {
       this.setSearch(search);
       this.refresh();
       m.redraw();
-    }, 100);
+    }, 100); */
     // keep track of the total number of pages
     this.totalPages = null;
   }
@@ -60,8 +59,8 @@ export default class TransactionController {
     // remove where again if it is empty
     if (Object.keys(query.where).length === 0) delete query.where;
 
-    return new Promise((resolve) => {
-      this.get(query, this.search).then((data) => {
+    return new Promise(resolve => {
+      this.get(query, this.search).then(data => {
         // update total number of pages
         this.totalPages = Math.ceil(data._meta.total / 10);
         resolve(data._items);
@@ -73,9 +72,9 @@ export default class TransactionController {
    * Get all available pages
    */
   getFullList() {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       // get first page to refresh total page count
-      this.getPageData(1).then((firstPage) => {
+      this.getPageData(1).then(firstPage => {
         const pages = { 1: firstPage };
         // save totalPages as a constant to avoid race condition with pages added during this
         // process
@@ -85,16 +84,23 @@ export default class TransactionController {
           resolve(firstPage);
         } else {
           // now fetch all the missing pages
-          Array.from(new Array(totalPages - 1), (x, i) => i + 2).forEach((pageNum) => {
-            this.getPageData(pageNum).then((newPage) => {
+          Array.from(new Array(totalPages - 1), (x, i) => i + 2).forEach(pageNum => {
+            this.getPageData(pageNum).then(newPage => {
               pages[pageNum] = newPage;
               // look if all pages were collected
-              const missingPages = Array.from(new Array(totalPages), (x, i) => i + 1).filter(i =>
-                !(i in pages));
+              const missingPages = Array.from(new Array(totalPages), (x, i) => i + 1).filter(
+                i => !(i in pages)
+              );
               if (missingPages.length === 0) {
                 // collect all the so-far loaded pages in order (sorted keys)
                 // and flatten them into 1 array
-                resolve([].concat(...Object.keys(pages).sort().map(key => pages[key])));
+                resolve(
+                  [].concat(
+                    ...Object.keys(pages)
+                      .sort()
+                      .map(key => pages[key])
+                  )
+                );
               }
             });
           });
@@ -129,4 +135,3 @@ export default class TransactionController {
     this.refresh();
   }
 }
-

@@ -1,11 +1,10 @@
-const m = require('mithril');
-
-const Transaction = require('../models/transaction');
-const Category = require('../models/category');
-const Account = require('../models/account');
-const Type = require('../models/type');
-const Currency = require('../models/currency');
-const BudgetItem = require('../models/budgetitem');
+import m from 'mithril';
+import Transaction from '../models/transaction';
+import Category from '../models/category';
+import Account from '../models/account';
+import Type from '../models/type';
+import Currency from '../models/currency';
+import BudgetItem from '../models/budgetitem';
 
 let TransactionData = {
   financial_year: 2018,
@@ -55,7 +54,7 @@ function dropDownMenu(Endpoint, belegformularAttrName, valueKey, textKeys) {
   );
 }
 
-const Belegformular = {
+export default class Belegformular {
   view(vnode) {
     return m(
       'form.col-md-8.col-md-offset-2',
@@ -110,7 +109,5 @@ const Belegformular = {
         m('button.button[type=submit]', 'Submit'),
       ]
     );
-  },
-};
-
-module.exports = Belegformular;
+  }
+}
