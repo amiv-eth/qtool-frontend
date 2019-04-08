@@ -2,18 +2,18 @@
 
 import m from 'mithril';
 
-const Layout = require('./views/layout');
+import layout from './views/layout';
 const Home = require('./views/home');
 const Belegformular = require('./views/belegformular');
 const Belegliste = require('./views/belegliste');
 const Transactionliste = require('./views/transactionliste');
 import TransactionTableView from './transaction/transactionTableView';
-import './style.js';
+import './styles/base.less';
 
 function layoutWith(view) {
   return {
     view() {
-      return m(Layout, m(view));
+      return m(layout, m(view));
     },
   };
 }

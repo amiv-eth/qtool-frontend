@@ -1,11 +1,8 @@
-const m = require('mithril');
+import m from 'mithril';
+import header from './header';
+export default class Layout {
+  static view(vnode) {
+    return m('div', [m(header), m('main', vnode.children)]);
+  }
+}
 
-const Menu = require('./menu');
-
-const Layout = {
-  view(vnode) {
-    return m('div', [m(Menu), m('main', m('div.container.container-fluid.fs', vnode.children))]);
-  },
-};
-
-module.exports = Layout;
