@@ -29,7 +29,7 @@ export default class TransactionTableView {
 
   getItemData(data) {
     const row = [];
-    this.setup.forEach(pos => {
+    table_setup.forEach(pos => {
       row.push(m('div', { style: pos.style }, data[pos.key]));
     });
     return row;
@@ -39,7 +39,7 @@ export default class TransactionTableView {
     const title_arr = [];
     const keys_arr = [];
 
-    setup.forEach(pos => {
+    table_setup.forEach(pos => {
       title_arr.push({
         text: pos.title,
         style: pos.style,
