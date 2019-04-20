@@ -1,6 +1,6 @@
 import m from 'mithril';
 import TableView from '../views/tableView';
-import TestTransactionController from './testTransactionController';
+import SampleTransactionController from './sampleTransactionController';
 
 const table_setup = [
   { key: 'id', title: 'ID', style: { width: '4em' } },
@@ -24,7 +24,7 @@ const table_setup = [
 /* Table of all studydocuments */
 export default class TransactionTableView {
   constructor() {
-    this.ctrl = new TestTransactionController();
+    this.ctrl = new SampleTransactionController();
   }
 
   getItemData(data) {

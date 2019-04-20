@@ -30,6 +30,17 @@ const Transaction = {
       });
   },
 
+  fetchInfinite(pageNum) {
+    return m.request({
+      method: 'GET',
+      url: `${api.address()}/Transaction/transaction?page=${pageNum}`,
+      headers: {
+        'X-AMIV-API-TOKEN': 'quaestor',
+        Accept: 'application/json',
+      },
+    });
+  },
+
   fetchId(id) {
     return m
       .request({
