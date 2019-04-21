@@ -1,6 +1,6 @@
 import m from 'mithril';
 import infinite from 'mithril-infinite';
-import { List, ListTile, Toolbar, Search, /* Button, */ Icon } from 'polythene-mithril';
+import { List, ListTile, Toolbar, Search, Button, Icon } from 'polythene-mithril';
 import 'polythene-css';
 import { styler } from 'polythene-core-css';
 
@@ -112,7 +112,7 @@ export default class TableView {
 
   getSelectedFilterQuery() {}
 
-  view({ attrs: { controller, titles, tableHeight = false } }) {
+  view({ attrs: { controller, titles, tools = false, tableHeight = false } }) {
     return m(
       'div.tabletool',
       {
@@ -143,6 +143,14 @@ export default class TableView {
               },
               fullWidth: false,
             }),
+            tools ? tools.map((tool) => 
+              m(Button, {
+                className: 'blue-button',
+                border: true,
+                label: tool.label,
+                events: { onclick: () => {tool.onclick(); }},//func.onclick },
+              })
+            ) : '',
           ],
         }),
         // please beare with this code, it is the only way possible to track the selection

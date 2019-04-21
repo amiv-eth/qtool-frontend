@@ -1,6 +1,8 @@
 // import m from 'mithril';
 import Stream from 'mithril/stream';
 import Transaction from '../models/transaction';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 /** Controller for a list of data from a python-eve REST-API. */
 export default class SampleTransactionController {
@@ -46,7 +48,6 @@ export default class SampleTransactionController {
   getPageData(pageNum) {
     // for some reason this is called before the object is instantiated.
     // check this and return nothing
-    console.log(pageNum);
     return Transaction.fetchInfinite(pageNum).then(result => {
       this.totalPages = result.meta.last_page;
       return result.items;
@@ -82,5 +83,39 @@ export default class SampleTransactionController {
   setSort(sort) {
     this.sort = sort;
     this.refresh();
+  }
+
+  print_all(header_info){
+    const title = 'All Transactions'
+    const filename = 'all_transactions.pdf'
+    Transaction.fetchInfinite(1).then(result => {
+      var doc = new jsPDF({
+        orientation: 'landscape',
+      });
+
+      doc.text(title, 14, 20)
+
+      doc.autoTable({
+        startY: 22,
+        body: result.items,
+        columns: header_info.map((entry) => { return {header: entry.text, dataKey: entry.key}}),
+        tableLineColor: 0, //Outline
+        tableLineWidth: 1,
+        styles: {
+            lineColor: 0,
+            lineWidth: .3
+        },
+        headStyles: {
+            fillColor: [232,70,43]
+        },
+        bodyStyles: {
+            fillColor: 255,
+        },
+        alternateRowStyles: {
+            fillColor: 255
+        },
+      });
+      doc.save(filename);
+    }); 
   }
 }

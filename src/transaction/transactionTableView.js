@@ -20,7 +20,6 @@ const table_setup = [
   { key: 'financial_year', title: 'Geschäftsjahr', style: { width: '10em' } },
   { key: 'date', title: 'Date', style: { width: '4em' } },
 ];
-
 /* Table of all studydocuments */
 export default class TransactionTableView {
   constructor() {
@@ -38,19 +37,30 @@ export default class TransactionTableView {
   view() {
     const title_arr = [];
     const keys_arr = [];
+    const print_table_info = [];
 
+    //There is probably a smoother way...
     table_setup.forEach(pos => {
       title_arr.push({
         text: pos.title,
         style: pos.style,
       });
       keys_arr.push(pos.key);
+      print_table_info.push({
+        text: pos.title, 
+        key: pos.key,
+      });
     });
+    
     return m(TableView, {
       controller: this.ctrl,
       keys: keys_arr, // Only needed if data was not tilecontent was not defined properly
       tileContent: this.getItemData,
       titles: title_arr,
+      tools: [
+        {label: 'Print all', onclick: () => {this.ctrl.print_all(print_table_info)}},
+        {label: 'Print selected', onclick: () => {console.log("Printing selected");}},
+        ],
     });
   }
 }
