@@ -1,11 +1,15 @@
-const m = require('mithril');
-const api = require('./api_config');
+import m from 'mithril';
+import api from'./api_config';
 
-const BudgetItem = {
-  items: [],
-  pageContent: {},
-  meta: {},
-  page: 1,
+export default class BudgetItem{
+
+  constructor(){
+    items = [];
+    pageContent= {};
+    meta = {};
+    page = 1;
+  }
+  
   fetchPage() {
     return m
       .request({
@@ -17,27 +21,27 @@ const BudgetItem = {
         },
       })
       .then(result => {
-        BudgetItem.pageContent[result.meta.page] = result.items;
-        BudgetItem.meta = result.meta;
+        this.pageContent[result.meta.page] = result.items;
+        this.meta = result.meta;
       });
-  },
+  }
+
   fetch() {
-    BudgetItem.fetchPage().then(() => {
+    this.fetchPage().then(() => {
       const requests = [];
       for (
-        BudgetItem.page = 2;
-        BudgetItem.page <= BudgetItem.meta.last_page;
-        BudgetItem.page += 1
+        this.page = 2;
+        this.page <= this.meta.last_page;
+        this.page += 1
       ) {
-        requests.push(BudgetItem.fetchPage());
+        requests.push(this.fetchPage());
       }
       Promise.all(requests).then(() => {
-        for (let i = 1; i <= BudgetItem.meta.last_page; i += 1) {
-          BudgetItem.items = BudgetItem.items.concat(BudgetItem.pageContent[i]);
+        for (let i = 1; i <= this.meta.last_page; i += 1) {
+          this.items = this.items.concat(this.pageContent[i]);
         }
       });
     });
-  },
-};
+  }
+}
 
-module.exports = BudgetItem;

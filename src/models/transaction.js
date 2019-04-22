@@ -1,23 +1,26 @@
-const m = require('mithril');
-const api = require('./api_config');
+import m from 'mithril';
+import api from'./api_config';
 
-const Transaction = {
-  items: [],
-  sort: 'id.asc',
-  page: 1,
-  meta: {},
-  where: '',
+export default class Transaction {
+
+  constructor(){
+    this.items = [];
+    this.sort = 'id.asc';
+    this.page = 1;
+    this.meta = {};
+    this.where = '';
+  }
 
   fetch() {
     let searchString = '';
-    if (Transaction.where !== '') {
-      searchString = `&where=${Transaction.where}`;
+    if (this.where !== '') {
+      searchString = `&where=${this.where}`;
     }
     return m
       .request({
         method: 'GET',
-        url: `${api.address()}/Transaction/transaction?sort=${Transaction.sort}&page=${
-          Transaction.page
+        url: `${api.address()}/Transaction/transaction?sort=${this.sort}&page=${
+          this.page
         }${searchString}`,
         headers: {
           'X-AMIV-API-TOKEN': 'quaestor',
@@ -25,10 +28,10 @@ const Transaction = {
         },
       })
       .then(result => {
-        Transaction.items = result.items;
-        Transaction.meta = result.meta;
+        this.items = result.items;
+        this.meta = result.meta;
       });
-  },
+  }
 
   fetchInfinite(pageNum) {
     return m.request({
@@ -39,7 +42,7 @@ const Transaction = {
         Accept: 'application/json',
       },
     });
-  },
+  }
 
   fetchId(id) {
     return m
@@ -52,7 +55,7 @@ const Transaction = {
         },
       })
       .then(result => result);
-  },
+  }
 
   submit(data) {
     return m.request({
@@ -65,16 +68,16 @@ const Transaction = {
         'Content-Type': 'application/json',
       },
     });
-  },
+  }
 
   setGeneralSearch(string){ //Returns whether there happened a change
     if (string.length < 3) {
-      if (Transaction.where === '') {
+      if (this.where === '') {
         return false;
       }
-      Transaction.where = '';
-      Transaction.page = 1;
-      Transaction.fetch();
+      this.where = '';
+      this.page = 1;
+      this.fetch();
       return true;
     }
     const fields = ['financial_year', 'date', 'description', 'amount', 'amount_in_chf', 'comment'];
@@ -83,10 +86,8 @@ const Transaction = {
       search = `${search}{'${field}.in': '${string}'}, `;
     });
     search += ']}';
-    Transaction.page = 1;
-    Transaction.where = search;
+    this.page = 1;
+    this.where = search;
     return true;
-  },
+  }
 }
-
-module.exports = Transaction;

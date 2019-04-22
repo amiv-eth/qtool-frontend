@@ -15,6 +15,7 @@ export default class SampleTransactionController {
   constructor(/* get, query = {} */) {
     this.stateCounter = Stream(0);
     this.search = '';
+    this.transaction = new Transaction;
     // keep track of the total number of pages
     this.totalPages = null;
   }
@@ -41,21 +42,21 @@ export default class SampleTransactionController {
    * @return     {Promise}  The page data as a list.
    */
   getPageData(pageNum) {
-    Transaction.page = pageNum;
-    return Transaction.fetch().then(() => {
-      this.totalPages = Transaction.meta.last_page;
-      return Transaction.items;
+    this.transaction.page = pageNum;
+    return this.transaction.fetch().then(() => {
+      this.totalPages = this.transaction.meta.last_page;
+      return this.transaction.items;
     });
 
     /* return Transaction.fetch().then((result) => {
       this.totalPages = result.meta.last_page;
       return result.items;
-    });*/
+    }); */
   }
 
   setSearch(search) {
     this.search = search;
-    if(Transaction.setGeneralSearch(this.search)){
+    if (this.transaction.setGeneralSearch(this.search)) {
       this.refresh();
     }
   }
@@ -82,16 +83,17 @@ export default class SampleTransactionController {
     this.refresh();
   }
 
-  print_all(header_info){
-    const title = 'All Transactions'
-    const filename = 'all_transactions.pdf'
-    Transaction.page = 1;
-    Transaction.fetch().then(() => {
+  print_all(header_info) {
+    const title = 'All Transactions';
+    const filename = 'all_transactions.pdf';
+    this.transaction.page = 1;
+    this.transaction.fetch().then(() => {
       generateTable(
-        header_info.map((entry) => { return {header: entry.text, dataKey: entry.key}}), 
-        Transaction.items, 
-        filename, 
-        title);
-    }); 
+        header_info.map(entry => ({ header: entry.text, dataKey: entry.key })),
+        this.transaction.items,
+        filename,
+        title
+      );
+    });
   }
 }

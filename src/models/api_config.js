@@ -1,9 +1,7 @@
-const API = {
+export default {
   server: 'localhost',
   port: '5000',
   address() {
-    return `http://${API.server}:${API.port}`;
+    return `http://${this.server}:${this.port}`;
   },
 };
-
-module.exports = API;

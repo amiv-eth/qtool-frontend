@@ -1,8 +1,12 @@
-const m = require('mithril');
-const api = require('./api_config');
+import m from 'mithril';
+import api from './api_config';
 
-const Type = {
-  items: [],
+export default class Type {
+
+  constructor(){
+    items = [];
+  }
+  
   fetch() {
     return m
       .request({
@@ -14,9 +18,7 @@ const Type = {
         },
       })
       .then(result => {
-        Type.items = result.items;
+        this.items = result.items;
       });
-  },
-};
-
-module.exports = Type;
+  }
+}

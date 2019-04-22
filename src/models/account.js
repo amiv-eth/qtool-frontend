@@ -1,8 +1,12 @@
-const m = require('mithril');
-const api = require('./api_config');
+import m from 'mithril';
+import api from'./api_config';
 
-const Account = {
-  items: [],
+export default class Account {
+
+  constructor(){
+    items = [];
+  }
+  
   fetch() {
     return m
       .request({
@@ -14,9 +18,7 @@ const Account = {
         },
       })
       .then(result => {
-        Account.items = result.items;
+        this.items = result.items;
       });
-  },
+  }
 };
-
-module.exports = Account;
