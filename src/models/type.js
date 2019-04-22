@@ -2,11 +2,10 @@ import m from 'mithril';
 import api from './api_config';
 
 export default class Type {
-
-  constructor(){
-    items = [];
+  constructor() {
+    this.items = [];
   }
-  
+
   fetch() {
     return m
       .request({

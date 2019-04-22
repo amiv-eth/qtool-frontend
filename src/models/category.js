@@ -1,12 +1,11 @@
-import m from'mithril';
+import m from 'mithril';
 import api from './api_config';
 
-export default class Category{
-
-  constructor(){
-    items = [];
+export default class Category {
+  constructor() {
+    this.items = [];
   }
-  
+
   fetch() {
     return m
       .request({

@@ -3,6 +3,7 @@ import infinite from 'mithril-infinite';
 import { List, ListTile, Toolbar, Search, Button, Icon } from 'polythene-mithril';
 import 'polythene-css';
 import { styler } from 'polythene-core-css';
+import { icons } from './elements';
 
 const tableStyles = [
   {
@@ -38,7 +39,7 @@ export default class TableView {
    */
   constructor({
     attrs: {
-      controller,
+      // controller,
       keys,
       titles,
       tileContent,
@@ -48,7 +49,7 @@ export default class TableView {
       // Filters
     },
   }) {
-    this.controller = controller;
+    // this.controller = controller;
     this.tableKeys = keys || [];
     this.tableTitles = titles;
     this.tileContent = tileContent;
@@ -59,9 +60,9 @@ export default class TableView {
    * initFilterIdxs lets you specify the filters that are active at initialization.
    * They are specified as index to the nexted filterGroups array.
    */
-  oninit() {
+  /* oninit() {
     // send filter to controller
-  }
+  } */
 
   arrowOrNot(controller, title) {
     const titleText = title.width ? title.text : title;
@@ -110,7 +111,7 @@ export default class TableView {
       });
   }
 
-  getSelectedFilterQuery() {}
+  // getSelectedFilterQuery() {}
 
   view({ attrs: { controller, titles, tools = false, tableHeight = false } }) {
     return m(
@@ -143,14 +144,20 @@ export default class TableView {
               },
               fullWidth: false,
             }),
-            tools ? tools.map((tool) => 
-              m(Button, {
-                className: 'blue-button',
-                border: true,
-                label: tool.label,
-                events: { onclick: () => {tool.onclick(); }},//func.onclick },
-              })
-            ) : '',
+            tools
+              ? tools.map(tool =>
+                  m(Button, {
+                    className: 'blue-button',
+                    border: true,
+                    label: tool.label,
+                    events: {
+                      onclick: () => {
+                        tool.onclick();
+                      },
+                    }, // func.onclick },
+                  })
+                )
+              : '',
           ],
         }),
         // please beare with this code, it is the only way possible to track the selection

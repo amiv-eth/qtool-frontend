@@ -1,9 +1,8 @@
 import m from 'mithril';
-import api from'./api_config';
+import api from './api_config';
 
 export default class Transaction {
-
-  constructor(){
+  constructor() {
     this.items = [];
     this.sort = 'id.asc';
     this.page = 1;
@@ -16,6 +15,9 @@ export default class Transaction {
     if (this.where !== '') {
       searchString = `&where=${this.where}`;
     }
+    console.log(
+      `${api.address()}/Transaction/transaction?sort=${this.sort}&page=${this.page}${searchString}`
+    );
     return m
       .request({
         method: 'GET',
@@ -33,7 +35,7 @@ export default class Transaction {
       });
   }
 
-  fetchInfinite(pageNum) {
+  /* fetchInfinite(pageNum) {
     return m.request({
       method: 'GET',
       url: `${api.address()}/Transaction/transaction?page=${pageNum}`,
@@ -68,9 +70,10 @@ export default class Transaction {
         'Content-Type': 'application/json',
       },
     });
-  }
+  } */
 
-  setGeneralSearch(string){ //Returns whether there happened a change
+  setGeneralSearch(string) {
+    // Returns whether there happened a change
     if (string.length < 3) {
       if (this.where === '') {
         return false;

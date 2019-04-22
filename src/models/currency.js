@@ -1,12 +1,11 @@
 import m from 'mithril';
-import api from'./api_config';
+import api from './api_config';
 
 export default class Currency {
-
-  constructor(){
-    items = [];
+  constructor() {
+    this.items = [];
   }
-  
+
   fetch() {
     return m
       .request({

@@ -23,39 +23,43 @@ let TransactionData = {
 };
 
 function populateDropDown(Endpoint, belegformularAttrName, valueKey, textKeys) {
-  if (Endpoint.items.length === 0) {
-    return m('option', 'None');
-  }
-  const firstItem = Endpoint.items[0];
-  const firstValue = firstItem[valueKey];
-  TransactionData[belegformularAttrName] = firstItem[valueKey];
-  return Endpoint.items.map(item => {
-    let text = '';
-    Object.values(textKeys).forEach(key => {
-      text = `${text + item[key]} `;
-    });
-    if (item[valueKey] === firstValue) {
-      return m('option', { selected: 'selected', value: item[valueKey] }, text);
+  console.log(Endpoint)
+  Endpoint.fetch().then(() => {
+    if (Endpoint.items.length === 0) {
+      return m('option', 'None');
     }
-    return m('option', { value: item[valueKey] }, text);
-  });
+    const firstItem = Endpoint.items[0];
+    const firstValue = firstItem[valueKey];
+    TransactionData[belegformularAttrName] = firstItem[valueKey];
+    return Endpoint.items.map(item => {
+      let text = '';
+      Object.values(textKeys).forEach(key => {
+        text = `${text + item[key]} `;
+      });
+      if (item[valueKey] === firstValue) {
+        return m('option', { selected: 'selected', value: item[valueKey] }, text);
+      }
+      return m('option', { value: item[valueKey] }, text);
+    });
+  })
 }
 
 function dropDownMenu(Endpoint, belegformularAttrName, valueKey, textKeys) {
+  const model = Endpoint;
   return m(
     'select.form-control',
     {
-      oninit: Endpoint.fetch,
+      oninit: model.fetch,
       onchange: m.withAttr('value', value => {
         TransactionData[belegformularAttrName] = value;
       }),
     },
-    populateDropDown(Endpoint, belegformularAttrName, valueKey, textKeys)
+    populateDropDown(model, belegformularAttrName, valueKey, textKeys)
   );
 }
 
 export default class Belegformular {
-  view(vnode) {
+  static view(vnode) {
     return m(
       'form.col-md-8.col-md-offset-2',
       {

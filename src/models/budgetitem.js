@@ -1,15 +1,14 @@
 import m from 'mithril';
-import api from'./api_config';
+import api from './api_config';
 
-export default class BudgetItem{
-
-  constructor(){
-    items = [];
-    pageContent= {};
-    meta = {};
-    page = 1;
+export default class BudgetItem {
+  constructor() {
+    this.items = [];
+    this.pageContent = {};
+    this.meta = {};
+    this.page = 1;
   }
-  
+
   fetchPage() {
     return m
       .request({
@@ -29,11 +28,7 @@ export default class BudgetItem{
   fetch() {
     this.fetchPage().then(() => {
       const requests = [];
-      for (
-        this.page = 2;
-        this.page <= this.meta.last_page;
-        this.page += 1
-      ) {
+      for (this.page = 2; this.page <= this.meta.last_page; this.page += 1) {
         requests.push(this.fetchPage());
       }
       Promise.all(requests).then(() => {
@@ -44,4 +39,3 @@ export default class BudgetItem{
     });
   }
 }
-

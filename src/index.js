@@ -15,6 +15,8 @@ function layoutWith(view) {
   };
 }
 
+const transactionliste = new Transactionliste();
+
 m.route.prefix('');
 m.route(document.body, '/', {
   '/': layoutWith(Home),
@@ -25,6 +27,6 @@ m.route(document.body, '/', {
     },
   },
   '/belegliste': layoutWith(Belegliste),
-  '/transactionliste': layoutWith(Transactionliste),
+  '/transactionliste': layoutWith(transactionliste),
   '/testliste': layoutWith(TransactionTableView),
 });

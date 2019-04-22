@@ -1,12 +1,11 @@
 import m from 'mithril';
-import api from'./api_config';
+import api from './api_config';
 
 export default class Account {
-
-  constructor(){
-    items = [];
+  constructor() {
+    this.items = [];
   }
-  
+
   fetch() {
     return m
       .request({
@@ -21,4 +20,4 @@ export default class Account {
         this.items = result.items;
       });
   }
-};
+}

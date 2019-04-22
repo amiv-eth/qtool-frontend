@@ -2,7 +2,7 @@ import m from 'mithril';
 import Transaction from '../models/transaction';
 
 export default class Belegliste {
-  view() {
+  static view() {
     return m(
       'table',
       {

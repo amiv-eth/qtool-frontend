@@ -15,7 +15,7 @@ export default class SampleTransactionController {
   constructor(/* get, query = {} */) {
     this.stateCounter = Stream(0);
     this.search = '';
-    this.transaction = new Transaction;
+    this.transaction = new Transaction();
     // keep track of the total number of pages
     this.totalPages = null;
   }
