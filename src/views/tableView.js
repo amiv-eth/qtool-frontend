@@ -44,8 +44,9 @@ export default class TableView {
       titles,
       tileContent,
       clickOnTitles = (controller, title) => {
-        controller.setSort([[title, 1]]);
+        controller.setSort(title);
       },
+
       // Filters
     },
   }) {
@@ -154,7 +155,7 @@ export default class TableView {
                       onclick: () => {
                         tool.onclick();
                       },
-                    }, // func.onclick },
+                    },
                   })
                 )
               : '',

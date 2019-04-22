@@ -14,10 +14,11 @@ export default class SampleTransactionController {
    */
   constructor(/* get, query = {} */) {
     this.stateCounter = Stream(0);
-    this.search = '';
     this.transaction = new Transaction();
     // keep track of the total number of pages
     this.totalPages = null;
+    this.search = '';
+    this.sort = this.transaction.sort;
   }
 
   /** Refresh the whole list */
@@ -73,13 +74,13 @@ export default class SampleTransactionController {
     this.refresh();
   }
 
-  setQuery(query) {
-    this.query = Object.assign({}, query);
-    this.refresh();
-  }
-
   setSort(sort) {
-    this.sort = sort;
+    if (this.sort === `${sort}.asc`) {
+      this.sort = `${sort}.desc`;
+    } else {
+      this.sort = `${sort}.asc`;
+    }
+    this.transaction.setSort(this.sort);
     this.refresh();
   }
 

@@ -23,7 +23,7 @@ let TransactionData = {
 };
 
 function populateDropDown(Endpoint, belegformularAttrName, valueKey, textKeys) {
-  console.log(Endpoint)
+  console.log(Endpoint);
   Endpoint.fetch().then(() => {
     if (Endpoint.items.length === 0) {
       return m('option', 'None');
@@ -41,7 +41,7 @@ function populateDropDown(Endpoint, belegformularAttrName, valueKey, textKeys) {
       }
       return m('option', { value: item[valueKey] }, text);
     });
-  })
+  });
 }
 
 function dropDownMenu(Endpoint, belegformularAttrName, valueKey, textKeys) {

@@ -15,9 +15,6 @@ export default class Transaction {
     if (this.where !== '') {
       searchString = `&where=${this.where}`;
     }
-    console.log(
-      `${api.address()}/Transaction/transaction?sort=${this.sort}&page=${this.page}${searchString}`
-    );
     return m
       .request({
         method: 'GET',
@@ -92,5 +89,9 @@ export default class Transaction {
     this.page = 1;
     this.where = search;
     return true;
+  }
+
+  setSort(sort) {
+    this.sort = sort;
   }
 }
