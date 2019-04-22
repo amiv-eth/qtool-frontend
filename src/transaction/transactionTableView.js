@@ -44,6 +44,7 @@ export default class TransactionTableView {
       title_arr.push({
         text: pos.title,
         style: pos.style,
+        key: pos.key,
       });
       keys_arr.push(pos.key);
       print_table_info.push({
@@ -54,8 +55,8 @@ export default class TransactionTableView {
 
     return m(TableView, {
       controller: this.ctrl,
-      keys: keys_arr, // Only needed if data was not tilecontent was not defined properly
-      tileContent: this.getItemData,
+      keys: keys_arr,
+      tileContent: TransactionTableView.getItemData,
       titles: title_arr,
       tools: [
         {

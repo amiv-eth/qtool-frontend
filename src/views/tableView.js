@@ -65,19 +65,6 @@ export default class TableView {
     // send filter to controller
   } */
 
-  arrowOrNot(controller, title) {
-    const titleText = title.width ? title.text : title;
-    if (!controller.sort) return false;
-    let i;
-    for (i = 0; i < this.tableTitles.length; i += 1) {
-      const tableTitlei = this.tableTitles[i].width
-        ? this.tableTitles[i].text
-        : this.tableTitles[i];
-      if (tableTitlei === titleText) break;
-    }
-    return this.tableKeys[i] === controller.sort[0][0];
-  }
-
   getItemData(data) {
     // Loads Data if no specific method is defined in tile content.
     // default if tile content was not defined
@@ -195,8 +182,16 @@ export default class TableView {
                     },
                     [
                       title.style.width ? title.text : title,
-                      this.arrowOrNot(controller, title)
-                        ? m(Icon, { svg: { content: m.trust(icons.sortingArrow) } })
+                      controller.sort.split('.')[0] === title.key
+                        ? m(Icon, {
+                            svg: {
+                              content: m.trust(
+                                controller.sort.split('.')[1] === 'desc'
+                                  ? icons.sortingArrowUp
+                                  : icons.sortingArrowDown
+                              ),
+                            },
+                          })
                         : '',
                     ]
                   )
