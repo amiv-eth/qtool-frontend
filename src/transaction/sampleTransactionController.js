@@ -19,6 +19,7 @@ export default class SampleTransactionController {
     this.totalPages = null;
     this.search = '';
     this.sort = this.transaction.sort;
+    this.selected = [];
   }
 
   /** Refresh the whole list */
@@ -48,11 +49,6 @@ export default class SampleTransactionController {
       this.totalPages = this.transaction.meta.last_page;
       return this.transaction.items;
     });
-
-    /* return Transaction.fetch().then((result) => {
-      this.totalPages = result.meta.last_page;
-      return result.items;
-    }); */
   }
 
   setSearch(search) {
@@ -60,6 +56,16 @@ export default class SampleTransactionController {
     if (this.transaction.setGeneralSearch(this.search)) {
       this.refresh();
     }
+  }
+
+  select(id) {
+    if (this.selected.includes(id)) {
+      const index = this.selected.indexOf(id);
+      if (index !== -1) this.selected.splice(index, 1);
+    } else {
+      this.selected.push(id);
+    }
+    console.log(this.selected);
   }
 
   /**

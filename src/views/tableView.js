@@ -39,22 +39,27 @@ export default class TableView {
    */
   constructor({
     attrs: {
-      // controller,
+      controller,
       keys,
       titles,
       tileContent,
-      clickOnTitles = (controller, title) => {
-        controller.setSort(title);
+      clickOnTitles = (ctrl, title) => {
+        ctrl.setSort(title);
+      },
+
+      clickOnRows = (ctrl, row) => {
+        ctrl.select(row.id);
       },
 
       // Filters
     },
   }) {
-    // this.controller = controller;
+    this.controller = controller;
     this.tableKeys = keys || [];
     this.tableTitles = titles;
     this.tileContent = tileContent;
     this.clickOnTitles = clickOnTitles;
+    this.clickOnRows = clickOnRows;
   }
 
   /*
@@ -82,17 +87,21 @@ export default class TableView {
     return data =>
       m(ListTile, {
         className: 'themed-list-tile',
-        // hoverable: this.clickOnRows,
-        // compactFront: true,
-        // compact: true,
+        hoverable: this.clickOnRows,
+        compactFront: true,
+        compact: true,
         content: m(
           'div',
           {
-            /* onclick: () => {
-          if (this.clickOnRows) this.clickOnRows(data);
-        }, */
+            onclick: () => {
+              if (this.clickOnRows) this.clickOnRows(this.controller, data);
+            },
             className: 'tableTile',
-            style: { width: '100%', display: 'flex' },
+            style: {
+              width: '100%',
+              display: 'flex',
+              backgroundColor: this.controller.selected.includes(data.id) ? '#B8B8B8' : null,
+            },
           },
           this.tileContent ? this.tileContent(data) : this.getItemData(data)
         ),
