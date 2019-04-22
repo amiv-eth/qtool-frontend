@@ -66,6 +66,27 @@ const Transaction = {
       },
     });
   },
-};
+
+  setGeneralSearch(string){ //Returns whether there happened a change
+    if (string.length < 3) {
+      if (Transaction.where === '') {
+        return false;
+      }
+      Transaction.where = '';
+      Transaction.page = 1;
+      Transaction.fetch();
+      return true;
+    }
+    const fields = ['financial_year', 'date', 'description', 'amount', 'amount_in_chf', 'comment'];
+    let search = "{'or': [";
+    Object.values(fields).forEach(field => {
+      search = `${search}{'${field}.in': '${string}'}, `;
+    });
+    search += ']}';
+    Transaction.page = 1;
+    Transaction.where = search;
+    return true;
+  },
+}
 
 module.exports = Transaction;

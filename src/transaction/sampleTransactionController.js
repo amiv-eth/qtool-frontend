@@ -1,4 +1,4 @@
-// import m from 'mithril';
+import m from 'mithril';
 import Stream from 'mithril/stream';
 import Transaction from '../models/transaction';
 import generateTable from '../models/pdf_table';
@@ -14,12 +14,7 @@ export default class SampleTransactionController {
    */
   constructor(/* get, query = {} */) {
     this.stateCounter = Stream(0);
-    this.refresh();
-    /* this.debouncedSearch = debounce((search) => {
-      this.setSearch(search);
-      this.refresh();
-      m.redraw();
-    }, 100); */
+    this.search = '';
     // keep track of the total number of pages
     this.totalPages = null;
   }
@@ -27,6 +22,7 @@ export default class SampleTransactionController {
   /** Refresh the whole list */
   refresh() {
     this.stateCounter(this.stateCounter() + 1);
+    m.redraw();
   }
 
   infiniteScrollParams(item) {
@@ -45,21 +41,23 @@ export default class SampleTransactionController {
    * @return     {Promise}  The page data as a list.
    */
   getPageData(pageNum) {
-    // for some reason this is called before the object is instantiated.
-    // check this and return nothing
-    return Transaction.fetchInfinite(pageNum).then(result => {
+    Transaction.page = pageNum;
+    return Transaction.fetch().then(() => {
+      this.totalPages = Transaction.meta.last_page;
+      return Transaction.items;
+    });
+
+    /* return Transaction.fetch().then((result) => {
       this.totalPages = result.meta.last_page;
       return result.items;
-    });
-    /* return Transaction.fetch()
-    .then(() =>{
-        console.log(Transaction.items);
-        return Transaction.items;});
-        */
+    });*/
   }
 
   setSearch(search) {
     this.search = search;
+    if(Transaction.setGeneralSearch(this.search)){
+      this.refresh();
+    }
   }
 
   /**
@@ -87,10 +85,11 @@ export default class SampleTransactionController {
   print_all(header_info){
     const title = 'All Transactions'
     const filename = 'all_transactions.pdf'
-    Transaction.fetchInfinite(1).then(result => {
+    Transaction.page = 1;
+    Transaction.fetch().then(() => {
       generateTable(
         header_info.map((entry) => { return {header: entry.text, dataKey: entry.key}}), 
-        result.items, 
+        Transaction.items, 
         filename, 
         title);
     }); 

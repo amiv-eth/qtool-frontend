@@ -137,7 +137,7 @@ export default class TableView {
                   // this is called not only if the value changes, but also the focus.
                   // we only want to change the search of the value is changed, therefore we
                   // have to track changes in the search value
-                  // if (value !== this.searchValue) controller.debouncedSearch(value);
+                  if (value !== this.searchValue) controller.setSearch(value);
                   this.searchValue = value;
                 },
               },
