@@ -41,7 +41,7 @@ export default class Transaction {
         Accept: 'application/json',
       },
     });
-  }
+  } 
 
   fetchId(id) {
     return m
@@ -56,6 +56,7 @@ export default class Transaction {
       .then(result => result);
   }
 
+  
   submit(data) {
     return m.request({
       method: 'POST',
@@ -86,6 +87,7 @@ export default class Transaction {
       search = `${search}{'${field}.in': '${string}'}, `;
     });
     search += ']}';
+
     this.page = 1;
     this.where = search;
     return true;

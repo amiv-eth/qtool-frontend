@@ -37,12 +37,6 @@ export default class SampleTransactionController {
     };
   }
 
-  /**
-   * Return the data of a specific page.
-   *
-   * @param      {int}   pageNum - The page number
-   * @return     {Promise}  The page data as a list.
-   */
   getPageData(pageNum) {
     this.transaction.page = pageNum;
     return this.transaction.fetch().then(() => {
@@ -58,23 +52,6 @@ export default class SampleTransactionController {
     }
   }
 
-  select(id) {
-    if (this.selected.includes(id)) {
-      const index = this.selected.indexOf(id);
-      if (index !== -1) this.selected.splice(index, 1);
-    } else {
-      this.selected.push(id);
-    }
-    console.log(this.selected);
-  }
-
-  /**
-   *  Set Filters applied to the query.
-   *  Filters a part of the 'where'-query that can be set independently from the standard where
-   *  query. The main usecase are filters on the list-items that can be quickly turned on and
-   *  off without affecting the general query settings.
-   * @param {Object} filters - filters object, in the python-eve format of a where-query.
-   */
   setFilter(filter) {
     this.filter = filter;
     this.refresh();
@@ -90,9 +67,64 @@ export default class SampleTransactionController {
     this.refresh();
   }
 
-  print_all(header_info) {
+  select(id) {
+    if (this.selected.includes(id)) {
+      const index = this.selected.indexOf(id);
+      if (index !== -1) this.selected.splice(index, 1);
+    } else {
+      this.selected.push(id);
+    }
+  }
+
+  getFullList() {
+    return new Promise((resolve) => {
+      // get first page to refresh total page count
+      this.getPageData(1).then((firstPage) => {
+        const pages = { 1: firstPage };
+        // save totalPages as a constant to avoid race condition with pages added during this
+        // process
+        const { totalPages } = this;
+
+        if (totalPages <= 1) {
+          resolve(firstPage);
+        } else {
+          // now fetch all the missing pages
+          Array.from(new Array(totalPages - 1), (x, i) => i + 2).forEach((pageNum) => {
+            this.getPageData(pageNum).then((newPage) => {
+              pages[pageNum] = newPage;
+              // look if all pages were collected
+              const missingPages = Array.from(new Array(totalPages), (x, i) => i + 1).filter(i =>
+                !(i in pages));
+              if (missingPages.length === 0) {
+                // collect all the so-far loaded pages in order (sorted keys)
+                // and flatten them into 1 array
+                resolve([].concat(...Object.keys(pages).sort().map(key => pages[key])));
+              }
+            });
+          });
+        }
+      });
+    });
+  }
+
+  printAll(header_info) {
+    //FILLL ACTUALLY ALL
     const title = 'All Transactions';
     const filename = 'all_transactions.pdf';
+    this.getFullList().then(result => {
+      console.log(result);
+      generateTable(
+        header_info.map(entry => ({ header: entry.text, dataKey: entry.key })),
+        result,
+        filename,
+        title
+      );
+    });
+  }
+
+  printSelected(header_info){
+    const title = 'Selected Transactions';
+    const filename = 'selected_transactions.pdf';
     this.transaction.page = 1;
     this.transaction.fetch().then(() => {
       generateTable(

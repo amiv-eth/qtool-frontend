@@ -62,13 +62,13 @@ export default class TransactionTableView {
         {
           label: 'Print all',
           onclick: () => {
-            this.ctrl.print_all(print_table_info);
+            this.ctrl.printAll(print_table_info);
           },
         },
         {
           label: 'Print selected',
           onclick: () => {
-            console.log('Printing selected');
+            this.ctrl.printSelected(print_table_info);
           },
         },
       ],
