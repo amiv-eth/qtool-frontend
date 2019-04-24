@@ -76,29 +76,67 @@ export default class SampleTransactionController {
     }
   }
 
+  unselectAll() {
+    this.selected = [];
+  }
+
   getFullList() {
-    return new Promise((resolve) => {
-      // get first page to refresh total page count
-      this.getPageData(1).then((firstPage) => {
+    return new Promise(resolve => {
+      this.getPageData(1).then(firstPage => {
         const pages = { 1: firstPage };
-        // save totalPages as a constant to avoid race condition with pages added during this
-        // process
         const { totalPages } = this;
 
         if (totalPages <= 1) {
           resolve(firstPage);
         } else {
           // now fetch all the missing pages
-          Array.from(new Array(totalPages - 1), (x, i) => i + 2).forEach((pageNum) => {
-            this.getPageData(pageNum).then((newPage) => {
+          Array.from(new Array(totalPages - 1), (x, i) => i + 2).forEach(pageNum => {
+            this.getPageData(pageNum).then(newPage => {
               pages[pageNum] = newPage;
               // look if all pages were collected
-              const missingPages = Array.from(new Array(totalPages), (x, i) => i + 1).filter(i =>
-                !(i in pages));
+              const missingPages = Array.from(new Array(totalPages), (x, i) => i + 1).filter(
+                i => !(i in pages)
+              );
               if (missingPages.length === 0) {
-                // collect all the so-far loaded pages in order (sorted keys)
-                // and flatten them into 1 array
-                resolve([].concat(...Object.keys(pages).sort().map(key => pages[key])));
+                resolve(
+                  [].concat(
+                    ...Object.keys(pages)
+                      .sort()
+                      .map(key => pages[key])
+                  )
+                );
+              }
+            });
+          });
+        }
+      });
+    });
+  }
+
+  getSelected() {
+    return new Promise(resolve => {
+      Transaction.fetchId(this.selected[0]).then(firstSelected => {
+        const selectedList = { 1: firstSelected };
+
+        if (this.selected.length <= 1) {
+          resolve([firstSelected]);
+        } else {
+          // now fetch all the missing pages
+          Array.from(new Array(this.selected.length - 1), (x, i) => i + 2).forEach(id => {
+            Transaction.fetchId(this.selected[id - 1]).then(newId => {
+              selectedList[id] = newId;
+              // look if all pages were collected
+              const missingId = Array.from(new Array(this.selected.length), (x, i) => i + 1).filter(
+                i => !(i in selectedList)
+              );
+              if (missingId.length === 0) {
+                resolve(
+                  [].concat(
+                    ...Object.keys(selectedList)
+                      .sort()
+                      .map(key => selectedList[key])
+                  )
+                );
               }
             });
           });
@@ -108,11 +146,9 @@ export default class SampleTransactionController {
   }
 
   printAll(header_info) {
-    //FILLL ACTUALLY ALL
-    const title = 'All Transactions';
-    const filename = 'all_transactions.pdf';
+    const title = 'All shown Transactions';
+    const filename = 'all_shown_transactions.pdf';
     this.getFullList().then(result => {
-      console.log(result);
       generateTable(
         header_info.map(entry => ({ header: entry.text, dataKey: entry.key })),
         result,
@@ -122,17 +158,21 @@ export default class SampleTransactionController {
     });
   }
 
-  printSelected(header_info){
+  printSelected(header_info) {
     const title = 'Selected Transactions';
     const filename = 'selected_transactions.pdf';
     this.transaction.page = 1;
-    this.transaction.fetch().then(() => {
-      generateTable(
-        header_info.map(entry => ({ header: entry.text, dataKey: entry.key })),
-        this.transaction.items,
-        filename,
-        title
-      );
-    });
+    if (this.selected.length <= 0) {
+      window.alert('Please selecte at least one Entry');
+    } else {
+      this.getSelected().then(result => {
+        generateTable(
+          header_info.map(entry => ({ header: entry.text, dataKey: entry.key })),
+          result,
+          filename,
+          title
+        );
+      });
+    }
   }
 }

@@ -42,8 +42,8 @@ export default class Transaction {
       },
     });
   } 
-
-  fetchId(id) {
+  */
+  static fetchId(id) {
     return m
       .request({
         method: 'GET',
@@ -56,7 +56,7 @@ export default class Transaction {
       .then(result => result);
   }
 
-  
+  /*
   submit(data) {
     return m.request({
       method: 'POST',

@@ -14,6 +14,7 @@ export default function generateTable(header, body_data, filename = false, title
     unit: 'mm',
     body: body_data,
     columns: header,
+    // Style Stuff
     tableLineColor: 0, // Outline
     tableLineWidth: 1,
     styles: {

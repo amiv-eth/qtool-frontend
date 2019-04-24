@@ -60,7 +60,7 @@ export default class TransactionTableView {
       titles: title_arr,
       tools: [
         {
-          label: 'Print all',
+          label: 'Print all shown',
           onclick: () => {
             this.ctrl.printAll(print_table_info);
           },
@@ -69,6 +69,12 @@ export default class TransactionTableView {
           label: 'Print selected',
           onclick: () => {
             this.ctrl.printSelected(print_table_info);
+          },
+        },
+        {
+          label: 'Unselect all',
+          onclick: () => {
+            this.ctrl.unselectAll();
           },
         },
       ],
