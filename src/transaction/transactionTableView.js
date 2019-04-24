@@ -1,16 +1,16 @@
 import m from 'mithril';
 import TableView from '../views/tableView';
-import SampleTransactionController from './sampleTransactionController';
+import TransactionController from './TransactionController';
 
 const table_setup = [
   { key: 'id', title: 'ID', style: { width: '4em' } },
   {
     key: 'description',
     title: 'Beschreibung',
-    style: { width: 'calc(100% - 56em)', minWidth: '10em' },
+    style: { width: 'calc(100% - 60em)', minWidth: '10em' },
   },
   { key: 'type_id', title: 'Type', style: { width: '4em' } },
-  { key: 'category_id', title: 'Category', style: { width: '4em' } },
+  { key: 'category_id', title: 'Category', style: { width: '8em' } },
   { key: 'budgetitem_id', title: 'Budgetposten', style: { width: '10em' } },
   { key: 'account_id', title: 'Account', style: { width: '4em' } },
   { key: 'currency_id', title: 'Währung', style: { width: '4em' } },
@@ -23,7 +23,7 @@ const table_setup = [
 /* Table of all studydocuments */
 export default class TransactionTableView {
   constructor() {
-    this.ctrl = new SampleTransactionController();
+    this.ctrl = new TransactionController();
   }
 
   static getItemData(data) {
