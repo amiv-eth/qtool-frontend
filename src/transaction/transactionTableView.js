@@ -1,6 +1,6 @@
 import m from 'mithril';
 import TableView from '../views/tableView';
-import TransactionController from './TransactionController';
+import TransactionController from './transactionController';
 
 const table_setup = [
   { key: 'id', title: 'ID', style: { width: '4em' } },

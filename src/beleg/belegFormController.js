@@ -4,7 +4,7 @@ import Transaction from '../models/transaction';
 import generateTable from '../models/pdf_table';
 
 /** Controller for a list of data from a python-eve REST-API. */
-export default class SampleTransactionController {
+export default class TransactionController {
   /**
    * @param {function} get   function(query, search),
    *   performs a get request to some resource with the given query and search. Search is a

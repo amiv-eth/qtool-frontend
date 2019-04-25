@@ -12,16 +12,6 @@ const mainNavigation = [
     oncreate: m.route.link,
   },
   {
-    name: 'Belegliste',
-    url: '/belegliste',
-    oncreate: m.route.link,
-  },
-  {
-    name: 'Transactionliste',
-    url: 'transactionliste',
-    oncreate: m.route.link,
-  },
-  {
     name: 'Testliste',
     url: 'testliste',
     oncreate: m.route.link,
