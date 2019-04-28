@@ -1,8 +1,8 @@
-import m from 'mithril';
-import { FormView, INPUT_TYPES } from '../views/formView';
-import BelegFromController from './belegFormController';
+import { INPUT_TYPES } from '../views/formView';
+import BelegFormController from './belegFormController';
 import Category from '../models/category';
 import Type from '../models/type';
+import BaseForm from '../views/baseForm';
 
 const inputFields = [
   {
@@ -37,33 +37,8 @@ const buttons = [
   },
 ];
 
-export default class BelegFromView {
+export default class BelegFormView extends BaseForm {
   constructor() {
-    this.fields_view_data = [];
-    this.fields_ctrl_data = [];
-
-    inputFields.forEach(pos => {
-      this.fields_ctrl_data.push({
-        endpoint: pos.endpoint,
-        attr_key: pos.attr_key,
-        value_key: pos.value_key,
-        text_key: pos.text_key,
-      });
-      this.fields_view_data.push({
-        label: pos.label,
-        type: pos.type,
-        attr_key: pos.attr_key,
-      });
-    });
-
-    this.ctrl = new BelegFromController(this.fields_ctrl_data);
-  }
-
-  view() {
-    return m(FormView, {
-      controller: this.ctrl,
-      fields: this.fields_view_data,
-      buttons,
-    });
+    super(BelegFormController, inputFields, buttons);
   }
 }

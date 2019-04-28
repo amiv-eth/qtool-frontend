@@ -1,6 +1,5 @@
-import m from 'mithril';
-import TableView from '../views/tableView';
 import TransactionController from './transactionController';
+import BaseTable from '../views/baseTable';
 
 const table_setup = [
   { key: 'id', title: 'ID', style: { width: '4em' } },
@@ -21,64 +20,8 @@ const table_setup = [
   { key: 'date', title: 'Date', style: { width: '4em' } },
 ];
 
-/* Table of all studydocuments */
-export default class TransactionTableView {
+export default class TransactionTableView extends BaseTable {
   constructor() {
-    this.ctrl = new TransactionController();
-  }
-
-  static getItemData(data) {
-    const row = [];
-    table_setup.forEach(pos => {
-      row.push(m('div', { style: pos.style }, data[pos.key]));
-    });
-    return row;
-  }
-
-  view() {
-    const title_arr = [];
-    const keys_arr = [];
-    const print_table_info = [];
-
-    // There is probably a smoother way...
-    table_setup.forEach(pos => {
-      title_arr.push({
-        text: pos.title,
-        style: pos.style,
-        key: pos.key,
-      });
-      keys_arr.push(pos.key);
-      print_table_info.push({
-        text: pos.title,
-        key: pos.key,
-      });
-    });
-
-    return m(TableView, {
-      controller: this.ctrl,
-      keys: keys_arr,
-      tileContent: TransactionTableView.getItemData,
-      titles: title_arr,
-      tools: [
-        {
-          label: 'Print all shown',
-          onclick: () => {
-            this.ctrl.printAll(print_table_info);
-          },
-        },
-        {
-          label: 'Print selected',
-          onclick: () => {
-            this.ctrl.printSelected(print_table_info);
-          },
-        },
-        {
-          label: 'Unselect all',
-          onclick: () => {
-            this.ctrl.unselectAll();
-          },
-        },
-      ],
-    });
+    super(TransactionController, table_setup);
   }
 }
