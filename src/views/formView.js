@@ -5,7 +5,7 @@ import { Toolbar, Button } from 'polythene-mithril';
 // import { icons } from './elements';
 
 // Since Javascript doesn't know enums
-const INPUT_TYPES = { plain: 1, drop: 2 /* radio: 3, check: 4 */ };
+const INPUT_TYPES = { plain: 1, number: 2, drop: 3 /* radio: 3, check: 4 */ };
 
 // Patches need to be included
 export default class FormView {
@@ -16,21 +16,36 @@ export default class FormView {
     this.result = new Map();
   }
 
-  oninit(vnode) {
+  oninit(/* vnode */) {
     const dropDowns = this.fields.filter(field => field.type === INPUT_TYPES.drop);
     dropDowns.forEach(dropDown => {
-      this.result.set(dropDown.attr_key, [])
+      this.result.set(dropDown.attr_key, []);
     });
     dropDowns.forEach(dropDown => {
       this.controller.getDropDownData(dropDown.attr_key).then(res => {
         this.result.set(dropDown.attr_key, res);
-        console.log(this.result)
       });
     });
   }
 
-  getPlainField(attr_key) {
-    return m('input.form-control[type=text]', {
+  getTextField(attr_key, type) {
+    let type_string = '';
+    if (type === INPUT_TYPES.plain) {
+      type_string = 'text';
+    } else if (type_string === INPUT_TYPES.number) {
+      type_string = 'number';
+    }
+    return m(`input.form-control[type=${type_string}]`, {
+      oninput: m.withAttr('value', value => {
+        this.controller.setData(attr_key, value);
+      }),
+      value: this.controller.getData(attr_key),
+      // TODO: helptext
+    });
+  }
+
+  getNumberField(attr_key) {
+    return m('input.form-control[type=number]', {
       oninput: m.withAttr('value', value => {
         this.controller.setData(attr_key, value);
       }),
@@ -39,7 +54,6 @@ export default class FormView {
   }
 
   getDropDown(attr_key) {
-    console.log(this.result)
     return m(
       'select',
       {
@@ -53,13 +67,30 @@ export default class FormView {
 
   getInputField(type, attr_key) {
     if (type === INPUT_TYPES.plain) {
-      return this.getPlainField(attr_key);
+      return this.getTextField(attr_key, type);
     }
     if (type === INPUT_TYPES.drop) {
       return this.getDropDown(attr_key);
     }
     console.log('no correct Type given');
     return m('div', 'no correct type for that field given');
+  }
+
+  getButtons() {
+    return this.buttons
+      ? this.buttons.map(button =>
+          m(Button, {
+            className: 'blue-button',
+            border: true,
+            label: button.label,
+            events: {
+              onclick: () => {
+                button.onclick();
+              },
+            },
+          })
+        )
+      : '';
   }
 
   view() {
@@ -75,22 +106,7 @@ export default class FormView {
         m(Toolbar, {
           className: 'toolbar',
           compact: true,
-          content: [
-            this.buttons
-              ? this.buttons.map(button =>
-                  m(Button, {
-                    className: 'blue-button',
-                    border: true,
-                    label: button.label,
-                    events: {
-                      onclick: () => {
-                        button.onclick();
-                      },
-                    },
-                  })
-                )
-              : '',
-          ],
+          content: [this.getButtons()],
         }),
         m(
           'div.form',

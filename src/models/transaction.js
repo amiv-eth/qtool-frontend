@@ -45,7 +45,7 @@ export default class Transaction {
       .then(result => result);
   }
 
-  submit(data) {
+  /* submit(data) {
     return m.request({
       method: 'POST',
       url: `${api.address()}/Transaction/transaction`,
@@ -56,7 +56,7 @@ export default class Transaction {
         'Content-Type': 'application/json',
       },
     });
-  }
+  } */
 
   setGeneralSearch(string) {
     // Returns whether there happened a change

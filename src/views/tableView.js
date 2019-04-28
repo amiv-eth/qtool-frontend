@@ -22,8 +22,6 @@ const tableStyles = [
 styler.add('tableview', tableStyles);
 
 export default class TableView {
-
-
   constructor({
     attrs: {
       controller,

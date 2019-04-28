@@ -1,6 +1,3 @@
-import m from 'mithril';
-
-
 export default class BelegFormController {
   /**
    * Should contain: GetDropdownContent, Patching, Submiting
@@ -26,7 +23,7 @@ export default class BelegFormController {
 
   getDropDownData(key) {
     const field = this.inputFields.find(element => element.attr_key === key);
-    const endpoint = field.endpoint;
+    const { endpoint } = field;
     return endpoint.fetch().then(() => {
       if (endpoint.items.length === 0) {
         return [{ value: 'None', key: undefined }];
@@ -37,10 +34,12 @@ export default class BelegFormController {
       return endpoint.items.map(item => {
         const text = item[field.text_key];
         if (item[field.value_key] === firstValue) {
-          return { selected: 'selected', key: item[field.value_key], text: text };
+          return { selected: 'selected', key: item[field.value_key], text };
         }
-        return { key: item[field.value_key], text: text };
+        return { key: item[field.value_key], text };
       });
     });
   }
+
+  // TODO submitting
 }
