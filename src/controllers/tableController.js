@@ -152,9 +152,7 @@ export default class TableController {
 
   printSelected(header_info, title = 'Table', filename = 'table.pdf') {
     this.endpoint.page = 1;
-    if (this.selected.length <= 0) {
-      window.alert('Please selecte at least one Entry');
-    } else {
+    if (this.selected.length > 0) {
       this.getSelected().then(result => {
         generateTable(
           header_info.map(entry => ({ header: entry.text, dataKey: entry.key })),

@@ -2,16 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6f41e06b-b85c-49e1-9272-1fd6922d6cfb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/controllers/formController.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/controllers/tableController.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/baseForm.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/baseTable.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.stylelintrc" beforeDir="false" afterPath="$PROJECT_DIR$/.stylelintrc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/beleg/belegFormController.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/beleg/belegFormController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/beleg/belegFormView.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/beleg/belegFormView.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/transaction/transactionController.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/transaction/transactionController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/transaction/transactionTableView.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/transaction/transactionTableView.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/elements.js" beforeDir="false" afterPath="$PROJECT_DIR$/res/elements.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/tableController.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/tableController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/baseTable.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/baseTable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/layout.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/layout.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/tableView.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/tableView.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -26,10 +20,19 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/controllers/tableController.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="1" column="36" selection-start-line="1" selection-start-column="36" selection-end-line="1" selection-end-column="36" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/views/baseTable.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="435">
-              <caret line="29" column="20" selection-start-line="29" selection-start-column="9" selection-end-line="29" selection-end-column="20" />
+            <state relative-caret-position="270">
+              <caret line="42" column="13" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="13" />
               <folding>
                 <element signature="e#0#24#0" expanded="true" />
               </folding>
@@ -38,12 +41,12 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/transaction/transactionTableView.js">
+        <entry file="file://$PROJECT_DIR$/src/views/tableView.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="21" selection-start-line="21" selection-end-line="21" />
+            <state relative-caret-position="394">
+              <caret line="136" column="30" selection-start-line="136" selection-start-column="30" selection-end-line="136" selection-end-column="30" />
               <folding>
-                <element signature="e#1#61#0" expanded="true" />
+                <element signature="e#0#24#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -69,13 +72,15 @@
         <option value="$PROJECT_DIR$/src/controllers/listController.js" />
         <option value="$PROJECT_DIR$/src/transaction/transactionController.js" />
         <option value="$PROJECT_DIR$/src/models/transaction.js" />
-        <option value="$PROJECT_DIR$/src/controllers/tableController.js" />
         <option value="$PROJECT_DIR$/src/controllers/formController.js" />
         <option value="$PROJECT_DIR$/src/beleg/belegFormController.js" />
         <option value="$PROJECT_DIR$/src/views/baseForm.js" />
         <option value="$PROJECT_DIR$/src/beleg/belegFormView.js" />
-        <option value="$PROJECT_DIR$/src/views/baseTable.js" />
         <option value="$PROJECT_DIR$/src/transaction/transactionTableView.js" />
+        <option value="$PROJECT_DIR$/src/controllers/tableController.js" />
+        <option value="$PROJECT_DIR$/src/views/layout.js" />
+        <option value="$PROJECT_DIR$/src/views/baseTable.js" />
+        <option value="$PROJECT_DIR$/src/views/tableView.js" />
       </list>
     </option>
   </component>
@@ -155,6 +160,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/views" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -200,12 +206,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1556454709815</updated>
-      <workItem from="1556454713975" duration="5646000" />
+      <workItem from="1556454713975" duration="8232000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5646000" />
+    <option name="totallyTimeSpent" value="8232000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="4" y="40" width="1281" height="1036" extended-state="0" />
@@ -249,16 +255,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="192">
           <caret line="92" column="4" selection-start-line="92" selection-start-column="4" selection-end-line="92" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/controllers/tableController.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="522">
-          <caret line="152" column="71" selection-start-line="152" selection-start-column="71" selection-end-line="152" selection-end-column="71" />
-          <folding>
-            <element signature="e#0#24#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -326,9 +322,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/tableView.js">
+    <entry file="file://$PROJECT_DIR$/src/transaction/transactionTableView.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="315">
+          <caret line="21" selection-start-line="21" selection-end-line="21" />
+          <folding>
+            <element signature="e#1#61#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/controllers/tableController.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="36" selection-start-line="1" selection-start-column="36" selection-end-line="1" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/layout.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="16" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
           <folding>
             <element signature="e#0#24#0" expanded="true" />
           </folding>
@@ -337,20 +351,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/views/baseTable.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="29" column="20" selection-start-line="29" selection-start-column="9" selection-end-line="29" selection-end-column="20" />
+        <state relative-caret-position="270">
+          <caret line="42" column="13" selection-start-line="42" selection-start-column="13" selection-end-line="42" selection-end-column="13" />
           <folding>
             <element signature="e#0#24#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/transaction/transactionTableView.js">
+    <entry file="file://$PROJECT_DIR$/src/views/tableView.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" selection-start-line="21" selection-end-line="21" />
+        <state relative-caret-position="394">
+          <caret line="136" column="30" selection-start-line="136" selection-start-column="30" selection-end-line="136" selection-end-column="30" />
           <folding>
-            <element signature="e#1#61#0" expanded="true" />
+            <element signature="e#0#24#0" expanded="true" />
           </folding>
         </state>
       </provider>

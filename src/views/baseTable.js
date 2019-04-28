@@ -1,4 +1,5 @@
 import m from 'mithril';
+import { Dialog, Button } from 'polythene-mithril';
 import TableView from './tableView';
 
 /* Table of all studydocuments */
@@ -39,7 +40,7 @@ export default class TransactionTableView {
       keys: this.keys_arr,
       tileContent: TransactionTableView.getItemData,
       titles: this.title_arr,
-      tools: [
+      buttons: [
         {
           label: 'Print all shown',
           onclick: () => {
@@ -49,7 +50,20 @@ export default class TransactionTableView {
         {
           label: 'Print selected',
           onclick: () => {
-            this.ctrl.printSelected(this.print_table_info);
+            if (this.ctrl.selected.length <= 0) {
+              Dialog.show({
+                body: 'Please selectat least one Item',
+                backdrop: false,
+                footerButtons: [
+                  m(Button, {
+                    label: 'OK',
+                    events: { onclick: () => Dialog.hide() },
+                  }),
+                ],
+              });
+            } else {
+              this.ctrl.printSelected(this.print_table_info);
+            }
           },
         },
         {

@@ -95,7 +95,7 @@ export default class TableView {
 
   // getSelectedFilterQuery() {}
 
-  view({ attrs: { controller, titles, tools = false, tableHeight = false } }) {
+  view({ attrs: { controller, titles, buttons = false, tableHeight = false } }) {
     return m(
       'div.tabletool',
       {
@@ -126,15 +126,15 @@ export default class TableView {
               },
               fullWidth: false,
             }),
-            tools
-              ? tools.map(tool =>
+            buttons
+              ? buttons.map(button =>
                   m(Button, {
                     className: 'blue-button',
                     border: true,
-                    label: tool.label,
+                    label: button.label,
                     events: {
                       onclick: () => {
-                        tool.onclick();
+                        button.onclick();
                       },
                     },
                   })
