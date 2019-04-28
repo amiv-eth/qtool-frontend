@@ -20,6 +20,7 @@ const table_setup = [
   { key: 'financial_year', title: 'Geschäftsjahr', style: { width: '10em' } },
   { key: 'date', title: 'Date', style: { width: '4em' } },
 ];
+
 /* Table of all studydocuments */
 export default class TransactionTableView {
   constructor() {

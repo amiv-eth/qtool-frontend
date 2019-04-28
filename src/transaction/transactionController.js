@@ -145,17 +145,20 @@ export default class TransactionController {
     });
   }
 
-  printAll(header_info) {
+  async printAll(header_info) {
     const title = 'All shown Transactions';
     const filename = 'all_shown_transactions.pdf';
-    this.getFullList().then(result => {
+    try {
+      const result = await this.getFullList();
       generateTable(
         header_info.map(entry => ({ header: entry.text, dataKey: entry.key })),
         result,
         filename,
         title
       );
-    });
+    } catch {
+      // Wenns schief geht
+    }
   }
 
   printSelected(header_info) {

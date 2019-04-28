@@ -32,17 +32,6 @@ export default class Transaction {
       });
   }
 
-  /* fetchInfinite(pageNum) {
-    return m.request({
-      method: 'GET',
-      url: `${api.address()}/Transaction/transaction?page=${pageNum}`,
-      headers: {
-        'X-AMIV-API-TOKEN': 'quaestor',
-        Accept: 'application/json',
-      },
-    });
-  } 
-  */
   static fetchId(id) {
     return m
       .request({
@@ -56,7 +45,6 @@ export default class Transaction {
       .then(result => result);
   }
 
-  /*
   submit(data) {
     return m.request({
       method: 'POST',
@@ -68,7 +56,7 @@ export default class Transaction {
         'Content-Type': 'application/json',
       },
     });
-  } */
+  }
 
   setGeneralSearch(string) {
     // Returns whether there happened a change

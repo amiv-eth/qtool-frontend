@@ -22,21 +22,8 @@ const tableStyles = [
 styler.add('tableview', tableStyles);
 
 export default class TableView {
-  /* Shows a table of objects for a given API resource.
-   *
-   * Required attributes:
-   *   vnode: { attrs: { controller, titles, keys } }
-   *   - controller: a listcontroller for some API resource data
-   *   - titles: the titles of the table
-   *   - keys: Keys of this resource to display as columns, e.g. ['firstname']
-   *       Works with embedded resources, i.e. if you add
-   *       { embedded: { event: 1 } } to a list of eventsignups,
-   *       you can display event.title_de as a table key
-   *   - filters: list of list of objects, each inner list is a group of mutual exclusive
-   *       filters.
-   *       A filter can have properties 'name', 'query' and optionally 'selected' for
-   *       the initial selection state.
-   */
+
+
   constructor({
     attrs: {
       controller,
