@@ -4,6 +4,7 @@ import Home from './views/home';
 import BelegFormularView from './beleg/belegFormView';
 import TransactionTableView from './transaction/transactionTableView';
 import './styles/base.less';
+import 'polythene-css-dialog';
 
 function layoutWith(view) {
   return {

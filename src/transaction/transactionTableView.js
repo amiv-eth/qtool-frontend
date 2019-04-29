@@ -23,5 +23,8 @@ const table_setup = [
 export default class TransactionTableView extends BaseTable {
   constructor() {
     super(TransactionController, table_setup);
+    this.selectable = true;
+    this.sortable = true;
+    this.searchable = true;
   }
 }

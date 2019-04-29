@@ -1,7 +1,6 @@
 import m from 'mithril';
 import infinite from 'mithril-infinite';
 import { List, ListTile, Toolbar, Search, Button, Icon } from 'polythene-mithril';
-import 'polythene-css';
 import { styler } from 'polythene-core-css';
 import { icons } from '../../res/elements';
 
@@ -26,8 +25,7 @@ export default class TableView {
     attrs: {
       controller,
       keys,
-      titles,
-      tileContent,
+      tileContent = false,
       clickOnTitles = (ctrl, title) => {
         ctrl.setSort(title);
       },
@@ -41,19 +39,10 @@ export default class TableView {
   }) {
     this.controller = controller;
     this.tableKeys = keys || [];
-    this.tableTitles = titles;
     this.tileContent = tileContent;
     this.clickOnTitles = clickOnTitles;
     this.clickOnRows = clickOnRows;
   }
-
-  /*
-   * initFilterIdxs lets you specify the filters that are active at initialization.
-   * They are specified as index to the nexted filterGroups array.
-   */
-  /* oninit() {
-    // send filter to controller
-  } */
 
   getItemData(data) {
     // Loads Data if no specific method is defined in tile content.
@@ -79,7 +68,7 @@ export default class TableView {
           'div',
           {
             onclick: () => {
-              if (this.clickOnRows) this.clickOnRows(this.controller, data);
+              if (this.clickOnRows && this.selectable) this.clickOnRows(this.controller, data);
             },
             className: 'tableTile',
             style: {
@@ -95,7 +84,18 @@ export default class TableView {
 
   // getSelectedFilterQuery() {}
 
-  view({ attrs: { controller, titles, buttons = false, tableHeight = false } }) {
+  view({
+    attrs: {
+      controller,
+      titles,
+      buttons = false,
+      tableHeight = false,
+      selectable = false,
+      searchable = false,
+      sortable = false,
+    },
+  }) {
+    this.selectable = selectable;
     return m(
       'div.tabletool',
       {
@@ -113,19 +113,18 @@ export default class TableView {
           className: 'toolbar',
           compact: true,
           content: [
-            m(Search, {
-              textfield: {
-                label: 'Search',
-                onChange: ({ value }) => {
-                  // this is called not only if the value changes, but also the focus.
-                  // we only want to change the search of the value is changed, therefore we
-                  // have to track changes in the search value
-                  if (value !== this.searchValue) controller.setSearch(value);
-                  this.searchValue = value;
-                },
-              },
-              fullWidth: false,
-            }),
+            searchable
+              ? m(Search, {
+                  textfield: {
+                    label: 'Search',
+                    onChange: ({ value }) => {
+                      if (value !== this.searchValue) controller.setSearch(value);
+                      this.searchValue = value;
+                    },
+                  },
+                  fullWidth: false,
+                })
+              : '',
             buttons
               ? buttons.map(button =>
                   m(Button, {
@@ -166,7 +165,7 @@ export default class TableView {
                     'div',
                     {
                       onclick: () => {
-                        if (this.clickOnTitles && this.tableKeys[i]) {
+                        if (this.clickOnTitles && this.tableKeys[i] && sortable) {
                           this.clickOnTitles(controller, this.tableKeys[i]);
                         }
                       },
@@ -176,7 +175,7 @@ export default class TableView {
                     },
                     [
                       title.style.width ? title.text : title,
-                      controller.sort.split('.')[0] === title.key
+                      controller.sort.split('.')[0] === title.key && sortable
                         ? m(Icon, {
                             svg: {
                               content: m.trust(

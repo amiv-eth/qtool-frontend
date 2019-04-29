@@ -1,5 +1,6 @@
 import m from 'mithril';
 import Stream from 'mithril/stream';
+import { Dialog, Button } from 'polythene-mithril';
 import generateTable from '../models/pdf_table';
 
 export default class TableController {
@@ -160,6 +161,18 @@ export default class TableController {
           filename,
           title
         );
+      });
+    } else {
+      Dialog.show({
+        body: 'Please select at least one Item',
+        backdrop: true,
+        modal: true,
+        footerButtons: [
+          m(Button, {
+            label: 'OK',
+            events: { onclick: () => Dialog.hide() },
+          }),
+        ],
       });
     }
   }
