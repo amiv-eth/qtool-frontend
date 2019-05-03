@@ -4,14 +4,13 @@ import { Dialog, Button } from 'polythene-mithril';
 import generateTable from '../models/pdf_table';
 
 export default class TableController {
-  constructor(Endpoint) {
+  constructor(endpoint) {
     this.stateCounter = Stream(0);
-    this.endpoint = new Endpoint();
+    this.endpoint = endpoint;
     // keep track of the total number of pages
     this.totalPages = null;
-    this.search = '';
-    this.sort = this.endpoint.sort;
     this.selected = [];
+    this.query = { sort: 'default', search: '' };
   }
 
   /** Refresh the whole list */
@@ -30,16 +29,21 @@ export default class TableController {
   }
 
   getPageData(pageNum) {
-    this.endpoint.page = pageNum;
-    return this.endpoint.fetch().then(() => {
-      this.totalPages = this.endpoint.meta.last_page;
-      return this.endpoint.items;
+    this.query.page = pageNum;
+    return this.endpoint.get(this.query).then(result => {
+      this.totalPages = result.meta.last_page;
+      return result.items;
     });
   }
 
   setSearch(search) {
-    this.search = search;
-    if (this.endpoint.setGeneralSearch(this.search)) {
+    // TODO: Splitting spaces for search patterns
+    if (search.length >= 3 || this.query.search !== '') {
+      if (search.length >= 3) {
+        this.query.search = search.split(' ');
+      } else {
+        this.query.search = '';
+      }
       this.refresh();
     }
   }
@@ -55,7 +59,7 @@ export default class TableController {
     } else {
       this.sort = `${sort}.asc`;
     }
-    this.endpoint.setSort(this.sort);
+    this.query.sort = this.sort;
     this.refresh();
   }
 
@@ -68,46 +72,17 @@ export default class TableController {
     }
   }
 
+  getSort() {
+    return this.endpoint.getSort(this.query);
+  }
+
   unselectAll() {
     this.selected = [];
   }
 
-  getFullList() {
-    return new Promise(resolve => {
-      this.getPageData(1).then(firstPage => {
-        const pages = { 1: firstPage };
-        const { totalPages } = this;
-
-        if (totalPages <= 1) {
-          resolve(firstPage);
-        } else {
-          // now fetch all the missing pages
-          Array.from(new Array(totalPages - 1), (x, i) => i + 2).forEach(pageNum => {
-            this.getPageData(pageNum).then(newPage => {
-              pages[pageNum] = newPage;
-              // look if all pages were collected
-              const missingPages = Array.from(new Array(totalPages), (x, i) => i + 1).filter(
-                i => !(i in pages)
-              );
-              if (missingPages.length === 0) {
-                resolve(
-                  [].concat(
-                    ...Object.keys(pages)
-                      .sort()
-                      .map(key => pages[key])
-                  )
-                );
-              }
-            });
-          });
-        }
-      });
-    });
-  }
-
   getSelected() {
     return new Promise(resolve => {
-      this.endpoint.constructor.fetchId(this.selected[0]).then(firstSelected => {
+      this.endpoint.getId(this.selected[0]).then(firstSelected => {
         const selectedList = { 1: firstSelected };
 
         if (this.selected.length <= 1) {
@@ -115,7 +90,7 @@ export default class TableController {
         } else {
           // now fetch all the missing pages
           Array.from(new Array(this.selected.length - 1), (x, i) => i + 2).forEach(id => {
-            this.endpoint.constructor.fetchId(this.selected[id - 1]).then(newId => {
+            this.endpoint.getId(this.selected[id - 1]).then(newId => {
               selectedList[id] = newId;
               // look if all pages were collected
               const missingId = Array.from(new Array(this.selected.length), (x, i) => i + 1).filter(
@@ -139,7 +114,7 @@ export default class TableController {
 
   async printAll(header_info, title = 'Table', filename = 'table.pdf') {
     try {
-      const result = await this.getFullList();
+      const result = await this.endpoint.getFullList(this.query);
       generateTable(
         header_info.map(entry => ({ header: entry.text, dataKey: entry.key })),
         result,

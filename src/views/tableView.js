@@ -175,11 +175,11 @@ export default class TableView {
                     },
                     [
                       title.style.width ? title.text : title,
-                      controller.sort.split('.')[0] === title.key && sortable
+                      controller.getSort().split('.')[0] === title.key && sortable
                         ? m(Icon, {
                             svg: {
                               content: m.trust(
-                                controller.sort.split('.')[1] === 'desc'
+                                controller.getSort().split('.')[1] === 'desc'
                                   ? icons.sortingArrowUp
                                   : icons.sortingArrowDown
                               ),
