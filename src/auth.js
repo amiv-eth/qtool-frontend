@@ -18,7 +18,7 @@ export default class ResourceHandler {
     if ('sort' in query && query.sort && query.sort.length > 0) {
       if (query.sort === 'default' && this.conf.default_sort) {
         fullQuery.sort = this.conf.default_sort;
-      } else {
+      } else if (query.sort !== 'default') {
         fullQuery.sort = query.sort;
       }
     }
@@ -58,7 +58,7 @@ export default class ResourceHandler {
       const max_pages = result.meta.last_page;
 
       for (let page = 2; page <= max_pages; page += 1) {
-        const inner_query = JSON.parse(JSON.stringify(new_query));
+        const inner_query = JSON.parse(JSON.stringify(new_query)); // To enforce to copy the object
         inner_query.page = page;
         requests.push(
           this.get(inner_query).then(res => {

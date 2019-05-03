@@ -27,7 +27,6 @@ export default class FormController {
       if (result.length === 0) {
         return [{ value: 'None', key: undefined }];
       }
-      console.log(result)
       const firstItem = result.items[0];
       const firstValue = firstItem[field.value_key];
       this.formData[field.attr_key] = firstValue;
