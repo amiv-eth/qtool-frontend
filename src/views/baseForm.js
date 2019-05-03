@@ -15,6 +15,7 @@ export default class BaseForm {
         attr_key: pos.attr_key,
         value_key: pos.value_key,
         text_key: pos.text_key,
+        value: pos.value,
       });
       this.fields_view_data.push({
         label: pos.label,

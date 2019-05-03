@@ -5,7 +5,7 @@ import { Toolbar, Button } from 'polythene-mithril';
 // import { icons } from './elements';
 
 // Since Javascript doesn't know enums
-const INPUT_TYPES = { plain: 1, number: 2, drop: 3 /* radio: 3, check: 4 */ };
+const INPUT_TYPES = { static: 0, plain: 1, number: 2, drop: 3 /* radio: 3, check: 4 */ };
 
 // Patches need to be included
 export default class FormView {
@@ -44,15 +44,6 @@ export default class FormView {
     });
   }
 
-  getNumberField(attr_key) {
-    return m('input.form-control[type=number]', {
-      oninput: m.withAttr('value', value => {
-        this.controller.setData(attr_key, value);
-      }),
-      value: this.controller.getData(attr_key),
-    });
-  }
-
   getDropDown(attr_key) {
     return m(
       'select',
@@ -66,13 +57,16 @@ export default class FormView {
   }
 
   getInputField(type, attr_key) {
-    if (type === INPUT_TYPES.plain) {
+    if (type === INPUT_TYPES.plain || type === INPUT_TYPES.number) {
       return this.getTextField(attr_key, type);
     }
     if (type === INPUT_TYPES.drop) {
       return this.getDropDown(attr_key);
     }
-    console.log('no correct Type given');
+    if (type === INPUT_TYPES.static) {
+      return '';
+    }
+    console.log('no correct Type for that field given');
     return m('div', 'no correct type for that field given');
   }
 

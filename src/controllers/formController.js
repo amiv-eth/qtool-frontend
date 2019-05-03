@@ -7,14 +7,13 @@ export default class FormController {
 
     this.formData = {};
     this.inputFields.forEach(field => {
-      this.formData[field.attr_key] = '';
+      this.formData[field.attr_key] = field.value;
     });
   }
 
   setData(key, value) {
     // INPUT validation?
     this.formData[key] = value;
-    console.log(this.formData);
   }
 
   getData(key) {
@@ -24,14 +23,15 @@ export default class FormController {
   getDropDownData(key) {
     const field = this.inputFields.find(element => element.attr_key === key);
     const { endpoint } = field;
-    return endpoint.fetch().then(() => {
-      if (endpoint.items.length === 0) {
+    return endpoint.getFullList({ sort: 'default' }).then(result => {
+      if (result.length === 0) {
         return [{ value: 'None', key: undefined }];
       }
-      const firstItem = endpoint.items[0];
+      console.log(result)
+      const firstItem = result.items[0];
       const firstValue = firstItem[field.value_key];
       this.formData[field.attr_key] = firstValue;
-      return endpoint.items.map(item => {
+      return result.items.map(item => {
         const text = item[field.text_key];
         if (item[field.value_key] === firstValue) {
           return { selected: 'selected', key: item[field.value_key], text };

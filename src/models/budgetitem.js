@@ -1,5 +1,5 @@
 import m from 'mithril';
-import api from './api_config';
+import api from '../network_config';
 
 export default class BudgetItem {
   constructor() {
@@ -25,7 +25,7 @@ export default class BudgetItem {
       });
   }
 
-  fetch() {
+  getFullList() {
     this.fetchPage().then(() => {
       const requests = [];
       for (this.page = 2; this.page <= this.meta.last_page; this.page += 1) {
@@ -34,6 +34,44 @@ export default class BudgetItem {
       Promise.all(requests).then(() => {
         for (let i = 1; i <= this.meta.last_page; i += 1) {
           this.items = this.items.concat(this.pageContent[i]);
+        }
+        console.log(this.items);
+      });
+    });
+  }
+
+  fetch() {
+    this.page = 1;
+    this.meta = {};
+    this.items = [];
+    return new Promise(resolve => {
+      this.fetchPage().then(firstPage => {
+        const pages = { 1: firstPage };
+        const totalPages = this.meta.last_page;
+
+        if (totalPages <= 1) {
+          resolve(firstPage);
+        } else {
+          // now fetch all the missing pages
+          Array.from(new Array(totalPages - 1), (x, i) => i + 2).forEach(pageNum => {
+            this.page = pageNum;
+            this.fetchPage().then(newPage => {
+              pages[pageNum] = newPage;
+              // look if all pages were collected
+              const missingPages = Array.from(new Array(totalPages), (x, i) => i + 1).filter(
+                i => !(i in pages)
+              );
+              if (missingPages.length === 0) {
+                resolve(
+                  [].concat(
+                    ...Object.keys(pages)
+                      .sort()
+                      .map(key => pages[key])
+                  )
+                );
+              }
+            });
+          });
         }
       });
     });

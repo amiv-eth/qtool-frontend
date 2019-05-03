@@ -1,5 +1,5 @@
 import m from 'mithril';
-import api from './api_config';
+import api from '../network_config';
 
 export default class Category {
   constructor() {
