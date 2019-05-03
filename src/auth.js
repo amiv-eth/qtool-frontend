@@ -94,6 +94,7 @@ export default class ResourceHandler {
   }
 
   async getFullList(query = false) {
+    // TODO: Maybe needs to put in a separate Child-class
     const new_query = query ? JSON.parse(JSON.stringify(query)) : {}; // To enforce to copy the object
     new_query.page = 1;
 
@@ -122,6 +123,37 @@ export default class ResourceHandler {
       result.items = result.items.concat(page_content[i].items);
     }
     result.meta = page_content[max_pages].meta;
+    return result;
+  }
+
+  async getIds(ids) {
+    if (ids.length === 0) {
+      return undefined;
+    }
+    if (ids.length === 1) {
+      return [this.getId(ids)];
+    }
+
+    const value = await this.getId(ids[0]);
+
+    let result = [];
+
+    const content = { 0: value };
+
+    const requests = [];
+    const max_ids = ids.length;
+
+    for (let id = 1; id < max_ids; id += 1) {
+      requests.push(
+        this.getId(ids[id]).then(res => {
+          content[id] = res;
+        })
+      );
+    }
+    await Promise.all(requests);
+    for (let i = 0; i < max_ids; i += 1) {
+      result = result.concat(content[i]);
+    }
     return result;
   }
 }

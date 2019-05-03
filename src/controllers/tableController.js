@@ -80,45 +80,12 @@ export default class TableController {
     this.selected = [];
   }
 
-  getSelected() {
-    // TODO: make async
-    return new Promise(resolve => {
-      this.endpoint.getId(this.selected[0]).then(firstSelected => {
-        const selectedList = { 1: firstSelected };
-
-        if (this.selected.length <= 1) {
-          resolve([firstSelected]);
-        } else {
-          // now fetch all the missing pages
-          Array.from(new Array(this.selected.length - 1), (x, i) => i + 2).forEach(id => {
-            this.endpoint.getId(this.selected[id - 1]).then(newId => {
-              selectedList[id] = newId;
-              // look if all pages were collected
-              const missingId = Array.from(new Array(this.selected.length), (x, i) => i + 1).filter(
-                i => !(i in selectedList)
-              );
-              if (missingId.length === 0) {
-                resolve(
-                  [].concat(
-                    ...Object.keys(selectedList)
-                      .sort()
-                      .map(key => selectedList[key])
-                  )
-                );
-              }
-            });
-          });
-        }
-      });
-    });
-  }
-
   async printAll(header_info, title = 'Table', filename = 'table.pdf') {
     try {
       const result = await this.endpoint.getFullList(this.query);
       generateTable(
         header_info.map(entry => ({ header: entry.text, dataKey: entry.key })),
-        result,
+        result.items,
         filename,
         title
       );
@@ -128,9 +95,8 @@ export default class TableController {
   }
 
   printSelected(header_info, title = 'Table', filename = 'table.pdf') {
-    this.endpoint.page = 1;
     if (this.selected.length > 0) {
-      this.getSelected().then(result => {
+      this.endpoint.getIds(this.selected).then(result => {
         generateTable(
           header_info.map(entry => ({ header: entry.text, dataKey: entry.key })),
           result,
