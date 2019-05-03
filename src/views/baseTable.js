@@ -16,7 +16,6 @@ export default class BaseTable {
   }
 
   oninit() {
-    console.log('called');
     this.table_setup.forEach(pos => {
       this.title_arr.push({
         text: pos.title,

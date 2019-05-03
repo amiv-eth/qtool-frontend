@@ -81,6 +81,7 @@ export default class TableController {
   }
 
   getSelected() {
+    // TODO: make async
     return new Promise(resolve => {
       this.endpoint.getId(this.selected[0]).then(firstSelected => {
         const selectedList = { 1: firstSelected };

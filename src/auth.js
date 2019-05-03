@@ -1,12 +1,14 @@
 // Authentication will be handled here
 
 import m from 'mithril';
-import config from './resource_config';
+import network_config from './network_config';
+import resource_config from './resource_config';
 
 export default class ResourceHandler {
   constructor(resource) {
     this.resource = resource;
-    this.conf = config[this.resource];
+    this.conf = resource_config[this.resource];
+    this.conf.url = `${network_config.address()}/${this.conf.path}`;
   }
 
   getSort(query) {
@@ -25,8 +27,6 @@ export default class ResourceHandler {
     const queryKeys = Object.keys(query);
     if (queryKeys.length === 0) return '';
 
-    console.log(query);
-
     const fullQuery = {};
 
     fullQuery.sort = this.getSort(query) || {};
@@ -43,7 +43,7 @@ export default class ResourceHandler {
           search += entry_search;
         }
       });
-      search = search.substring(0, search.length - 1)
+      search = search.substring(0, search.length - 1);
       search += query.search.length > 1 ? ']}' : '';
 
       fullQuery.where = search;
@@ -76,6 +76,19 @@ export default class ResourceHandler {
       headers: {
         'X-AMIV-API-TOKEN': 'quaestor',
         Accept: 'application/json',
+      },
+    });
+  }
+
+  submit(data) {
+    return m.request({
+      method: 'POST',
+      url: `${this.conf.url}`,
+      data,
+      headers: {
+        'X-AMIV-API-TOKEN': 'quaestor',
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
     });
   }
