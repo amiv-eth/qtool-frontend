@@ -20,23 +20,22 @@ export default class FormController {
     return this.formData[key];
   }
 
-  getDropDownData(key) {
+  async getDropDownData(key) {
     const field = this.inputFields.find(element => element.attr_key === key);
     const { endpoint } = field;
-    return endpoint.getFullList({ sort: 'default' }).then(result => {
-      if (result.length === 0) {
-        return [{ value: 'None', key: undefined }];
+    const result = await endpoint.getFullList({ sort: 'default' });
+    if (result.length === 0) {
+      return [{ value: 'None', key: undefined }];
+    }
+    const firstItem = result.items[0];
+    const firstValue = firstItem[field.value_key];
+    this.formData[field.attr_key] = firstValue;
+    return result.items.map(item => {
+      const text = item[field.text_key];
+      if (item[field.value_key] === firstValue) {
+        return { selected: 'selected', key: item[field.value_key], text };
       }
-      const firstItem = result.items[0];
-      const firstValue = firstItem[field.value_key];
-      this.formData[field.attr_key] = firstValue;
-      return result.items.map(item => {
-        const text = item[field.text_key];
-        if (item[field.value_key] === firstValue) {
-          return { selected: 'selected', key: item[field.value_key], text };
-        }
-        return { key: item[field.value_key], text };
-      });
+      return { key: item[field.value_key], text };
     });
   }
 

@@ -68,11 +68,6 @@ const inputFields = [
   },
   {
     type: INPUT_TYPES.static,
-    attr_key: 'date',
-    value: new Date(),
-  },
-  {
-    type: INPUT_TYPES.static,
     attr_key: 'is_valid',
     value: true,
   },
