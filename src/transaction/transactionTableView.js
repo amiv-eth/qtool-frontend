@@ -6,7 +6,7 @@ const table_setup = [
   {
     key: 'description',
     title: 'Beschreibung',
-    style: { width: 'calc(100% - 60em)', minWidth: '10em' },
+    style: { width: 'calc(100% - 80em)', minWidth: '10em' },
   },
   { key: 'type_id', title: 'Type', style: { width: '4em' } },
   { key: 'category_id', title: 'Category', style: { width: '8em' } },
@@ -17,7 +17,7 @@ const table_setup = [
   { key: 'amount_in_chf', title: 'Betrag CHF', style: { width: '4em' } },
   { key: 'is_valid', title: 'Valid', style: { width: '4em' } },
   { key: 'financial_year', title: 'Geschäftsjahr', style: { width: '10em' } },
-  { key: 'date', title: 'Date', style: { width: '4em' } },
+  { key: 'date', title: 'Date', style: { width: '24em' } },
 ];
 
 export default class TransactionTableView extends BaseTable {

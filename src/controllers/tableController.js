@@ -94,16 +94,15 @@ export default class TableController {
     }
   }
 
-  printSelected(header_info, title = 'Table', filename = 'table.pdf') {
+  async printSelected(header_info, title = 'Table', filename = 'table.pdf') {
     if (this.selected.length > 0) {
-      this.endpoint.getIds(this.selected).then(result => {
-        generateTable(
-          header_info.map(entry => ({ header: entry.text, dataKey: entry.key })),
-          result,
-          filename,
-          title
-        );
-      });
+      const result = await this.endpoint.getIds(this.selected);
+      generateTable(
+        header_info.map(entry => ({ header: entry.text, dataKey: entry.key })),
+        result,
+        filename,
+        title
+      );
     } else {
       Dialog.show({
         body: 'Please select at least one Item',

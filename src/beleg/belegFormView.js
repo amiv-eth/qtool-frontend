@@ -24,7 +24,7 @@ const inputFields = [
     type: INPUT_TYPES.drop,
     endpoint: new ResourceHandler('transaction_budgetitem'),
     attr_key: 'budgetitem_id',
-    value_key: 'budgetitem',
+    value_key: 'budgetitem_id',
     text_key: 'budgetitem_name',
   },
   {
@@ -79,7 +79,7 @@ const inputFields = [
   {
     type: INPUT_TYPES.static,
     attr_key: 'user_id',
-    value: 789,
+    value: 101,
   },
   {
     type: INPUT_TYPES.static,
