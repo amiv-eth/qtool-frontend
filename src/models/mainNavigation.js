@@ -2,6 +2,7 @@ import m from 'mithril';
 import Home from '../views/home';
 import BelegFormularView from '../beleg/belegFormView';
 import TransactionTableView from '../transaction/transactionTableView';
+import ForecastTableView from '../kst/forecastTableView';
 
 export default [
   {
@@ -38,7 +39,7 @@ export default [
         name: 'Prognose',
         path: '/kst/forecast',
         onupdate: m.route.link,
-        view: Home,
+        view: ForecastTableView,
       },
     ],
   },

@@ -22,7 +22,7 @@ export default class TableController {
   infiniteScrollParams(item) {
     return {
       item,
-      pageData: pageNum => this.getPageData(pageNum), // pageNum => this.getPageData(pageNum),
+      pageData: pageNum => this.getPageData(pageNum),
       pageKey: pageNum => `${pageNum}-${this.stateCounter()}`,
       maxPages: this.totalPages ? this.totalPages : undefined,
     };
@@ -30,14 +30,13 @@ export default class TableController {
 
   getPageData(pageNum) {
     this.query.page = pageNum;
-    return this.endpoint.get(this.query).then(result => {
+    return this.endpoint.getItems(this.query).then(result => {
       this.totalPages = result.meta.last_page;
       return result.items;
     });
   }
 
   setSearch(search) {
-    // TODO: Splitting spaces for search patterns
     if (search.length >= 3 || this.query.search !== '') {
       if (search.length >= 3) {
         this.query.search = search.split(' ');

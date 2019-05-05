@@ -1,6 +1,6 @@
 import { INPUT_TYPES } from '../views/formView';
 import BelegFormController from './belegFormController';
-import ResourceHandler from '../auth';
+import DataListController from '../controllers/dataListController';
 
 import BaseForm from '../views/baseForm';
 
@@ -14,7 +14,7 @@ const inputFields = [
   {
     label: 'Category',
     type: INPUT_TYPES.drop,
-    endpoint: new ResourceHandler('transaction_category'),
+    endpoint: new DataListController('transaction_category'),
     attr_key: 'category_id',
     value_key: 'category',
     text_key: 'category_name',
@@ -22,7 +22,7 @@ const inputFields = [
   {
     label: 'Budgetposten',
     type: INPUT_TYPES.drop,
-    endpoint: new ResourceHandler('transaction_budgetitem'),
+    endpoint: new DataListController('transaction_budgetitem'),
     attr_key: 'budgetitem_id',
     value_key: 'budgetitem_id',
     text_key: 'budgetitem_name',
@@ -30,7 +30,7 @@ const inputFields = [
   {
     label: 'Zahlungsart',
     type: INPUT_TYPES.drop,
-    endpoint: new ResourceHandler('transaction_type'),
+    endpoint: new DataListController('transaction_type'),
     attr_key: 'type_id',
     value_key: 'type_id',
     text_key: 'type_name',
@@ -38,7 +38,7 @@ const inputFields = [
   {
     label: 'Account',
     type: INPUT_TYPES.drop,
-    endpoint: new ResourceHandler('transaction_account'),
+    endpoint: new DataListController('transaction_account'),
     attr_key: 'account_id',
     value_key: 'account',
     text_key: 'account_name',
@@ -46,7 +46,7 @@ const inputFields = [
   {
     label: 'Currency',
     type: INPUT_TYPES.drop,
-    endpoint: new ResourceHandler('transaction_currency'),
+    endpoint: new DataListController('transaction_currency'),
     attr_key: 'currency_id',
     value_key: 'currency_id',
     text_key: 'currency_name',
@@ -96,5 +96,6 @@ export default class BelegFormView extends BaseForm {
   constructor() {
     super(BelegFormController, inputFields, buttons);
     this.buttons[0].onclick = () => this.ctrl.submit(); // Sandro fragen
+    // TODO: Reroute
   }
 }

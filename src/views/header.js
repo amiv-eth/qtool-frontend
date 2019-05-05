@@ -10,7 +10,8 @@ export default class Header {
         m(
           'a.logo',
           { href: `/`, onupdate: m.route.link },
-          m('img', { src: logos.amiv, alt: 'AMIV an der ETH'})),
+          m('img', { src: logos.amiv, alt: 'AMIV an der ETH' })
+        ),
         this.constructor._mainMenu,
       ])
     );

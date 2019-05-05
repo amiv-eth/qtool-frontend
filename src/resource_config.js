@@ -7,6 +7,8 @@ export default {
   transaction_budgetitem: {
     path: `Budget/item`,
     default_sort: 'budgetitem_code.asc',
+    unique_id: 'budgetitem_id',
+    search_keys: ['budgetitem_code', 'budgetitem_name'],
   },
   transaction_category: {
     path: `utility/category`,

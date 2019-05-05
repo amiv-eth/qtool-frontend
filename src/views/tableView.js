@@ -31,7 +31,7 @@ export default class TableView {
       },
 
       clickOnRows = (ctrl, row) => {
-        ctrl.select(row.id);
+        ctrl.select(row.unique_id);
       },
 
       // Filters
@@ -74,7 +74,7 @@ export default class TableView {
             style: {
               width: '100%',
               display: 'flex',
-              backgroundColor: this.controller.selected.includes(data.id) ? '#B8B8B8' : null,
+              backgroundColor: this.controller.selected.includes(data.unique_id) ? '#B8B8B8' : null,
             },
           },
           this.tileContent ? this.tileContent(data) : this.getItemData(data)

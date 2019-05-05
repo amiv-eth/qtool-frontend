@@ -54,18 +54,22 @@ export default class BaseTable {
             this.ctrl.printAll(this.print_table_info);
           },
         },
-        {
-          label: 'Print selected',
-          onclick: () => {
-            this.ctrl.printSelected(this.print_table_info);
-          },
-        },
-        {
-          label: 'Unselect all',
-          onclick: () => {
-            this.ctrl.unselectAll();
-          },
-        },
+        this.selectable
+          ? {
+              label: 'Print selected',
+              onclick: () => {
+                this.ctrl.printSelected(this.print_table_info);
+              },
+            }
+          : '',
+        this.selectable
+          ? {
+              label: 'Unselect all',
+              onclick: () => {
+                this.ctrl.unselectAll();
+              },
+            }
+          : '',
       ],
     });
   }

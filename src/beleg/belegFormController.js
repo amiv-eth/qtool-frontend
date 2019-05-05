@@ -10,6 +10,7 @@ export default class BelegFormController extends FormController {
   }
 
   submit() {
-    this.transaction_resource.submit(this.formData);
+    this.transaction_resource.post(this.formData);
+    // TODO Reroute
   }
 }
