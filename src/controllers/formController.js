@@ -38,6 +38,4 @@ export default class FormController {
       return { key: item[field.value_key], text };
     });
   }
-
-  // TODO submitting
 }

@@ -1,22 +1,5 @@
 import m from 'mithril';
-
-const mainNavigation = [
-  {
-    name: 'Home',
-    url: '/',
-    oncreate: m.route.link,
-  },
-  {
-    name: 'Belegformular',
-    url: '/belegformular',
-    oncreate: m.route.link,
-  },
-  {
-    name: 'Testliste',
-    url: 'testliste',
-    oncreate: m.route.link,
-  },
-];
+import MainNavigation from '../models/mainNavigation';
 
 export default class Header {
   view() {
@@ -37,21 +20,21 @@ export default class Header {
   static get _mainMenu() {
     return m(
       'ul.mainmenu',
-      mainNavigation.map((item, index) =>
+      MainNavigation.map((item, index) =>
         m(
           'li',
           {
-            class: mainNavigation.selectedIndex === index ? 'active' : '',
+            class: MainNavigation.selectedIndex === index ? 'active' : '',
           },
           [
             m(
               'a',
               {
-                href: item.url,
+                href: item.path,
               },
               item.name
             ),
-            /* item.submenu
+            item.submenu
               ? [
                   m('div.phantomElement'),
                   m('ul.submenu', [
@@ -62,26 +45,16 @@ export default class Header {
                         m(
                           'a',
                           {
-                            href: subitem.getLink(),
+                            href: subitem.path,
                             onupdate: subitem.onupdate,
                           },
-                          [
-                            i18n(subitem.label),
-                            subitem.url
-                              ? m(Icon, {
-                                  class: 'external-link',
-                                  svg: { content: m.trust(icons.externalLink) },
-                                  size: 'small',
-                                  alt: i18n('externalLink'),
-                                })
-                              : m(''),
-                          ]
+                          subitem.name
                         )
                       )
                     ),
                   ]),
                 ]
-              : m(''),  */
+              : m(''),
           ]
         )
       )

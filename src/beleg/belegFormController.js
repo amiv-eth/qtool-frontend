@@ -10,9 +10,6 @@ export default class BelegFormController extends FormController {
   }
 
   submit() {
-    console.log('Sumitting the following data');
-    console.log(this.formData);
-    // this.transaction.submit(this.formData);
     this.transaction_resource.submit(this.formData);
   }
 }

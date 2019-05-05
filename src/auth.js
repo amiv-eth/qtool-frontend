@@ -123,7 +123,6 @@ export default class ResourceHandler {
       result.items = result.items.concat(page_content[i].items);
     }
     result.meta = page_content[max_pages].meta;
-    console.log(result);
     return result;
   }
 
