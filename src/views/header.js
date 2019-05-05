@@ -1,17 +1,16 @@
 import m from 'mithril';
 import MainNavigation from '../models/mainNavigation';
+import logos from '../../res/logos';
 
 export default class Header {
   view() {
     return m(
       'header',
       m('nav', [
-        /* LOGO-Stuff
-          m(
-            'a.logo',
-            { href: `/${currentLanguage()}/`, onupdate: m.route.link },
-            m('img', { src: logos.amiv, alt: 'AMIV an der ETH' })
-          ), */
+        m(
+          'a.logo',
+          { href: `/`, onupdate: m.route.link },
+          m('img', { src: logos.amiv, alt: 'AMIV an der ETH'})),
         this.constructor._mainMenu,
       ])
     );
