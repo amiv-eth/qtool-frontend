@@ -20,8 +20,6 @@ const table_setup = [
 export default class ForecastTableView extends BaseTable {
   constructor() {
     super(ForecastController, table_setup);
-    this.selectable = true;
-    this.sortable = true;
     this.searchable = true;
   }
 }

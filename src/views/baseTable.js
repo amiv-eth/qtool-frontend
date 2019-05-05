@@ -61,7 +61,7 @@ export default class BaseTable {
                 this.ctrl.printSelected(this.print_table_info);
               },
             }
-          : '',
+          : null,
         this.selectable
           ? {
               label: 'Unselect all',
@@ -69,7 +69,7 @@ export default class BaseTable {
                 this.ctrl.unselectAll();
               },
             }
-          : '',
+          : null,
       ],
     });
   }

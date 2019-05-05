@@ -127,16 +127,18 @@ export default class TableView {
               : '',
             buttons
               ? buttons.map(button =>
-                  m(Button, {
-                    className: 'blue-button',
-                    border: true,
-                    label: button.label,
-                    events: {
-                      onclick: () => {
-                        button.onclick();
-                      },
-                    },
-                  })
+                  button
+                    ? m(Button, {
+                        className: 'blue-button',
+                        border: true,
+                        label: button.label,
+                        events: {
+                          onclick: () => {
+                            button.onclick();
+                          },
+                        },
+                      })
+                    : ''
                 )
               : '',
           ],
