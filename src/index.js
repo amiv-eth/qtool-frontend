@@ -4,6 +4,11 @@ import './styles/base.less';
 import 'polythene-css-dialog';
 import MainNavigation from './models/mainNavigation';
 
+/**
+ * Puts all the page-layout around a view
+ * @param view
+ * @returns {{view(): *}|{dom, domSize, instance, children, _state, skip, tag, text, state, key, events, attrs}}
+ */
 function layoutWith(view) {
   return {
     view() {
@@ -12,6 +17,10 @@ function layoutWith(view) {
   };
 }
 
+/**
+ * Assembles the whole page
+ * @type {{}}
+ */
 const items = {};
 MainNavigation.forEach(item => {
   if (item.path && item.name && item.view) {

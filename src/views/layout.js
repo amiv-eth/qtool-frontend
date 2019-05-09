@@ -2,6 +2,9 @@ import m from 'mithril';
 import { Dialog } from 'polythene-mithril';
 import header from './header';
 
+/**
+ * Assembles the layout of the website
+ */
 export default class Layout {
   static view(vnode) {
     return m('div', [

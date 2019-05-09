@@ -4,6 +4,11 @@ import BelegFormularView from '../beleg/belegFormView';
 import TransactionTableView from '../transaction/transactionTableView';
 import ForecastTableView from '../kst/forecastTableView';
 
+/**
+ * Collection of the main Navigation buttons
+ * name: displayed name, path: to the page, oncreate/onupdate: , view: the given View to the Element, submenu:
+ * array of entries in the same style.
+ */
 export default [
   {
     name: 'Home',

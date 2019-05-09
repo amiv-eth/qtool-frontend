@@ -1,3 +1,6 @@
+/**
+ * Resource configuration
+ */
 export default {
   transaction: {
     path: `Transaction/transaction`,

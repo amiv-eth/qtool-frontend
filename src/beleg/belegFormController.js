@@ -1,14 +1,18 @@
 import FormController from '../controllers/formController';
 import ResourceHandler from '../auth';
 
+/**
+ * Form Controller with added submit function
+ */
 export default class BelegFormController extends FormController {
-  // will be needed in later state thus disabling it for now
-  // eslint-disable-next-line no-useless-constructor
   constructor(inputFields) {
     super(inputFields);
     this.transaction_resource = new ResourceHandler('transaction');
   }
 
+  /**
+   * Submits the current given form-content to the API
+   */
   submit() {
     this.transaction_resource.post(this.formData);
     // TODO Reroute

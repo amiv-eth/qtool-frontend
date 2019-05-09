@@ -2,6 +2,9 @@ import m from 'mithril';
 import MainNavigation from '../models/mainNavigation';
 import logos from '../../res/logos';
 
+/**
+ * Header of the Website
+ */
 export default class Header {
   view() {
     return m(
@@ -17,6 +20,11 @@ export default class Header {
     );
   }
 
+  /**
+   * assembles the menu from the Navigation data
+   * @returns {{dom, domSize, instance, children, _state, skip, tag, text, state, key, events, attrs}}
+   * @private
+   */
   static get _mainMenu() {
     return m(
       'ul.mainmenu',

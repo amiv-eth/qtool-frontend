@@ -4,13 +4,25 @@ import m from 'mithril';
 import network_config from './network_config';
 import resource_config from './resource_config';
 
+/**
+ * Resourcehandler handles all the communication between front- and backend
+ */
 export default class ResourceHandler {
+  /**
+   * Constructor
+   * @param resource: resource from resource_config-file
+   */
   constructor(resource) {
     this.resource = resource;
     this.conf = resource_config[this.resource];
     this.conf.url = `${network_config.address()}/${this.conf.path}`;
   }
 
+  /**
+   * gives back the sorting of the request (needed since default can be specified)
+   * @param query: the query used
+   * @returns {string|undefined|*} current sorting
+   */
   getSort(query) {
     if ('sort' in query && query.sort && query.sort.length > 0) {
       if (query.sort === 'default' && this.conf.default_sort) {
@@ -23,6 +35,11 @@ export default class ResourceHandler {
     return undefined;
   }
 
+  /**
+   * Assembles the query to a string, allows for several searches which are anded together
+   * @param query the query used
+   * @returns {string} a querystring which can be sent to the api
+   */
   buildQueryString(query) {
     const queryKeys = Object.keys(query);
     if (queryKeys.length === 0) return '';
@@ -58,6 +75,10 @@ export default class ResourceHandler {
     return m.buildQueryString(fullQuery);
   }
 
+  /**
+   * Get-Request
+   * @param query used query containing all the information to be sent to the api
+   */
   get(query = false) {
     return m.request({
       method: 'GET',
@@ -69,6 +90,10 @@ export default class ResourceHandler {
     });
   }
 
+  /**
+   * Returns object to a given id
+   * @param id of the object
+   */
   getId(id) {
     return m.request({
       method: 'GET',
@@ -80,6 +105,10 @@ export default class ResourceHandler {
     });
   }
 
+  /**
+   * Post request
+   * @param data the payload
+   */
   post(data) {
     return m.request({
       method: 'POST',

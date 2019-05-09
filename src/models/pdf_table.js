@@ -2,6 +2,13 @@ import JsPDF from 'jspdf';
 import 'jspdf-autotable';
 //  import logos from '../../res/logos';
 
+/**
+ * generates a PDF-table from given data
+ * @param header header data: consisting of objects odf (title: ..., id:, ...) in the body_data
+ * @param body_data body data consisting of an array of maps mapping entries to the id in the header
+ * @param filename String of the filename
+ * @param title Displayed title of
+ */
 export default function generateTable(header, body_data, filename = false, title = false) {
   const doc = new JsPDF({
     orientation: 'landscape',
@@ -12,8 +19,8 @@ export default function generateTable(header, body_data, filename = false, title
   doc.autoTable({
     margin: { top: 20 },
     unit: 'mm',
-    body: body_data,
-    columns: header,
+    body: body_data, //Filling in data
+    columns: header, // Setting header
     // Style Stuff
     tableLineColor: 0, // Outline
     tableLineWidth: 1,
@@ -30,6 +37,7 @@ export default function generateTable(header, body_data, filename = false, title
     alternateRowStyles: {
       fillColor: 255,
     },
+    //Function to add footer and header including pagenumber
     didDrawPage(data) {
       // Header
       doc.setFontSize(15);
@@ -64,5 +72,5 @@ export default function generateTable(header, body_data, filename = false, title
     doc.putTotalPages(totalPagesExp);
   }
 
-  doc.save(filename || 'table.pdf');
+  doc.save(`${filename}.pdf` || 'table.pdf');
 }

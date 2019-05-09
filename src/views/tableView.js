@@ -20,6 +20,9 @@ const tableStyles = [
 
 styler.add('tableview', tableStyles);
 
+/**
+ * Handles the whole viewstuff for a Table
+ */
 export default class TableView {
   constructor({
     attrs: {
@@ -44,6 +47,11 @@ export default class TableView {
     this.clickOnRows = clickOnRows;
   }
 
+  /**
+   * generic Function filling the list when no no other is defined
+   * @param data
+   * @returns {*|Array|...*[]|{dom, domSize, instance, children, _state, skip, tag, text, state, key, events, attrs}[]}
+   */
   getItemData(data) {
     // Loads Data if no specific method is defined in tile content.
     // default if tile content was not defined
@@ -57,6 +65,10 @@ export default class TableView {
     });
   }
 
+  /**
+   * Assembles a TableTile from the given data
+   * @returns {function(*=): {dom, domSize, instance, children, _state, skip, tag, text, state, key, events, attrs}}
+   */
   item() {
     return data =>
       m(ListTile, {
@@ -83,7 +95,10 @@ export default class TableView {
   }
 
   // getSelectedFilterQuery() {}
-
+  /**
+   * View Function
+   * @returns {{dom, domSize, instance, children, _state, skip, tag, text, state, key, events, attrs}}
+   */
   view({
     attrs: {
       controller,

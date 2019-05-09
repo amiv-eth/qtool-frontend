@@ -4,10 +4,16 @@ import { Toolbar, Button } from 'polythene-mithril';
 
 // import { icons } from './elements';
 
-// Since Javascript doesn't know enums
+/**
+ * Since Javascript doesn't know enums
+ */
 const INPUT_TYPES = { static: 0, plain: 1, number: 2, drop: 3 /* radio: 3, check: 4 */ };
 
-// Patches need to be included
+// TODO: Patches need to be included
+
+/**
+ * Handles the whole viewstuff for a Form
+ */
 export default class FormView {
   constructor({ attrs: { controller, fields = false, buttons = false } }) {
     this.controller = controller;
@@ -16,6 +22,9 @@ export default class FormView {
     this.result = new Map();
   }
 
+  /**
+   * Prepare the Dropdown Data and fill all
+   */
   oninit(/* vnode */) {
     const dropDowns = this.fields.filter(field => field.type === INPUT_TYPES.drop);
     dropDowns.forEach(dropDown => {
@@ -28,6 +37,12 @@ export default class FormView {
     });
   }
 
+  /**
+   * Returns a TextInputField
+   * @param attr_key: key where in the controller to put the data
+   * @param type: type of the textfield plaintext or number.
+   * @returns {{dom, domSize, instance, children, _state, skip, tag, text, state, key, events, attrs}}
+   */
   getTextField(attr_key, type) {
     let type_string = '';
     if (type === INPUT_TYPES.plain) {
@@ -44,6 +59,11 @@ export default class FormView {
     });
   }
 
+  /**
+   * Returns a DropdownMenu
+   * @param attr_key: key where in the controller to put the data
+   * @returns {{dom, domSize, instance, children, _state, skip, tag, text, state, key, events, attrs}}
+   */
   getDropDown(attr_key) {
     return m(
       'select',
@@ -52,10 +72,16 @@ export default class FormView {
           this.controller.setData(attr_key, key);
         }),
       },
-      this.result.get(attr_key).map(option => m('option', { value: option.key }, option.text))
+      this.result.get(attr_key).map(option => m('option', { value: option.key, style: option.style ? option.style : '' }, option.text))
     );
   }
 
+  /**
+   * Returns a rredefined inputfield
+   * @param type: type of the inputfield as int (See the "enum")
+   * @param attr_key: key where in the controller to put the data
+   * @returns {{dom, domSize, instance, children, _state, skip, tag, text, state, key, events, attrs}|string}
+   */
   getInputField(type, attr_key) {
     if (type === INPUT_TYPES.plain || type === INPUT_TYPES.number) {
       return this.getTextField(attr_key, type);
@@ -70,6 +96,10 @@ export default class FormView {
     return m('div', 'no correct type for that field given');
   }
 
+  /**
+   * Returns all buttons to be added to the form.
+   * @returns {string} Array of all buttons
+   */
   getButtons() {
     return this.buttons
       ? this.buttons.map(button =>
@@ -87,6 +117,10 @@ export default class FormView {
       : '';
   }
 
+  /**
+   * View Function
+   * @returns {{dom, domSize, instance, children, _state, skip, tag, text, state, key, events, attrs}}
+   */
   view() {
     return m(
       'div.formtool',

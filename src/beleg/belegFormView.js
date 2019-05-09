@@ -4,7 +4,10 @@ import DataListController from '../controllers/dataListController';
 
 import BaseForm from '../views/baseForm';
 
-// Several Text-Keys needed
+/**
+ * Collection of all Inputfields in belegForm
+ * @type {*[]}
+ */
 const inputFields = [
   {
     label: 'Description',
@@ -83,18 +86,25 @@ const inputFields = [
   },
 ];
 
+/**
+ * Collection of all used buttons
+ * @type {{label: string}[]}
+ */
 const buttons = [
   {
     label: 'Confirm',
-    onclick: () => {
-      console.log('Missing function definition');
-    },
   },
 ];
 
 export default class BelegFormView extends BaseForm {
+
+  /**
+   * Initializing super and adding onclick functions to the buttons
+   */
   constructor() {
     super(BelegFormController, inputFields, buttons);
+
+    // Adding the corresponding functions to the buttons
     this.buttons[0].onclick = () => this.ctrl.submit(); // Sandro fragen
     // TODO: Reroute
   }

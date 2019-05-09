@@ -1,6 +1,10 @@
 import TransactionController from './transactionController';
 import BaseTable from '../views/baseTable';
 
+/**
+ * Setup of the transaction Table
+ * @type {*[]}
+ */
 const table_setup = [
   { key: 'id', title: 'ID', style: { width: '4em' } },
   {
@@ -19,12 +23,41 @@ const table_setup = [
   { key: 'financial_year', title: 'Geschäftsjahr', style: { width: '10em' } },
   { key: 'date', title: 'Date', style: { width: '24em' } },
 ];
+/**
+ * Collection of all buttons function must be added in the inherited constructor
+ * @type {*[]}
+ */
+const buttons = [
+  {
+    label: 'Print all shown',
+  },
+  {
+    label: 'Print selected',
+  },
+  {
+    label: 'Unselect all',
+  },
+];
 
 export default class TransactionTableView extends BaseTable {
   constructor() {
-    super(TransactionController, table_setup);
+    super(TransactionController, table_setup, buttons);
+    //Defintion of all table attributes
     this.selectable = true;
     this.sortable = true;
     this.searchable = true;
+
+    //Adding Button functionality
+    buttons[0].onclick = () => {
+      this.ctrl.printAll(this.print_table_info, "Transaction_Table", "All Transactions");
+    };
+
+    buttons[1].onclick = () => {
+      this.ctrl.printSelected(this.print_table_info, "Transaction_Table", "Selected Transactions");
+    };
+
+    buttons[2].onclick = () => {
+      this.ctrl.unselectAll();
+    };
   }
 }
