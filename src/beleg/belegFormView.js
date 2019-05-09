@@ -97,7 +97,6 @@ const buttons = [
 ];
 
 export default class BelegFormView extends BaseForm {
-
   /**
    * Initializing super and adding onclick functions to the buttons
    */

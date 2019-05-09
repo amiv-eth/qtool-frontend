@@ -19,7 +19,7 @@ export default function generateTable(header, body_data, filename = false, title
   doc.autoTable({
     margin: { top: 20 },
     unit: 'mm',
-    body: body_data, //Filling in data
+    body: body_data, // Filling in data
     columns: header, // Setting header
     // Style Stuff
     tableLineColor: 0, // Outline
@@ -37,7 +37,7 @@ export default function generateTable(header, body_data, filename = false, title
     alternateRowStyles: {
       fillColor: 255,
     },
-    //Function to add footer and header including pagenumber
+    // Function to add footer and header including pagenumber
     didDrawPage(data) {
       // Header
       doc.setFontSize(15);

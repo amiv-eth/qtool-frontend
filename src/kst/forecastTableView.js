@@ -65,7 +65,7 @@ export default class ForecastTableView extends BaseTable {
     super(ForecastController, table_setup, buttons);
     this.searchable = true;
 
-    //Setting button onclick function since ctrl isn't defined yet.
+    // Setting button onclick function since ctrl isn't defined yet.
     buttons[0].onclick = () => {
       this.ctrl.printAll(this.print_table_info);
     };

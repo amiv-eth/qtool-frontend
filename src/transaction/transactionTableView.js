@@ -42,18 +42,18 @@ const buttons = [
 export default class TransactionTableView extends BaseTable {
   constructor() {
     super(TransactionController, table_setup, buttons);
-    //Defintion of all table attributes
+    // Defintion of all table attributes
     this.selectable = true;
     this.sortable = true;
     this.searchable = true;
 
-    //Adding Button functionality
+    // Adding Button functionality
     buttons[0].onclick = () => {
-      this.ctrl.printAll(this.print_table_info, "Transaction_Table", "All Transactions");
+      this.ctrl.printAll(this.print_table_info, 'Transaction_Table', 'All Transactions');
     };
 
     buttons[1].onclick = () => {
-      this.ctrl.printSelected(this.print_table_info, "Transaction_Table", "Selected Transactions");
+      this.ctrl.printSelected(this.print_table_info, 'Transaction_Table', 'Selected Transactions');
     };
 
     buttons[2].onclick = () => {

@@ -14,7 +14,8 @@ export default class BaseForm {
     this.fields_view_data = []; // Data for the view containing all the info to display
     this.fields_ctrl_data = []; // Data for the controller used to make the request.
 
-    this.inputFields.forEach(pos => { // Adding all the data to the different arrays.
+    this.inputFields.forEach(pos => {
+      // Adding all the data to the different arrays.
       this.fields_ctrl_data.push({
         endpoint: pos.endpoint,
         attr_key: pos.attr_key,
