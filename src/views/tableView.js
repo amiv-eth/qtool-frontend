@@ -24,10 +24,22 @@ styler.add('tableview', tableStyles);
  * Handles the whole viewstuff for a Table
  */
 export default class TableView {
+  /**
+   * @param controller A table Controller
+   * @param titles array of titles consisting of the following:
+   *  - text: Title-text
+   *  - style: all style attributes for the field
+   *  - conditional_background: function for background color based on the given row
+   *  - key: key of the data of the object. can be embedded
+   *  - sort: separate sorting key
+   * @param tileContent
+   * @param clickOnTitles
+   * @param clickOnRows
+   */
   constructor({
     attrs: {
       controller,
-      keys,
+      titles,
       tileContent = false,
       clickOnTitles = (ctrl, title) => {
         ctrl.setSort(title);
@@ -36,12 +48,11 @@ export default class TableView {
       clickOnRows = (ctrl, row) => {
         ctrl.select(row.unique_id);
       },
-
       // Filters
     },
   }) {
     this.controller = controller;
-    this.tableKeys = keys || [];
+    this.titles = titles || [];
     this.tileContent = tileContent;
     this.clickOnTitles = clickOnTitles;
     this.clickOnRows = clickOnRows;
@@ -55,13 +66,13 @@ export default class TableView {
   getItemData(data) {
     // Loads Data if no specific method is defined in tile content.
     // default if tile content was not defined
-    return this.tableKeys.map(key => {
+    return this.titles.map(elem => {
       // Access a nested key, indicated by dot-notation
       let nestedData = data;
-      key.split('.').forEach(subKey => {
+      elem.key.split('.').forEach(subKey => {
         nestedData = nestedData[subKey];
       });
-      return m('div', { style: { width: `${98 / this.tableKeys.length}%` } }, nestedData);
+      return m('div', { style: { width: `${98 / this.titles.length}%` } }, nestedData);
     });
   }
 
@@ -102,7 +113,6 @@ export default class TableView {
   view({
     attrs: {
       controller,
-      titles,
       buttons = false,
       tableHeight = false,
       selectable = false,
@@ -177,13 +187,13 @@ export default class TableView {
                 { style: { width: '100%', display: 'flex' } },
                 // Either titles is a list of titles that are distributed equally,
                 // or it is a list of objects with text and width
-                titles.map((title, i) =>
+                this.titles.map(title =>
                   m(
                     'div',
                     {
                       onclick: () => {
-                        if (this.clickOnTitles && this.tableKeys[i] && sortable) {
-                          this.clickOnTitles(controller, this.tableKeys[i]);
+                        if (this.clickOnTitles && sortable) {
+                          this.clickOnTitles(controller, title.sort);
                         }
                       },
                       style: title.style
@@ -192,7 +202,9 @@ export default class TableView {
                     },
                     [
                       title.style.width ? title.text : title,
-                      controller.getSort().split('.')[0] === title.key && sortable
+                      (controller.getSort().split('.')[0] === title.key ||
+                        controller.getSort().split('.')[0] === title.sort) &&
+                      sortable
                         ? m(Icon, {
                             svg: {
                               content: m.trust(

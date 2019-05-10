@@ -153,6 +153,7 @@ export default class TableController {
   async printSelected(header_info, title = 'Table', filename = false) {
     if (this.selected.length > 0) {
       const result = await this.endpoint.getIds(this.selected);
+
       generateTable(
         header_info.map(entry => ({ header: entry.text, dataKey: entry.key })),
         result,

@@ -16,11 +16,40 @@ export default function generateTable(header, body_data, filename = false, title
 
   const totalPagesExp = '{total_pages_count_string}';
 
+  // This is needed since nested data can be brought here as well, and autotable cant handle
+  // I am really sorry but didn't find a smarter solution yet.
+  const header_map = new Map();
+  const new_header = [];
+
+  // Mapping the key to an number since those can be handled by autotable
+  // Mapping the title to this number =>the int is the new DataKey
+  header.forEach((element, i) => {
+    header_map.set(i, element.dataKey);
+    new_header.push({ header: element.header, dataKey: i });
+  });
+
+  // Filling a new body with dataKey being the new int.
+  const new_body = [];
+  body_data.forEach(row => {
+    const new_row = {};
+    header_map.forEach((key, val) => {
+      const nested = key.split('.');
+      new_row[val] = 'not defined';
+      if (nested.length === 1 && row[nested[0]]) {
+        new_row[val] = row[nested[0]];
+      } else if (nested.length === 2 && row[nested[0]] && row[nested[0]][nested[1]]) {
+        new_row[val] = row[nested[0]][nested[1]];
+      }
+    });
+    new_body.push(new_row);
+  });
+
+  // Generating the table
   doc.autoTable({
     margin: { top: 20 },
     unit: 'mm',
-    body: body_data, // Filling in data
-    columns: header, // Setting header
+    body: new_body, // Filling in data
+    columns: new_header, // Setting header
     // Style Stuff
     tableLineColor: 0, // Outline
     tableLineWidth: 1,

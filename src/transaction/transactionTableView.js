@@ -7,21 +7,29 @@ import BaseTable from '../views/baseTable';
  */
 const table_setup = [
   { key: 'id', title: 'ID', style: { width: '4em' } },
+  { key: 'user.name', sort: 'user_id', title: 'Name', style: { width: '12em' } },
   {
     key: 'description',
     title: 'Beschreibung',
-    style: { width: 'calc(100% - 80em)', minWidth: '10em' },
+    style: { width: '100%', display: 'flex' },
   },
-  { key: 'type_id', title: 'Type', style: { width: '4em' } },
-  { key: 'category_id', title: 'Category', style: { width: '8em' } },
-  { key: 'budgetitem_id', title: 'Budgetposten', style: { width: '10em' } },
-  { key: 'account_id', title: 'Account', style: { width: '4em' } },
-  { key: 'currency_id', title: 'Währung', style: { width: '4em' } },
-  { key: 'amount', title: 'Betrag', style: { width: '4em' } },
-  { key: 'amount_in_chf', title: 'Betrag CHF', style: { width: '4em' } },
-  { key: 'is_valid', title: 'Valid', style: { width: '4em' } },
-  { key: 'financial_year', title: 'Geschäftsjahr', style: { width: '10em' } },
-  { key: 'date', title: 'Date', style: { width: '24em' } },
+  {
+    key: 'category.category_name',
+    sort: 'category_id',
+    title: 'Kategorie',
+    style: { width: '20em' },
+  },
+  {
+    key: 'budgetitem.budgetitem_name',
+    sort: 'budgetitem_id',
+    title: 'Budgetposten',
+    style: { width: '20em' },
+  },
+  { key: 'amount', title: 'Betrag', style: { width: '8em' } },
+  { key: 'amount_in_chf', title: 'Betrag CHF', style: { width: '8em' } },
+  { key: 'type.type_name', sort: 'type_id', title: 'Zahlungsmethode', style: { width: '20em' } },
+  { key: 'is_valid', title: 'Gültig', style: { width: '10em' } },
+  { key: 'ezag', title: 'EZAG', style: { width: '10em' } },
 ];
 /**
  * Collection of all buttons function must be added in the inherited constructor

@@ -4,8 +4,16 @@
 export default {
   transaction: {
     path: `Transaction/transaction`,
-    search_keys: ['financial_year', 'date', 'description', 'amount', 'amount_in_chf', 'comment'],
+    search_keys: [
+      'financial_year',
+      'date',
+      'description',
+      'amount',
+      'amount_in_chf',
+      /* cant be used at the moment 'user.name', */
+    ],
     default_sort: 'id.asc',
+    embedded: ['user', 'category', 'budgetitem', 'type'],
   },
   transaction_budgetitem: {
     path: `Budget/item`,

@@ -32,8 +32,8 @@ export default class BaseTable {
         conditional_background: item =>
           pos.conditional_background ? pos.conditional_background(item) : false,
         key: pos.key,
+        sort: pos.sort ? pos.sort : pos.key, // TODO: temporary till API ready
       });
-      this.keys_arr.push(pos.key);
       this.print_table_info.push({
         text: pos.title,
         key: pos.key,
@@ -49,7 +49,15 @@ export default class BaseTable {
   getItemData(data) {
     const row = [];
     this.title_arr.forEach(pos => {
-      row.push(m('div', { style: pos.style }, data[pos.key]));
+      // Access nested data
+      const nested = pos.key.split('.');
+      if (nested.length === 1 && data[nested[0]]) {
+        row.push(m('div', { style: pos.style }, data[nested[0]]));
+      } else if (nested.length === 2 && data[nested[0]] && data[nested[0]][nested[1]]) {
+        row.push(m('div', { style: pos.style }, data[nested[0]][nested[1]]));
+      } else {
+        row.push(m('div', { style: pos.style }, 'not defined'));
+      }
     });
     return row;
   }
@@ -61,7 +69,6 @@ export default class BaseTable {
   view() {
     return m(TableView, {
       controller: this.ctrl,
-      keys: this.keys_arr,
       tileContent: data => this.getItemData(data),
       titles: this.title_arr,
       sortable: this.sortable,

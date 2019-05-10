@@ -60,7 +60,7 @@ export default class DataListController extends ResourceHandler {
       return [];
     }
     if (ids.length === 1) {
-      return [this.getId(ids)];
+      return [await this.getId(ids)];
     }
 
     const value = await this.getId(ids[0]); // Waiting till promise is fulfilled

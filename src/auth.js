@@ -46,6 +46,18 @@ export default class ResourceHandler {
 
     const fullQuery = {};
 
+    // Setting for embedded needs to come first.
+    if (this.conf.embedded && this.conf.embedded.length !== 0) {
+      let embedded = '{';
+      this.conf.embedded.forEach(item => {
+        embedded += `'${item}':1, `;
+      });
+      embedded = embedded.substring(0, embedded.length - 2);
+      embedded += '}';
+
+      fullQuery.embedded = embedded;
+    }
+
     fullQuery.sort = this.getSort(query) || {};
 
     if ('search' in query && query.search && query.search.length > 0 && this.conf.search_keys) {
@@ -72,6 +84,7 @@ export default class ResourceHandler {
         fullQuery[key] = JSON.stringify(query[key]);
       });
 
+    console.log(m.buildQueryString(fullQuery));
     return m.buildQueryString(fullQuery);
   }
 
