@@ -23,10 +23,8 @@ const table_setup = [
     key: 'expenditure_calculated',
     title: 'Ausgaben berechnet',
     style: { width: '6em', textAlign: 'right' },
-    conditional_background: item => {
-      console.log(item);
-      return item.expenditure_calculated < item.expenditure_budgeted ? '#F78181' : '#58FA82';
-    },
+    conditional_tags: item =>
+      item.expenditure_calculated < item.expenditure_budgeted ? 'red' : 'green',
   },
   {
     key: 'revenue_budgeted',
@@ -37,8 +35,8 @@ const table_setup = [
     key: 'revenue_calculated',
     title: 'Ertrag berechnet',
     style: { width: '6em', textAlign: 'right' },
-    conditional_background: item =>
-      item.revenue_calculated < item.revenue_budgeted ? '#F78181' : '#58FA82',
+    conditional_tags: item =>
+      item.revenue_calculated < item.revenue_budgeted ? 'red' : 'green',
   },
   {
     key: 'difference_budgeted',
@@ -49,8 +47,8 @@ const table_setup = [
     key: 'difference_calculated',
     title: 'Differenz berechnet',
     style: { width: '6em', textAlign: 'right' },
-    conditional_background: item =>
-      item.difference_budgeted > item.difference_calculated ? '#F78181' : '#58FA82',
+    conditional_tags: item =>
+      item.difference_budgeted > item.difference_calculated ? 'red' : 'green',
   },
 ];
 
@@ -79,13 +77,9 @@ export default class ForecastTableView extends BaseTable {
   getItemData(data) {
     const row = [];
     this.title_arr.forEach(pos => {
-      // eslint-disable-next-line no-param-reassign
-      pos.style.backgroundColor = pos.conditional_background
-        ? pos.conditional_background(data)
-        : ''; // conditional background color
       row.push(
         m(
-          'div',
+          `div.tableItem.${pos.conditional_tags(data)}`,
           {
             style: pos.style,
           },

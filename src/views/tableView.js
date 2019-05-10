@@ -96,6 +96,7 @@ export default class TableView {
             className: 'tableTile',
             style: {
               width: '100%',
+              height: '100%',
               display: 'flex',
               backgroundColor: this.controller.selected.includes(data.unique_id) ? '#B8B8B8' : null,
             },

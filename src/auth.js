@@ -84,7 +84,6 @@ export default class ResourceHandler {
         fullQuery[key] = JSON.stringify(query[key]);
       });
 
-    console.log(m.buildQueryString(fullQuery));
     return m.buildQueryString(fullQuery);
   }
 

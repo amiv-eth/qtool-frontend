@@ -29,8 +29,7 @@ export default class BaseTable {
       this.title_arr.push({
         text: pos.title,
         style: pos.style,
-        conditional_background: item =>
-          pos.conditional_background ? pos.conditional_background(item) : false,
+        conditional_tags: item => (pos.conditional_tags ? pos.conditional_tags(item) : false),
         key: pos.key,
         sort: pos.sort ? pos.sort : pos.key, // TODO: temporary till API ready
       });
@@ -52,11 +51,11 @@ export default class BaseTable {
       // Access nested data
       const nested = pos.key.split('.');
       if (nested.length === 1 && data[nested[0]]) {
-        row.push(m('div', { style: pos.style }, data[nested[0]]));
+        row.push(m('div.tableItem', { style: pos.style }, data[nested[0]]));
       } else if (nested.length === 2 && data[nested[0]] && data[nested[0]][nested[1]]) {
-        row.push(m('div', { style: pos.style }, data[nested[0]][nested[1]]));
+        row.push(m('div.tableItem', { style: pos.style }, data[nested[0]][nested[1]]));
       } else {
-        row.push(m('div', { style: pos.style }, 'not defined'));
+        row.push(m('div.tableItem', { style: pos.style }, 'not defined'));
       }
     });
     return row;
