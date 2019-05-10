@@ -1,5 +1,3 @@
-import ResourceHandler from '../auth';
+// import ResourceHandler from '../auth';
 
-export default class InvoiceController {
-  
-}
+export default class InvoiceController {}
