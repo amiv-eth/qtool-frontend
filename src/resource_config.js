@@ -25,4 +25,7 @@ export default {
   transaction_currency: {
     path: `utility/currency`,
   },
+  invoice_detail: {
+    path: ''
+  }
 };

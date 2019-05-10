@@ -1,6 +1,6 @@
 import m from 'mithril';
 import MainNavigation from '../models/mainNavigation';
-import logos from '../../res/logos';
+import logos from '../../res/images/logos';
 
 /**
  * Header of the Website

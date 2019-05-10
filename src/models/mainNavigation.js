@@ -3,7 +3,7 @@ import Home from '../views/home';
 import BelegFormularView from '../beleg/belegFormView';
 import TransactionTableView from '../transaction/transactionTableView';
 import ForecastTableView from '../kst/forecastTableView';
-
+import TestInvoice from '../invoice/testInvoice';
 /**
  * Collection of the main Navigation buttons
  * name: displayed name, path: to the page, oncreate/onupdate: , view: the given View to the Element, submenu:
@@ -47,5 +47,11 @@ export default [
         view: ForecastTableView,
       },
     ],
+  },
+  {
+    name: 'Invoice',
+    path: '/invoice',
+    oncreate: m.route.link,
+    view: TestInvoice,
   },
 ];

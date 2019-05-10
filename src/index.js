@@ -3,6 +3,7 @@ import layout from './views/layout';
 import './styles/base.less';
 import 'polythene-css-dialog';
 import MainNavigation from './models/mainNavigation';
+import { loadLanguage } from './models/language';
 
 /**
  * Puts all the page-layout around a view
@@ -21,6 +22,9 @@ function layoutWith(view) {
  * Assembles the whole page
  * @type {{}}
  */
+// Loading Language
+loadLanguage();
+
 const items = {};
 MainNavigation.forEach(item => {
   if (item.path && item.name && item.view) {

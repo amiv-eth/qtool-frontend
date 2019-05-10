@@ -1,4 +1,4 @@
-import TransactionController from './transactionController';
+import TransactionTableController from './transactionTableController';
 import BaseTable from '../views/baseTable';
 
 /**
@@ -41,7 +41,7 @@ const buttons = [
 
 export default class TransactionTableView extends BaseTable {
   constructor() {
-    super(TransactionController, table_setup, buttons);
+    super(TransactionTableController, table_setup, buttons);
     // Defintion of all table attributes
     this.selectable = true;
     this.sortable = true;

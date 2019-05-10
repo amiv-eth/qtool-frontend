@@ -2,7 +2,7 @@ import m from 'mithril';
 import infinite from 'mithril-infinite';
 import { List, ListTile, Toolbar, Search, Button, Icon } from 'polythene-mithril';
 import { styler } from 'polythene-core-css';
-import { icons } from '../../res/elements';
+import { icons } from '../../res/images/elements';
 
 const tableStyles = [
   {
