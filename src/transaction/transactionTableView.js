@@ -22,13 +22,14 @@ const table_setup = [
   },
   {
     key: 'budgetitem.budgetitem_name',
+    text_keys: ['budgetitem.budgetitem_code'],
     sort: 'budgetitem_id',
     title: 'Budgetposten',
     style: { width: '20em' },
   },
   {
     key: 'amount',
-    text_keys: '',
+    text_keys: ['currency.currency_shortcut'],
     title: 'Betrag',
     style: { width: '8em' },
     formatting: item => amountFormatter(item),

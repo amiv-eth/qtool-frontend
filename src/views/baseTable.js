@@ -32,11 +32,13 @@ export default class BaseTable {
         conditional_tags: item => (pos.conditional_tags ? pos.conditional_tags(item) : false),
         formatting: item => (pos.formatting ? pos.formatting(item) : item),
         key: pos.key,
+        text_keys: pos.text_keys,
         sort: pos.sort ? pos.sort : pos.key, // TODO: temporary till API ready
       });
       this.print_table_info.push({
         text: pos.title,
         key: pos.key,
+        text_keys: pos.text_keys,
       });
     });
   }
@@ -51,12 +53,22 @@ export default class BaseTable {
     this.title_arr.forEach(pos => {
       // Access nested data
       const nested_data = getNested(data, pos.key);
+      const nested_texts = pos.text_keys ? pos.text_keys.map(key => getNested(data, key)) : null;
+      // Assemble the pre_text
+      let pre_text = '';
+      if (nested_texts) {
+        nested_texts.forEach(text => {
+          if (text) {
+            pre_text += `${text} `;
+          }
+        });
+      }
       if (nested_data) {
         row.push(
           m(
             `div.tableItem.${pos.conditional_tags(data)}`,
             { style: pos.style },
-            pos.formatting(nested_data)
+            `${pre_text}${pos.formatting(nested_data)}`
           )
         );
       } else {

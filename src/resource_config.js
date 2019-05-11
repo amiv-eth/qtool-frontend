@@ -13,7 +13,7 @@ export default {
       /* cant be used at the moment 'user.name', */
     ],
     default_sort: 'id.asc',
-    embedded: ['user', 'category', 'budgetitem', 'type'],
+    embedded: ['user', 'category', 'budgetitem', 'type', 'currency'],
   },
   transaction_budgetitem: {
     path: `Budget/item`,
