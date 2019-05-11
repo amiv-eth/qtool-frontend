@@ -78,8 +78,13 @@ function i18n(key, values = null) {
   return i18next.t(key);
 }
 
+/**
+ * Formats given amount to the convention
+ * @param amount
+ * @returns {*}
+ */
 function amountFormatter(amount) {
-  if (amount === undefined) {
+  if (amount === undefined || amount === null) {
     return amount;
   }
   const fixed = amount.toFixed(2);

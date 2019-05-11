@@ -1,5 +1,6 @@
 import m from 'mithril';
 import TableView from './tableView';
+import { getNested } from '../utils';
 
 /**
  * Base of a TableView which can be inherited
@@ -49,25 +50,13 @@ export default class BaseTable {
     const row = [];
     this.title_arr.forEach(pos => {
       // Access nested data
-      const nested = pos.key.split('.');
-      if (nested.length === 1 && data[nested[0]] !== undefined) {
+      const nested_data = getNested(data, pos.key);
+      if (nested_data) {
         row.push(
           m(
             `div.tableItem.${pos.conditional_tags(data)}`,
             { style: pos.style },
-            pos.formatting(data[nested[0]])
-          )
-        );
-      } else if (
-        nested.length === 2 &&
-        data[nested[0]] !== undefined &&
-        data[nested[0]][nested[1]] !== undefined
-      ) {
-        row.push(
-          m(
-            `div.tableItem.${pos.conditional_tags(data)}`,
-            { style: pos.style },
-            pos.formatting(data[nested[0]][nested[1]])
+            pos.formatting(nested_data)
           )
         );
       } else {

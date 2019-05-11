@@ -1,5 +1,6 @@
 import TransactionTableController from './transactionTableController';
 import BaseTable from '../views/baseTable';
+import { amountFormatter } from '../models/language';
 
 /**
  * Setup of the transaction Table
@@ -25,8 +26,19 @@ const table_setup = [
     title: 'Budgetposten',
     style: { width: '20em' },
   },
-  { key: 'amount', title: 'Betrag', style: { width: '8em' } },
-  { key: 'amount_in_chf', title: 'Betrag CHF', style: { width: '8em' } },
+  {
+    key: 'amount',
+    text_keys: '',
+    title: 'Betrag',
+    style: { width: '8em' },
+    formatting: item => amountFormatter(item),
+  },
+  {
+    key: 'amount_in_chf',
+    title: 'Betrag CHF',
+    style: { width: '8em' },
+    formatting: item => amountFormatter(item),
+  },
   { key: 'type.type_name', sort: 'type_id', title: 'Zahlungsmethode', style: { width: '20em' } },
   { key: 'is_valid', title: 'Gültig', style: { width: '10em' } },
   { key: 'ezag', title: 'EZAG', style: { width: '10em' } },

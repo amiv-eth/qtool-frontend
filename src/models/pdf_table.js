@@ -1,5 +1,6 @@
 import JsPDF from 'jspdf';
 import 'jspdf-autotable';
+import { getNested } from '../utils';
 //  import logos from '../../res/logos';
 
 /**
@@ -33,12 +34,9 @@ export default function generateTable(header, body_data, filename = false, title
   body_data.forEach(row => {
     const new_row = {};
     header_map.forEach((key, val) => {
-      const nested = key.split('.');
-      new_row[val] = 'not defined';
-      if (nested.length === 1 && row[nested[0]]) {
-        new_row[val] = row[nested[0]];
-      } else if (nested.length === 2 && row[nested[0]] && row[nested[0]][nested[1]]) {
-        new_row[val] = row[nested[0]][nested[1]];
+      new_row[val] = getNested(row, key);
+      if (!new_row[val]) {
+        new_row[val] = 'not defined';
       }
     });
     new_body.push(new_row);

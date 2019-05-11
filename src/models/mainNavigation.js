@@ -2,7 +2,7 @@ import m from 'mithril';
 import Home from '../views/home';
 import BelegFormularView from '../beleg/belegFormView';
 import TransactionTableView from '../transaction/transactionTableView';
-import ForecastTableView from '../kst/forecastTableView';
+import ForecastTableView from '../kst/budgetTableView';
 import ConfirmedTableView from '../kst/confirmedTableView';
 import TestInvoice from '../invoice/testInvoice';
 /**
