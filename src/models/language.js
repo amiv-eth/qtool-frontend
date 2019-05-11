@@ -78,4 +78,12 @@ function i18n(key, values = null) {
   return i18next.t(key);
 }
 
-export { i18n, changeLanguage, setLanguage, currentLanguage, loadLanguage };
+function amountFormatter(amount) {
+  if (amount === undefined) {
+    return amount;
+  }
+  const fixed = amount.toFixed(2);
+  return fixed === 0 ? '0.00' : fixed;
+}
+
+export { i18n, changeLanguage, setLanguage, currentLanguage, loadLanguage, amountFormatter };

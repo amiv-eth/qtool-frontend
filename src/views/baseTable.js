@@ -13,7 +13,6 @@ export default class BaseTable {
     this.buttons = buttons;
 
     this.title_arr = []; // Array for the table
-    this.keys_arr = []; // Array for all keys used in the view
     this.print_table_info = []; // Array used by the genereatePDF function
 
     this.selectable = false; // List items are selectable
@@ -30,6 +29,7 @@ export default class BaseTable {
         text: pos.title,
         style: pos.style,
         conditional_tags: item => (pos.conditional_tags ? pos.conditional_tags(item) : false),
+        formatting: item => (pos.formatting ? pos.formatting(item) : item),
         key: pos.key,
         sort: pos.sort ? pos.sort : pos.key, // TODO: temporary till API ready
       });
@@ -50,12 +50,30 @@ export default class BaseTable {
     this.title_arr.forEach(pos => {
       // Access nested data
       const nested = pos.key.split('.');
-      if (nested.length === 1 && data[nested[0]]) {
-        row.push(m('div.tableItem', { style: pos.style }, data[nested[0]]));
-      } else if (nested.length === 2 && data[nested[0]] && data[nested[0]][nested[1]]) {
-        row.push(m('div.tableItem', { style: pos.style }, data[nested[0]][nested[1]]));
+      if (nested.length === 1 && data[nested[0]] !== undefined) {
+        row.push(
+          m(
+            `div.tableItem.${pos.conditional_tags(data)}`,
+            { style: pos.style },
+            pos.formatting(data[nested[0]])
+          )
+        );
+      } else if (
+        nested.length === 2 &&
+        data[nested[0]] !== undefined &&
+        data[nested[0]][nested[1]] !== undefined
+      ) {
+        row.push(
+          m(
+            `div.tableItem.${pos.conditional_tags(data)}`,
+            { style: pos.style },
+            pos.formatting(data[nested[0]][nested[1]])
+          )
+        );
       } else {
-        row.push(m('div.tableItem', { style: pos.style }, 'not defined'));
+        row.push(
+          m(`div.tableItem.${pos.conditional_tags(data)}`, { style: pos.style }, 'not defined')
+        );
       }
     });
     return row;

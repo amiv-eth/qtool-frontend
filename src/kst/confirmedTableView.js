@@ -21,7 +21,7 @@ const table_setup = [
     formatting: item => amountFormatter(item),
   },
   {
-    key: 'expenditure_calculated',
+    key: 'expenditure_confirmed',
     title: 'Ausgaben berechnet',
     style: { width: '6em', textAlign: 'right' },
     conditional_tags: item =>
@@ -35,7 +35,7 @@ const table_setup = [
     formatting: item => amountFormatter(item),
   },
   {
-    key: 'revenue_calculated',
+    key: 'revenue_confirmed',
     title: 'Ertrag berechnet',
     style: { width: '6em', textAlign: 'right' },
     conditional_tags: item => (item.revenue_calculated < item.revenue_budgeted ? 'red' : 'green'),
@@ -48,7 +48,7 @@ const table_setup = [
     formatting: item => amountFormatter(item),
   },
   {
-    key: 'difference_calculated',
+    key: 'difference_confirmed',
     title: 'Differenz berechnet',
     style: { width: '6em', textAlign: 'right' },
     conditional_tags: item =>
@@ -63,7 +63,7 @@ const buttons = [
   },
 ];
 
-export default class ConfirmedTableView extends BaseTable {
+export default class ForecastTableView extends BaseTable {
   constructor() {
     super(ForecastController, table_setup, buttons);
     this.searchable = true;

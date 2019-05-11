@@ -3,6 +3,7 @@ import Home from '../views/home';
 import BelegFormularView from '../beleg/belegFormView';
 import TransactionTableView from '../transaction/transactionTableView';
 import ForecastTableView from '../kst/forecastTableView';
+import ConfirmedTableView from '../kst/confirmedTableView';
 import TestInvoice from '../invoice/testInvoice';
 /**
  * Collection of the main Navigation buttons
@@ -38,7 +39,7 @@ export default [
         name: 'KST-Auswertung',
         path: '/kst/eval',
         onupdate: m.route.link,
-        view: Home,
+        view: ConfirmedTableView,
       },
       {
         name: 'Prognose',
