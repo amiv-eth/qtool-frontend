@@ -3,9 +3,10 @@ export default {
   amiv_eth: 'AMIV an der ETH',
   street: 'Universitätsstrasse 6 (CAB E37)',
   zurich: '8092 Zürich',
-  address_full: '$t(amiv_eth), $t(street), $(zurich)',
-  phone_no: '044 632 42 45',
+  address_full: '$t(amiv_eth), $t(street), $t(zurich)',
+  phone_no: '(+41) 44 632 42 45',
   website: 'www.amiv.ethz.ch',
+  queastur_mail: 'questor@amiv.ethz.ch',
 
   phone: 'Telefon',
   email: 'E-Mail',
@@ -21,11 +22,13 @@ export default {
 
   invoice: {
     payment_within: 'Zahlungsziel',
+    payment_within_duration: '30 Tage',
     contact_person: 'Kontaktperson',
 
-    pronoun: {
+    title: {
       mr: 'Herr',
       ms: 'Frau',
+      comp: 'Firma',
       general: 'Damen und Herren',
     },
 
@@ -35,7 +38,7 @@ export default {
     salutation_male: 'Sehr geehrter $t(invoice.pronoun.mr)',
 
     intro:
-      'Bitte Überweisen Sie den Betrag bis am 03.02.2019 ohne Abzüge unter Angabe der Rechnungsnummer auf unser unten aufgeführtes Bankkonto',
+      'Wir erlauben uns für die unten aufgeführten Leistungen folgenden Betrag in Rechnung zu stellen.',
 
     services: {
       pos: 'Pos',

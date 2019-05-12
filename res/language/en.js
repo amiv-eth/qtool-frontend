@@ -3,13 +3,14 @@ export default {
   amiv_eth: 'AMIV an der ETH',
   street: 'Universitätsstrasse 6 (CAB E37)',
   zurich: '8092 Zürich',
-  address_full: '$t(amiv_eth), $t(street), $(zurich)',
-  phone_no: '044 632 42 45',
+  address_full: '$t(amiv_eth), $t(street), $t(zurich)',
+  phone_no: '(+41) 44 632 42 45',
   website: 'www.amiv.ethz.ch',
+  queastur_mail: 'questor@amiv.ethz.ch',
 
-  phone: 'phone',
-  email: 'email',
-  date: 'date',
+  phone: 'Phone',
+  email: 'Mail',
+  date: 'Date',
 
   currency: {
     chf: 'CHF',
@@ -20,12 +21,14 @@ export default {
   },
 
   invoice: {
-    payment_within: 'to pay within',
+    payment_within: 'To pay within',
+    payment_within_duration: '30 Days',
     contact_person: 'Contact person',
 
-    pronoun: {
+    title: {
       mr: 'Mr',
       ms: 'Ms',
+      comp: 'Company',
       general: 'Madam or Sir',
     },
 
