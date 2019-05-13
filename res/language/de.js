@@ -53,7 +53,7 @@ export default {
     },
 
     outro:
-      'Bitte Überweisen Sie den Betrag bis am {{till}} ohne Abzüge unter Angabe der Rechnungsnummer auf unser unten aufgeführtes Bankkonto',
+      'Bitte Überweisen Sie den Betrag bis am {{till}} ohne Abzüge unter Angabe der Rechnungsnummer \nauf unser unten aufgeführtes Bankkonto.',
     thanks: 'Besten Dank für Ihr Vertrauen.\n',
     greetings: 'Freundliche Grüsse',
     position: '{{pos}} - $t(amiv_eth)',

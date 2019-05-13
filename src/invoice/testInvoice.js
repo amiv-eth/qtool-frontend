@@ -35,8 +35,9 @@ export default class TestInvoice {
           unitprice: 1.1,
           article_type: 'Weiterverrechnung ohne Gewinn',
           taxrate: 0,
-          invoice_id: '1',
+          subtotal: 371,
           description: 'Bier für Automaten',
+          pos: 'QT-3',
         },
         {
           unit: 'kg',
@@ -44,12 +45,17 @@ export default class TestInvoice {
           unitprice: 25,
           article_type: 'Kafferechnung',
           taxrate: 0.077,
+          subtotal: 32,
           description: 'Kaffee aus Schweden',
+          pos: 'K-3',
         },
       ],
+      tot_net: 500,
+      tot_tax: 26,
+      tot_gros: 526,
       nr: 'R19-test',
       issue_date: '2017-02-27',
-      duedate: '2017-03-29',
+      due_date: '2017-03-29',
     };
   }
 

@@ -1,5 +1,5 @@
 import JsPDF from 'jspdf';
-import { i18n, setLanguage, currentLanguage } from './language';
+import { i18n, setLanguage, amountFormatter, currentLanguage } from './language';
 import logos from '../../res/images/logos';
 
 export default function generateInvoice(invoice, lang) {
@@ -13,7 +13,14 @@ export default function generateInvoice(invoice, lang) {
   });
 
   const left_border = 25;
-  const general_font_size = 10;
+  const font = {
+    size: 10,
+    type: 'helvetica',
+    style: 'normal',
+    title_style: 'bold',
+  };
+
+  doc.setFont(font.type, font.style);
 
   // Logo
   const logo_width = 70;
@@ -31,8 +38,7 @@ export default function generateInvoice(invoice, lang) {
   doc.text(i18n('address_full'), left_border, row);
   doc.line(left_border, row + 1, left_border + 82, row + 1);
   row += header_spacing;
-
-  doc.setFontSize(general_font_size);
+  doc.setFontSize(font.size);
 
   // Company
   if (invoice.customer.company) {
@@ -102,17 +108,19 @@ export default function generateInvoice(invoice, lang) {
 
   // INVOICE CONTENT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-  // Title
+  // Title =========================================================================================
   const title_start = 93;
   doc.setFontSize(14);
+  doc.setFont(font.type, font.title_style);
   doc.text(
     `${i18n('invoice.invoice')} ${i18n('invoice.no')} ${invoice.nr}`,
     left_border,
     title_start
   );
-  doc.setFontSize(general_font_size);
+  doc.setFont(font.type, font.style);
+  doc.setFontSize(font.size);
 
-  // Salutation
+  // Salutation ====================================================================================
   const salutation_start = 100;
   if (invoice.customer.last_name && invoice.customer.title) {
     doc.text(
@@ -132,12 +140,122 @@ export default function generateInvoice(invoice, lang) {
     );
   }
 
-  // Intro
+  // Intro =========================================================================================
   const intro_start = salutation_start + header_spacing;
   doc.text(i18n('invoice.intro'), left_border, intro_start);
 
-  doc.save(`${invoice.nr}.pdf`);
+  // Table =========================================================================================
+  const table_start = 120;
+  const table_spacing = 10;
 
-  console.log(doc.getFontList());
+  const columns = [
+    { header: i18n('invoice.services.pos'), dataKey: 'pos', pos: left_border },
+    { header: i18n('invoice.services.desc'), dataKey: 'article_type', pos: left_border + 11 },
+    {
+      header: i18n('invoice.services.qty'),
+      dataKey: 'amount',
+      add_key: 'unit',
+      pos: left_border + 82,
+      align: 'right',
+    },
+    {
+      header: i18n('invoice.services.tax'),
+      dataKey: 'taxrate',
+      pos: left_border + 101,
+      align: 'right',
+    },
+    {
+      header: i18n('invoice.services.unit_price'),
+      dataKey: 'unitprice',
+      pos: left_border + 135,
+      align: 'right',
+      formatter: price => amountFormatter(price),
+    },
+    {
+      header: i18n('invoice.services.tot'),
+      dataKey: 'subtotal',
+      pos: left_border + 162,
+      align: 'right',
+      formatter: price => amountFormatter(price),
+    },
+  ];
+
+  // Table-Title -----------------------------------------------------------------------------------
+  row = table_start;
+  columns.forEach(col => {
+    doc.text(col.header, col.pos, row, col.align);
+  });
+
+  // Table-Items -----------------------------------------------------------------------------------
+  invoice.items.forEach(item => {
+    doc.line(left_border, row + 1, left_border + 164, row + 1);
+    row += table_spacing / 2;
+    columns.forEach(col => {
+      doc.text(
+        `${col.formatter ? col.formatter(item[col.dataKey]) : item[col.dataKey]} ${
+          col.add_key ? item[col.add_key] : ''
+        }`,
+        col.pos,
+        row,
+        col.align
+      );
+    });
+    row += table_spacing / 2;
+    doc.text(item.description, columns[1].pos, row);
+  });
+
+  // Sums ------------------------------------------------------------------------------------------
+  doc.setLineWidth(0.75);
+  doc.line(left_border, row + 1, left_border + 164, row + 1);
+  row += table_spacing / 2;
+
+  const table_footer_pos_left = columns[columns.length - 2].pos;
+  const table_footer_pos_right = columns[columns.length - 1].pos;
+  const table_footer_align = 'right';
+
+  doc.text(`${i18n('invoice.services.tot_net')}:`, table_footer_pos_left, row, table_footer_align);
+  doc.text(`${amountFormatter(invoice.tot_net)}`, table_footer_pos_right, row, table_footer_align);
+  row += table_spacing / 2;
+
+  doc.text(`${i18n('invoice.services.tot_vat')}:`, table_footer_pos_left, row, table_footer_align);
+  doc.text(`${amountFormatter(invoice.tot_tax)}`, table_footer_pos_right, row, table_footer_align);
+  row += table_spacing / 2;
+
+  doc.setFont(font.type, font.title_style);
+  doc.text(`${i18n('invoice.services.tot_gros')}:`, table_footer_pos_left, row, table_footer_align);
+  doc.text(`${amountFormatter(invoice.tot_gros)}`, table_footer_pos_right, row, table_footer_align);
+  doc.setFont(font.type, 'normal');
+
+  doc.line(left_border, row + 1, left_border + 164, row + 1);
+  doc.setLineWidth(0.5);
+
+  // Outro =========================================================================================
+  const outro_spacing = 14; // After the table we only can put spacings
+  row += outro_spacing;
+  doc.text(i18n('invoice.outro', { till: invoice.due_date }), left_border, row);
+
+  // Thanks ========================================================================================
+  const thanks_spacing = 19;
+  row += thanks_spacing;
+  doc.text(i18n('invoice.thanks'), left_border, row);
+
+  // Greetings =====================================================================================
+  const greetings_spacing = 10;
+  row += greetings_spacing;
+  doc.text(i18n('invoice.greetings'), left_border, row);
+
+  // Name ==========================================================================================
+  const name_spacing = 10;
+  row += name_spacing;
+  doc.text(invoice.user.name, left_border, row);
+
+  // Role ==========================================================================================
+  if (invoice.user.role) {
+    const position_spacing = 10;
+    row += position_spacing;
+    doc.text(invoice.user.role, left_border, row);
+  }
+
+  doc.save(`${invoice.nr}.pdf`);
   setLanguage(current_lang);
 }
