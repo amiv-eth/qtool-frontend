@@ -49,6 +49,16 @@ export default class TestInvoice {
           description: 'Kaffee aus Schweden',
           pos: 'K-3',
         },
+        {
+          unit: 'kg',
+          amount: 1.5,
+          unitprice: 25,
+          article_type: 'Kafferechnung',
+          taxrate: 0.077,
+          subtotal: 32,
+          description: 'Kaffee aus Schweden',
+          pos: 'K-3',
+        },
       ],
       tot_net: 500,
       tot_tax: 26,
@@ -68,7 +78,7 @@ export default class TestInvoice {
         label: 'PDF',
         events: {
           onclick: () => {
-            generateInvoice(this.inv_data, 'de');
+            generateInvoice(this.inv_data, 'en');
           },
         },
       }),

@@ -1,8 +1,9 @@
 import JsPDF from 'jspdf';
-import { i18n, setLanguage, amountFormatter, currentLanguage } from './language';
+import { i18n, setLanguage, amountFormatter, dateTextFormatter, currentLanguage } from './language';
 import logos from '../../res/images/logos';
 
 export default function generateInvoice(invoice, lang) {
+  // TODO Multipage Support
   const current_lang = currentLanguage();
   setLanguage(lang);
 
@@ -12,12 +13,25 @@ export default function generateInvoice(invoice, lang) {
     format: 'a4',
   });
 
-  const left_border = 25;
+  // Left boarder of the Document content
+  const left_border = 22;
+
+  // Font specifications
   const font = {
     size: 10,
+    sender_size: 8,
+    title_size: 15,
     type: 'helvetica',
     style: 'normal',
     title_style: 'bold',
+  };
+
+  // Line specifications
+  const lines = {
+    addressline: 0.2,
+    table_normal: 0.1,
+    table_total: 0.6,
+    footer: 0.1,
   };
 
   doc.setFont(font.type, font.style);
@@ -34,8 +48,9 @@ export default function generateInvoice(invoice, lang) {
   let row = header_start; // current row
 
   // Header AMIV-Address
-  doc.setFontSize(8);
+  doc.setFontSize(font.sender_size);
   doc.text(i18n('address_full'), left_border, row);
+  doc.setLineWidth(lines.addressline);
   doc.line(left_border, row + 1, left_border + 82, row + 1);
   row += header_spacing;
   doc.setFontSize(font.size);
@@ -79,7 +94,7 @@ export default function generateInvoice(invoice, lang) {
 
   // Issue date
   doc.text(`${i18n('date')}:`, border_tab_left, row);
-  doc.text(invoice.issue_date, border_tab_right, row); // TODO: Date formatter
+  doc.text(dateTextFormatter(new Date(invoice.issue_date)), border_tab_right, row); // TODO: Date formatter
   row += header_spacing;
 
   // To Pay within
@@ -109,8 +124,8 @@ export default function generateInvoice(invoice, lang) {
   // INVOICE CONTENT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
   // Title =========================================================================================
-  const title_start = 93;
-  doc.setFontSize(14);
+  const title_start = 93; // Starting point in mm
+  doc.setFontSize(font.title_size);
   doc.setFont(font.type, font.title_style);
   doc.text(
     `${i18n('invoice.invoice')} ${i18n('invoice.no')} ${invoice.nr}`,
@@ -121,7 +136,7 @@ export default function generateInvoice(invoice, lang) {
   doc.setFontSize(font.size);
 
   // Salutation ====================================================================================
-  const salutation_start = 100;
+  const salutation_start = 100; // Starting point in mm from the top
   if (invoice.customer.last_name && invoice.customer.title) {
     doc.text(
       `${
@@ -141,13 +156,14 @@ export default function generateInvoice(invoice, lang) {
   }
 
   // Intro =========================================================================================
-  const intro_start = salutation_start + header_spacing;
+  const intro_start = salutation_start + header_spacing; // Starting point in mm from the top
   doc.text(i18n('invoice.intro'), left_border, intro_start);
 
   // Table =========================================================================================
-  const table_start = 120;
-  const table_spacing = 10;
+  const table_start = 120; // Starting point in mm from the top
+  const table_spacing = 10; // Spacing between rows
 
+  // Specifications of all column rows;
   const columns = [
     { header: i18n('invoice.services.pos'), dataKey: 'pos', pos: left_border },
     { header: i18n('invoice.services.desc'), dataKey: 'article_type', pos: left_border + 11 },
@@ -187,6 +203,7 @@ export default function generateInvoice(invoice, lang) {
   });
 
   // Table-Items -----------------------------------------------------------------------------------
+  doc.setLineWidth(lines.table_normal);
   invoice.items.forEach(item => {
     doc.line(left_border, row + 1, left_border + 164, row + 1);
     row += table_spacing / 2;
@@ -205,7 +222,7 @@ export default function generateInvoice(invoice, lang) {
   });
 
   // Sums ------------------------------------------------------------------------------------------
-  doc.setLineWidth(0.75);
+  doc.setLineWidth(lines.table_total);
   doc.line(left_border, row + 1, left_border + 164, row + 1);
   row += table_spacing / 2;
 
@@ -213,48 +230,129 @@ export default function generateInvoice(invoice, lang) {
   const table_footer_pos_right = columns[columns.length - 1].pos;
   const table_footer_align = 'right';
 
+  // Total net
   doc.text(`${i18n('invoice.services.tot_net')}:`, table_footer_pos_left, row, table_footer_align);
   doc.text(`${amountFormatter(invoice.tot_net)}`, table_footer_pos_right, row, table_footer_align);
   row += table_spacing / 2;
 
+  // Total Tax
   doc.text(`${i18n('invoice.services.tot_vat')}:`, table_footer_pos_left, row, table_footer_align);
   doc.text(`${amountFormatter(invoice.tot_tax)}`, table_footer_pos_right, row, table_footer_align);
   row += table_spacing / 2;
 
+  // Total gros
   doc.setFont(font.type, font.title_style);
   doc.text(`${i18n('invoice.services.tot_gros')}:`, table_footer_pos_left, row, table_footer_align);
   doc.text(`${amountFormatter(invoice.tot_gros)}`, table_footer_pos_right, row, table_footer_align);
   doc.setFont(font.type, 'normal');
 
   doc.line(left_border, row + 1, left_border + 164, row + 1);
-  doc.setLineWidth(0.5);
 
   // Outro =========================================================================================
   const outro_spacing = 14; // After the table we only can put spacings
   row += outro_spacing;
-  doc.text(i18n('invoice.outro', { till: invoice.due_date }), left_border, row);
+  doc.text(
+    i18n('invoice.outro', { till: dateTextFormatter(new Date(invoice.due_date)) }),
+    left_border,
+    row
+  );
 
   // Thanks ========================================================================================
-  const thanks_spacing = 19;
+  const thanks_spacing = 19; // Spacing after the outro
   row += thanks_spacing;
   doc.text(i18n('invoice.thanks'), left_border, row);
 
   // Greetings =====================================================================================
-  const greetings_spacing = 10;
+  const greetings_spacing = 5; // Spacing to afte thanks
   row += greetings_spacing;
   doc.text(i18n('invoice.greetings'), left_border, row);
 
   // Name ==========================================================================================
-  const name_spacing = 10;
+  const name_spacing = 10; // Spacing after  greetings
   row += name_spacing;
   doc.text(invoice.user.name, left_border, row);
 
   // Role ==========================================================================================
+  const role_spacing = 5; // Spacing after name
   if (invoice.user.role) {
-    const position_spacing = 10;
-    row += position_spacing;
+    row += role_spacing;
     doc.text(invoice.user.role, left_border, row);
   }
+
+  // Footer %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  const footer_spacing = 5; // spacing between footers
+  const footer_start = 260; // Starting point in mm from the top
+
+  // Footer left ===================================================================================
+  row = footer_start + footer_spacing;
+
+  // AMIV
+  doc.text(i18n('amiv_eth'), left_border, row);
+  row += footer_spacing;
+
+  // MWST-No
+  doc.text(i18n('invoice.mwst'), left_border, row);
+
+  // Footer middle =================================================================================
+  const middle_footer_col = 105; // start from the left border
+  row = footer_start;
+
+  // Street
+  doc.text(i18n('street'), middle_footer_col, row, 'center');
+  row += footer_spacing;
+
+  // Room
+  doc.text(i18n('cab'), middle_footer_col, row, 'center');
+  row += footer_spacing;
+
+  // City
+  doc.text(i18n('zurich'), middle_footer_col, row, 'center');
+  row += footer_spacing;
+
+  // AMIv-Website
+  doc.text(i18n('website'), middle_footer_col, row, 'center');
+
+  // Footer right ==================================================================================
+  const right_footer_col = 135; // start from the left border
+  row = footer_start;
+
+  // Bank Account
+  doc.text(i18n('invoice.bank_acc'), right_footer_col, row);
+  row += footer_spacing;
+
+  // BLZ
+  doc.text(i18n('invoice.blz'), right_footer_col, row);
+  row += footer_spacing;
+
+  // Bank
+  doc.text(i18n('invoice.bank'), right_footer_col, row);
+  row += footer_spacing;
+
+  // IBAN
+  doc.text(i18n('invoice.iban'), right_footer_col, row);
+  row += footer_spacing;
+
+  // BIC
+  doc.text(i18n('invoice.bic'), right_footer_col, row);
+
+  // Footer lines ==================================================================================
+  const line_start = 255; // start from the top
+  const line_end = 285; // end from the top
+  const line_distance = 25; // distance from middle
+
+  doc.setLineWidth(lines.footer);
+  doc.line(
+    middle_footer_col - line_distance,
+    line_start,
+    middle_footer_col - line_distance,
+    line_end
+  );
+  doc.line(
+    middle_footer_col + line_distance,
+    line_start,
+    middle_footer_col + line_distance,
+    line_end
+  );
 
   doc.save(`${invoice.nr}.pdf`);
   setLanguage(current_lang);

@@ -1,9 +1,10 @@
 export default {
   amiv: 'AMIV',
   amiv_eth: 'AMIV an der ETH',
-  street: 'Universitätsstrasse 6 (CAB E37)',
+  street: 'Universitätstrasse 6',
+  cab: '(CAB E37)',
   zurich: '8092 Zürich',
-  address_full: '$t(amiv_eth), $t(street), $t(zurich)',
+  address_full: '$t(amiv_eth), $t(street) $t(cab), $t(zurich)',
   phone_no: '(+41) 44 632 42 45',
   website: 'www.amiv.ethz.ch',
   queastur_mail: 'questor@amiv.ethz.ch',
@@ -32,7 +33,7 @@ export default {
       general: 'Madam or Sir',
     },
 
-    invoice: 'invoice',
+    invoice: 'Invoice',
     no: 'No.',
     salutation: 'Dear {{pronoun}}',
     salutation_male: '$t(salutation)',
@@ -52,8 +53,8 @@ export default {
     },
 
     outro:
-      'Please transfer the amount until {{till}} without deductions specifying the invoice number to our bank account given below',
-    thanks: 'with our best thanks for your confidence',
+      'Please transfer the amount until {{till}} without deductions specifying the invoice number \nto our bank account given below',
+    thanks: 'With our best thanks for your confidence',
     greetings: 'Kind regards',
     position: '{{pos}} - $t(amiv_eth)',
 
@@ -63,5 +64,20 @@ export default {
     bank: 'Bank: Die Schweizerische Post',
     iban: 'IBAN: CH80 0900 0000 8000 3210 5',
     bic: 'BIC: POFICHBEXXX',
+  },
+
+  months: {
+    1: 'Januay',
+    2: 'February',
+    3: 'March',
+    4: 'April',
+    5: 'May',
+    6: 'June',
+    7: 'July',
+    8: 'August',
+    9: 'September',
+    10: 'October',
+    11: 'November',
+    12: 'December',
   },
 };

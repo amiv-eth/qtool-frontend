@@ -91,4 +91,21 @@ function amountFormatter(amount) {
   return fixed === 0 ? '0.00' : fixed;
 }
 
-export { i18n, changeLanguage, setLanguage, currentLanguage, loadLanguage, amountFormatter };
+/**
+ * Formats a JS-Date object to a usable String
+ * @param date JS-Date
+ * @returns {string} Date as strin in the current language
+ */
+function dateTextFormatter(date) {
+  return `${date.getDate()}. ${i18n(`months.${date.getMonth() + 1}`)} ${date.getFullYear()}`;
+}
+
+export {
+  i18n,
+  changeLanguage,
+  setLanguage,
+  currentLanguage,
+  loadLanguage,
+  amountFormatter,
+  dateTextFormatter,
+};

@@ -1,9 +1,10 @@
 export default {
   amiv: 'AMIV',
   amiv_eth: 'AMIV an der ETH',
-  street: 'Universitätsstrasse 6 (CAB E37)',
+  street: 'Universitätstrasse 6',
+  cab: '(CAB E37)',
   zurich: '8092 Zürich',
-  address_full: '$t(amiv_eth), $t(street), $t(zurich)',
+  address_full: '$t(amiv_eth), $t(street) $t(cab), $t(zurich)',
   phone_no: '(+41) 44 632 42 45',
   website: 'www.amiv.ethz.ch',
   queastur_mail: 'questor@amiv.ethz.ch',
@@ -55,7 +56,7 @@ export default {
     outro:
       'Bitte Überweisen Sie den Betrag bis am {{till}} ohne Abzüge unter Angabe der Rechnungsnummer \nauf unser unten aufgeführtes Bankkonto.',
     thanks: 'Besten Dank für Ihr Vertrauen.\n',
-    greetings: 'Freundliche Grüsse',
+    greetings: 'Mit freundlichen Grüssen',
     position: '{{pos}} - $t(amiv_eth)',
 
     mwst: 'MwStNr: CHE-218.868.772 MWST',
@@ -64,5 +65,20 @@ export default {
     bank: 'Bank: Die Schweizerische Post',
     iban: 'IBAN: CH80 0900 0000 8000 3210 5',
     bic: 'BIC: POFICHBEXXX',
+  },
+
+  months: {
+    1: 'Januar',
+    2: 'Februar',
+    3: 'März',
+    4: 'April',
+    5: 'Mai',
+    6: 'Juni',
+    7: 'Juli',
+    8: 'August',
+    9: 'September',
+    10: 'Oktober',
+    11: 'November',
+    12: 'Dezember',
   },
 };
