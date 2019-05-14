@@ -15,7 +15,8 @@ export default class ResourceHandler {
   constructor(resource) {
     this.resource = resource;
     this.conf = resource_config[this.resource];
-    this.conf.url = `${network_config.address()}/${this.conf.path}`;
+    this.qtool_api = `${network_config.qtool_api_address()}/${this.conf.path}`;
+    console.log(this.qtool_api);
   }
 
   /**
@@ -94,7 +95,7 @@ export default class ResourceHandler {
   get(query = false) {
     return m.request({
       method: 'GET',
-      url: `${this.conf.url}${query ? `?${this.buildQueryString(query)}` : ''}`,
+      url: `${this.qtool_api}${query ? `?${this.buildQueryString(query)}` : ''}`,
       headers: {
         'X-AMIV-API-TOKEN': 'quaestor',
         Accept: 'application/json',
@@ -109,7 +110,7 @@ export default class ResourceHandler {
   getId(id) {
     return m.request({
       method: 'GET',
-      url: `${this.conf.url}/${id}`,
+      url: `${this.qtool_api}/${id}`,
       headers: {
         'X-AMIV-API-TOKEN': 'quaestor',
         Accept: 'application/json',
@@ -124,7 +125,7 @@ export default class ResourceHandler {
   post(data) {
     return m.request({
       method: 'POST',
-      url: `${this.conf.url}`,
+      url: `${this.qtool_api}`,
       data,
       headers: {
         'X-AMIV-API-TOKEN': 'quaestor',

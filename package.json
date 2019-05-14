@@ -34,7 +34,8 @@
     "polythene-css": "^1.5.4",
     "polythene-mithril": "^1.5.4",
     "polythene-utilities": "^1.5.4",
-    "robotstxt-webpack-plugin": "^4.0.1"
+    "robotstxt-webpack-plugin": "^4.0.1",
+    "xml-js": "^1.6.11"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",
