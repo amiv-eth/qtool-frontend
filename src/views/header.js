@@ -1,6 +1,8 @@
 import m from 'mithril';
+import { Button } from 'polythene-mithril';
 import MainNavigation from '../models/mainNavigation';
 import logos from '../../res/images/logos';
+import { deleteSession } from '../auth';
 
 /**
  * Header of the Website
@@ -16,6 +18,7 @@ export default class Header {
           m('img', { src: logos.amiv, alt: 'AMIV an der ETH' })
         ),
         this.constructor._mainMenu,
+        this.constructor._profileMenu,
       ])
     );
   }
@@ -66,6 +69,63 @@ export default class Header {
           ]
         )
       )
+    );
+  }
+
+  static get _profileMenu() {
+    return m(
+      'ul.profile',
+      [
+        m(Button, {
+          className: 'blue-button',
+          border: true,
+          label: 'logout',
+          events: {
+            onclick: () => {
+              deleteSession();
+            },
+          },
+        }),
+      ]
+      /* isLoggedIn()
+        ? [
+          m(
+            'li',
+            {
+              class: m.route.get().includes(`/profile`) ? 'active' : '',
+            },
+            m(
+              'a',
+              { href: `/${currentLanguage()}/profile`, onupdate: m.route.link },
+              i18n('mainMenu.profile')
+            )
+          ),
+          m(
+            'li',
+            m(
+              'a',
+              { href: `/${currentLanguage()}/logout`, onupdate: m.route.link },
+              i18n('mainMenu.logout')
+            )
+          ),
+        ]
+        : [
+          m(
+            'li',
+            { class: 'not-logged-in' },
+            m(
+              'a',
+              {
+                href: `/${currentLanguage()}/profile`,
+                onclick: e => {
+                  login(`/${currentLanguage()}/profile`);
+                  e.preventDefault();
+                },
+              },
+              m('span', i18n('mainMenu.login'))
+            )
+          ),
+        ] */
     );
   }
 }

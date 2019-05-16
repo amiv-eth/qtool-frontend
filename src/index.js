@@ -4,6 +4,7 @@ import './styles/base.less';
 import 'polythene-css-dialog';
 import MainNavigation from './models/mainNavigation';
 import { loadLanguage } from './models/language';
+import { OauthRedirect } from './auth';
 
 /**
  * Puts all the page-layout around a view
@@ -38,6 +39,8 @@ MainNavigation.forEach(item => {
     });
   }
 });
+
+items['/oauthcallback'] = OauthRedirect;
 
 m.route.prefix('');
 m.route(document.body, '/', items);

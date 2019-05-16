@@ -1,8 +1,108 @@
 // Authentication will be handled here
-
 import m from 'mithril';
+import ClientOAuth2 from 'client-oauth2';
 import network_config from './network_config';
 import resource_config from './resource_config';
+import * as localStorage from './localStorage';
+
+const APISession = {
+  authenticated: false,
+  amiv_token: '',
+  qtool_token: '',
+  rights: {
+    beleg: [],
+    invoice: [],
+    user: [],
+  },
+};
+
+/**
+ * Oauth handler
+ * @type {ClientOAuth2}
+ */
+const oauth = new ClientOAuth2({
+  clientId: network_config.oAuthID,
+  authorizationUri: `${network_config.amiv_api_address}/oauth`,
+  redirectUri: `${network_config.own_url}/oauthcallback`,
+});
+
+/**
+ * Set the session back to clear
+ */
+function resetSession() {
+  APISession.authenticated = false;
+  APISession.amiv_token = '';
+  APISession.qtool_token = '';
+  localStorage.remove('amiv_token');
+  localStorage.remove('qtool_token');
+  window.location.replace(oauth.token.getUri()); // Redirect to get token.
+}
+
+/**
+ * Checks if the token is still valid.
+ * @param api
+ * @param token
+ */
+function checkToken(api, token) {
+  return m
+    .request({
+      method: 'GET',
+      url: `${api}/sessions/${token}`,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    })
+    .then(() => true) // response => response.token === token)
+    .catch(() => false);
+}
+
+export async function checkAuthenticated() {
+  if (APISession.authenticated) return true;
+
+  const amiv_token = localStorage.get('amiv_token');
+  // const qtool_token = localStorage.get('qtool_token');
+
+  if (amiv_token === '' /* || qtool_token === '' */) {
+    return false;
+  }
+
+  const response = await checkToken(network_config.amiv_api_address, amiv_token);
+  // TODO implement qtool_token
+  if (response) {
+    APISession.amiv_token = amiv_token;
+    APISession.authenticated = true;
+    return true;
+  }
+  return false;
+}
+
+export async function getSession() {
+  const authenticated = await checkAuthenticated();
+  if (!authenticated) {
+    return '';
+  }
+  return APISession.amiv_token;
+}
+
+export function deleteSession() {
+  m.request({
+    method: 'DELETE',
+    url: `${network_config.amiv_api_address}/sessions/${APISession.amiv_token}`,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: APISession.amiv_token,
+    },
+  })
+    .then(() => {
+      APISession.authenticated = false;
+      return resetSession();
+    })
+    .catch(() => {
+      APISession.authenticated = false;
+      return resetSession();
+    });
+}
 
 /**
  * Resourcehandler handles all the communication between front- and backend
@@ -15,8 +115,10 @@ export default class ResourceHandler {
   constructor(resource) {
     this.resource = resource;
     this.conf = resource_config[this.resource];
-    this.qtool_api = `${network_config.qtool_api_address()}/${this.conf.path}`;
-    console.log(this.qtool_api);
+    this.qtool_api = `${network_config.qtool_api_address()}/${this.conf.path}`; // TODO Not solved clever enough
+    getSession().then(res => {
+      console.log(res);
+    });
   }
 
   /**
@@ -133,5 +235,22 @@ export default class ResourceHandler {
         'Content-Type': 'application/json',
       },
     });
+  }
+}
+
+export class OauthRedirect {
+  // eslint-disable-next-line class-methods-use-this
+  oninit() {
+    oauth.token.getToken(m.route.get()).then(auth => {
+      localStorage.set('amiv_token', auth.accessToken);
+      checkAuthenticated()
+        .then(() => m.route.set('/'))
+        .catch();
+    });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  view() {
+    return 'redirecting...';
   }
 }
