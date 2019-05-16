@@ -10,7 +10,9 @@ export default {
       'description',
       'amount',
       'amount_in_chf',
-      /* cant be used at the moment 'user.name', */
+      'user.name',
+      'type.type_name',
+      'category.category_name',
     ],
     default_sort: 'id.asc',
     embedded: ['user', 'category', 'budgetitem', 'type', 'currency'],

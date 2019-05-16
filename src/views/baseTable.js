@@ -63,7 +63,7 @@ export default class BaseTable {
           }
         });
       }
-      if (nested_data) {
+      if (nested_data !== undefined || nested_data !== null) {
         row.push(
           m(
             `div.tableItem.${pos.conditional_tags(data)}`,

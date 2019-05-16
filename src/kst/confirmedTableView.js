@@ -25,7 +25,7 @@ const table_setup = [
     title: 'Ausgaben berechnet',
     style: { width: '6em', textAlign: 'right' },
     conditional_tags: item =>
-      item.expenditure_calculated < item.expenditure_budgeted ? 'red' : 'green',
+      item.expenditure_calculated > item.expenditure_budgeted ? 'red' : 'green',
     formatting: item => amountFormatter(item),
   },
   {
@@ -52,7 +52,7 @@ const table_setup = [
     title: 'Differenz berechnet',
     style: { width: '6em', textAlign: 'right' },
     conditional_tags: item =>
-      item.difference_budgeted > item.difference_calculated ? 'green' : 'red',
+      item.difference_budgeted <= item.difference_calculated ? 'green' : 'red',
     formatting: item => amountFormatter(item),
   },
 ];
