@@ -13,6 +13,8 @@ export default {
       'user.name',
       'type.type_name',
       'category.category_name',
+      'budgetitem.budgetitem_name',
+      'budgetitem.budgetitem_code',
     ],
     default_sort: 'id.asc',
     embedded: ['user', 'category', 'budgetitem', 'type', 'currency'],

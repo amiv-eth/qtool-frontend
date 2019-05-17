@@ -9,6 +9,7 @@ const APISession = {
   authenticated: false,
   amiv_token: '',
   qtool_token: '',
+  nethz: '',
   rights: {
     beleg: [],
     invoice: [],
@@ -43,11 +44,11 @@ function resetSession() {
  * @param api
  * @param token
  */
-function checkToken(api, token) {
+function checkAmivToken(token) {
   return m
     .request({
       method: 'GET',
-      url: `${api}/sessions/${token}`,
+      url: `${network_config.amiv_api_address}/sessions/${token}`,
       headers: {
         'Content-Type': 'application/json',
         Authorization: token,
@@ -57,20 +58,66 @@ function checkToken(api, token) {
     .catch(() => false);
 }
 
+function checkQtoolToken(token) {
+  return m
+    .request({
+      method: 'GET',
+      url: `${network_config.qtool_api_address()}/Session/session`,
+      headers: {
+        Accept: 'application/json',
+        'X-AMIV-API-TOKEN': token,
+      },
+    })
+    .then(response => response) // response => response.token === token)
+    .catch(() => false);
+}
+
+async function resetQtoolToken() {
+  if (!APISession.amiv_token) {
+    return resetSession();
+  }
+  console.log(APISession.amiv_token);
+  return m
+    .request({
+      method: 'POST',
+      url: `${network_config.qtool_api_address()}/Session/session`,
+      data: { amivapi_session_token: APISession.amiv_token },
+      headers: {
+        Accept: 'application/json',
+      },
+    })
+    .then(res => {
+      localStorage.set('qtool_token', res.qtool_session_token);
+      return res;
+    })
+    .catch(resetSession);
+}
+
 export async function checkAuthenticated() {
   if (APISession.authenticated) return true;
 
   const amiv_token = localStorage.get('amiv_token');
-  // const qtool_token = localStorage.get('qtool_token');
+  const qtool_token = localStorage.get('qtool_token');
 
-  if (amiv_token === '' /* || qtool_token === '' */) {
+  if (amiv_token === '' || qtool_token === '') {
     return false;
   }
 
-  const response = await checkToken(network_config.amiv_api_address, amiv_token);
-  // TODO implement qtool_token
-  if (response) {
+  const amiv_api_response = await checkAmivToken(amiv_token);
+
+  if (amiv_api_response) {
     APISession.amiv_token = amiv_token;
+  }
+
+  const qtool_api_response = await checkQtoolToken(qtool_token);
+
+  if (amiv_api_response && !qtool_api_response) {
+    await resetQtoolToken();
+  }
+
+  if (amiv_api_response && qtool_api_response) {
+    APISession.qtool_token = qtool_token;
+    APISession.nethz = qtool_api_response.nethz;
     APISession.authenticated = true;
     return true;
   }
@@ -82,10 +129,11 @@ export async function getSession() {
   if (!authenticated) {
     return '';
   }
-  return APISession.amiv_token;
+  return APISession.qtool_token;
 }
 
 export function deleteSession() {
+  // delete the AMIV API session if possible.
   m.request({
     method: 'DELETE',
     url: `${network_config.amiv_api_address}/sessions/${APISession.amiv_token}`,
@@ -104,6 +152,14 @@ export function deleteSession() {
     });
 }
 
+export async function getNethz() {
+  const authenticated = await checkAuthenticated();
+  if (!authenticated) {
+    return '';
+  }
+  return APISession.nethz;
+}
+
 /**
  * Resourcehandler handles all the communication between front- and backend
  */
@@ -116,9 +172,7 @@ export default class ResourceHandler {
     this.resource = resource;
     this.conf = resource_config[this.resource];
     this.qtool_api = `${network_config.qtool_api_address()}/${this.conf.path}`; // TODO Not solved clever enough
-    getSession().then(res => {
-      console.log(res);
-    });
+    getSession().then(res => console.log(res));
   }
 
   /**
@@ -232,7 +286,6 @@ export default class ResourceHandler {
       headers: {
         'X-AMIV-API-TOKEN': 'quaestor',
         Accept: 'application/json',
-        'Content-Type': 'application/json',
       },
     });
   }
