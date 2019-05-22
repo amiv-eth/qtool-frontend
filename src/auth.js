@@ -1,6 +1,7 @@
 // Authentication will be handled here
 import m from 'mithril';
 import ClientOAuth2 from 'client-oauth2';
+import Session from './session';
 import network_config from './network_config';
 import resource_config from './resource_config';
 import * as localStorage from './localStorage';
@@ -41,65 +42,47 @@ function resetSession() {
 
 /**
  * Checks if the token is still valid.
- * @param api
  * @param token
  */
 function checkAmivToken(token) {
-  return m
-    .request({
-      method: 'GET',
-      url: `${network_config.amiv_api_address}/sessions/${token}`,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token,
-      },
-    })
-    .then(() => true) // response => response.token === token)
-    .catch(() => false);
+  const amiv_session = new Session(
+    network_config.amiv_api_address,
+    { Authorization: token },
+    () => false
+  );
+  return amiv_session.get(`sessions/${token}`).then(() => true);
 }
 
 function checkQtoolToken(token) {
-  return m
-    .request({
-      method: 'GET',
-      url: `${network_config.qtool_api_address()}/Session/session`,
-      headers: {
-        Accept: 'application/json',
-        'X-AMIV-API-TOKEN': token,
-      },
-    })
-    .then(response => response) // response => response.token === token)
-    .catch(() => false);
+  const qtool_session = new Session(
+    network_config.qtool_api_address(),
+    { 'X-AMIV-API-TOKEN': token },
+    () => false
+  );
+  return qtool_session.get('Session/session').then(response => response); // response => response.token === token)
 }
 
 async function resetQtoolToken() {
   if (!APISession.amiv_token) {
     return resetSession();
   }
-  console.log(APISession.amiv_token);
-  return m
-    .request({
-      method: 'POST',
-      url: `${network_config.qtool_api_address()}/Session/session`,
-      data: { amivapi_session_token: APISession.amiv_token },
-      headers: {
-        Accept: 'application/json',
-      },
-    })
+  const qtool_session = new Session(network_config.qtool_api_address(), {}, () => resetSession());
+
+  return qtool_session
+    .post('Session/session', { amivapi_session_token: APISession.amiv_token })
     .then(res => {
       localStorage.set('qtool_token', res.qtool_session_token);
       return res;
-    })
-    .catch(resetSession);
+    });
 }
 
 export async function checkAuthenticated() {
   if (APISession.authenticated) return true;
 
   const amiv_token = localStorage.get('amiv_token');
-  const qtool_token = localStorage.get('qtool_token');
+  let qtool_token = localStorage.get('qtool_token');
 
-  if (amiv_token === '' || qtool_token === '') {
+  if (amiv_token === '') {
     return false;
   }
 
@@ -109,15 +92,19 @@ export async function checkAuthenticated() {
     APISession.amiv_token = amiv_token;
   }
 
-  const qtool_api_response = await checkQtoolToken(qtool_token);
+  let qtool_api_response = await checkQtoolToken(qtool_token);
 
+  // Just in case ONLY the qtool-token was deleted. Not sure about the use-case unless someone manually deletes the token
   if (amiv_api_response && !qtool_api_response) {
     await resetQtoolToken();
+    qtool_token = localStorage.get('qtool_token');
+    qtool_api_response = await checkQtoolToken(qtool_token);
   }
 
+  // setting the API Session.
   if (amiv_api_response && qtool_api_response) {
     APISession.qtool_token = qtool_token;
-    APISession.nethz = qtool_api_response.nethz;
+    APISession.nethz = qtool_api_response[0].nethz || qtool_api_response.nethz;
     APISession.authenticated = true;
     return true;
   }
@@ -126,30 +113,33 @@ export async function checkAuthenticated() {
 
 export async function getSession() {
   const authenticated = await checkAuthenticated();
+  console.log(authenticated);
   if (!authenticated) {
-    return '';
+    resetSession();
   }
-  return APISession.qtool_token;
+  return new Session(
+    network_config.qtool_api_address(),
+    {
+      'X-AMIV-API-TOKEN': APISession.qtool_token,
+    },
+    () => resetSession()
+  );
 }
 
 export function deleteSession() {
   // delete the AMIV API session if possible.
-  m.request({
-    method: 'DELETE',
-    url: `${network_config.amiv_api_address}/sessions/${APISession.amiv_token}`,
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: APISession.amiv_token,
-    },
-  })
-    .then(() => {
+  const amiv_session = new Session(
+    network_config.amiv_api_address,
+    { Authorization: APISession.amiv_token },
+    () => {
       APISession.authenticated = false;
       return resetSession();
-    })
-    .catch(() => {
-      APISession.authenticated = false;
-      return resetSession();
-    });
+    }
+  );
+  amiv_session.delete(`sessions/${APISession.amiv_token}`).then(() => {
+    APISession.authenticated = false;
+    return resetSession();
+  });
 }
 
 export async function getNethz() {
@@ -172,7 +162,7 @@ export default class ResourceHandler {
     this.resource = resource;
     this.conf = resource_config[this.resource];
     this.qtool_api = `${network_config.qtool_api_address()}/${this.conf.path}`; // TODO Not solved clever enough
-    getSession().then(res => console.log(res));
+    // getSession().then(res => console.log(res));
   }
 
   /**
@@ -249,14 +239,13 @@ export default class ResourceHandler {
    * @param query used query containing all the information to be sent to the api
    */
   get(query = false) {
-    return m.request({
-      method: 'GET',
-      url: `${this.qtool_api}${query ? `?${this.buildQueryString(query)}` : ''}`,
-      headers: {
-        'X-AMIV-API-TOKEN': 'quaestor',
-        Accept: 'application/json',
-      },
-    });
+    return getSession().then(session =>
+      session.get(this.conf.path, query ? this.buildQueryString(query) : null).then(res => {
+        console.log(query);
+        console.log(res);
+        return res;
+      })
+    );
   }
 
   /**
@@ -264,14 +253,7 @@ export default class ResourceHandler {
    * @param id of the object
    */
   getId(id) {
-    return m.request({
-      method: 'GET',
-      url: `${this.qtool_api}/${id}`,
-      headers: {
-        'X-AMIV-API-TOKEN': 'quaestor',
-        Accept: 'application/json',
-      },
-    });
+    return getSession().then(session => session.get(`${this.conf.path}/${id}`));
   }
 
   /**
@@ -279,15 +261,7 @@ export default class ResourceHandler {
    * @param data the payload
    */
   post(data) {
-    return m.request({
-      method: 'POST',
-      url: `${this.qtool_api}`,
-      data,
-      headers: {
-        'X-AMIV-API-TOKEN': 'quaestor',
-        Accept: 'application/json',
-      },
-    });
+    return getSession().then(session => session.post(this.conf.path, data));
   }
 }
 
