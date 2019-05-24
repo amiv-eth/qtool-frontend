@@ -6,6 +6,10 @@ import network_config from './network_config';
 import resource_config from './resource_config';
 import * as localStorage from './localStorage';
 
+/**
+ * Saves all fields retreived from the api
+ * @type {{authenticated: boolean, nethz: string, amiv_token: string, rights: {invoice: Array, user: Array, beleg: Array}, qtool_token: string}}
+ */
 const APISession = {
   authenticated: false,
   amiv_token: '',
@@ -41,7 +45,7 @@ function resetSession() {
 }
 
 /**
- * Checks if the token is still valid.
+ * Checks if the token is still valid against the AMIV-API.
  * @param token
  */
 function checkAmivToken(token) {
@@ -53,6 +57,10 @@ function checkAmivToken(token) {
   return amiv_session.get(`sessions/${token}`).then(() => true);
 }
 
+/**
+ * Checks if the token is still valid against the Qtool-API.
+ * @param token
+ */
 function checkQtoolToken(token) {
   const qtool_session = new Session(
     network_config.qtool_api_address(),
@@ -61,6 +69,11 @@ function checkQtoolToken(token) {
   );
   return qtool_session.get('Session/session'); // response => response.token === token)
 }
+
+/**
+ * Resets the qtool token, and even the AMIV session if needed.
+ * @returns {Promise<void|*>}
+ */
 async function resetQtoolToken() {
   if (!APISession.amiv_token) {
     return resetSession();
@@ -75,6 +88,10 @@ async function resetQtoolToken() {
     });
 }
 
+/**
+ * Checks if the user is authenticated and retrieves new tokens if needed
+ * @returns {Promise<boolean>}
+ */
 export async function checkAuthenticated() {
   if (APISession.authenticated) return true;
 
@@ -112,6 +129,10 @@ export async function checkAuthenticated() {
   return false;
 }
 
+/**
+ * Returns a session for the API, which handles all requests
+ * @returns {Promise<Session>}
+ */
 export async function getSession() {
   const authenticated = await checkAuthenticated();
   if (!authenticated) {
@@ -126,6 +147,9 @@ export async function getSession() {
   );
 }
 
+/**
+ * Deletes the qtool session (and temporary redirects to login, needed until profile page is finished)
+ */
 export function deleteSession() {
   // delete the AMIV API session if possible.
   const amiv_session = new Session(
@@ -142,6 +166,10 @@ export function deleteSession() {
   });
 }
 
+/**
+ * Returns the nethz-kürzel of the current user
+ * @returns {Promise<string>}
+ */
 export async function getNethz() {
   const authenticated = await checkAuthenticated();
   if (!authenticated) {
@@ -206,6 +234,7 @@ export default class ResourceHandler {
 
     fullQuery.sort = this.getSort(query) || {};
 
+    // Different search fields combined
     if ('search' in query && query.search && query.search.length > 0 && this.conf.search_keys) {
       let search = query.search.length > 1 ? "{'and': [" : '';
       query.search.forEach(entry => {
@@ -260,6 +289,9 @@ export default class ResourceHandler {
   }
 }
 
+/**
+ * Landing Page after completed login TODO: redirect to the last page.
+ */
 export class OauthRedirect {
   // eslint-disable-next-line class-methods-use-this
   oninit() {

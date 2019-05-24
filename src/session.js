@@ -2,7 +2,7 @@ import m from 'mithril';
 
 export default class Session {
   /**
-   * Generic Session handling all requests
+   * Generic Session handling all requests based on the axios-Session but more minimal
    * @param baseUrl url of the base session, specific resources will be added in the reqests
    * @param headers headers to be send along
    * @param errorCallback Callback function when the request fails.
