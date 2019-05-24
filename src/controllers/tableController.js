@@ -48,8 +48,9 @@ export default class TableController {
    * @returns {Promise<*>} Promise to the pagedata striped from the meta data
    */
   async getPageData(pageNum) {
-    this.query.page = pageNum;
-    const result = await this.endpoint.getItems(this.query);
+    const query_copy = JSON.parse(JSON.stringify(this.query));
+    query_copy.page = pageNum;
+    const result = await this.endpoint.getItems(query_copy);
     // Actualize the number of total pages
     this.totalPages = result.meta.last_page;
     return result.items;

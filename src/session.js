@@ -1,6 +1,12 @@
 import m from 'mithril';
 
 export default class Session {
+  /**
+   * Generic Session handling all requests
+   * @param baseUrl url of the base session, specific resources will be added in the reqests
+   * @param headers headers to be send along
+   * @param errorCallback Callback function when the request fails.
+   */
   constructor(baseUrl, headers, errorCallback) {
     this.baseUrl = baseUrl;
     this.headers = headers;
@@ -9,6 +15,12 @@ export default class Session {
     this.errorCallback = e => errorCallback(e);
   }
 
+  /**
+   * GET-Request
+   * @param url specific url for the request. baseurl will be added
+   * @param query optional query
+   * @returns {*} Successful promise of http-request.
+   */
   get(url, query = false) {
     return m
       .request({
@@ -19,6 +31,12 @@ export default class Session {
       .catch(e => this.errorCallback(e));
   }
 
+  /**
+   * POST-Request
+   * @param url specific url for the request. baseurl will be added
+   * @param data to be transmitted
+   * @returns {*} Successful promise of http-request.
+   */
   post(url, data) {
     return m
       .request({
@@ -30,6 +48,11 @@ export default class Session {
       .catch(e => this.errorCallback(e));
   }
 
+  /**
+   * DELETE-Request
+   * @param url specific url for the request. baseurl will be added
+   * @returns {*} Successful promise of http-request.
+   */
   delete(url) {
     return m
       .request({

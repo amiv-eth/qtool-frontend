@@ -59,9 +59,8 @@ function checkQtoolToken(token) {
     { 'X-AMIV-API-TOKEN': token },
     () => false
   );
-  return qtool_session.get('Session/session').then(response => response); // response => response.token === token)
+  return qtool_session.get('Session/session'); // response => response.token === token)
 }
-
 async function resetQtoolToken() {
   if (!APISession.amiv_token) {
     return resetSession();
@@ -104,7 +103,9 @@ export async function checkAuthenticated() {
   // setting the API Session.
   if (amiv_api_response && qtool_api_response) {
     APISession.qtool_token = qtool_token;
-    APISession.nethz = qtool_api_response[0].nethz || qtool_api_response.nethz;
+    APISession.nethz = qtool_api_response[0].nethz
+      ? qtool_api_response[0].nethz
+      : qtool_api_response.nethz;
     APISession.authenticated = true;
     return true;
   }
@@ -113,7 +114,6 @@ export async function checkAuthenticated() {
 
 export async function getSession() {
   const authenticated = await checkAuthenticated();
-  console.log(authenticated);
   if (!authenticated) {
     resetSession();
   }
@@ -162,7 +162,6 @@ export default class ResourceHandler {
     this.resource = resource;
     this.conf = resource_config[this.resource];
     this.qtool_api = `${network_config.qtool_api_address()}/${this.conf.path}`; // TODO Not solved clever enough
-    // getSession().then(res => console.log(res));
   }
 
   /**
@@ -240,11 +239,7 @@ export default class ResourceHandler {
    */
   get(query = false) {
     return getSession().then(session =>
-      session.get(this.conf.path, query ? this.buildQueryString(query) : null).then(res => {
-        console.log(query);
-        console.log(res);
-        return res;
-      })
+      session.get(this.conf.path, query ? this.buildQueryString(query) : null)
     );
   }
 
