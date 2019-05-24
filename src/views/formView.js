@@ -77,13 +77,13 @@ export default class FormView {
           this.controller.setData(attr_key, key);
         }),
       },
-      this.result.get(attr_key).map(option => {
-        return m(
-          'option',
-          { value: option.key, style: option.style ? option.style : '' },
-          option.text
-        );
-      })
+      this.result
+        .get(attr_key)
+        .map(option =>
+          m(
+            m('option', { value: option.key, style: option.style ? option.style : '' }, option.text)
+          )
+        )
     );
   }
 
