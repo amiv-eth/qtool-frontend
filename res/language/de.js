@@ -21,6 +21,16 @@ export default {
     treasurer: 'Quästor',
   },
 
+  menu: {
+    home: 'Home',
+    receipt_form: 'Belegformular',
+    test_list: 'Testliste',
+    kst: 'Kostenstelle',
+    kst_eval: 'KST-Auswertung',
+    kst_fore: 'Prognose',
+    invoice: 'Rechung',
+  },
+
   invoice: {
     payment_within: 'Zahlungsziel',
     payment_within_duration: '30 Tage',

@@ -102,7 +102,7 @@ export async function checkAuthenticated() {
     return false;
   }
 
-  const amiv_api_response = await checkAmivToken(amiv_token);
+  const amiv_api_response = await checkAmivToken(amiv_token); // TODO:  Maybe move to backend...
 
   if (amiv_api_response) {
     APISession.amiv_token = amiv_token;

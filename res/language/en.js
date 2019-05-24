@@ -21,6 +21,16 @@ export default {
     treasurer: 'treasurer',
   },
 
+  menu: {
+    home: 'Home',
+    receipt_form: 'Receipt form',
+    test_list: 'Test list',
+    kst: 'Cost center',
+    kst_eval: 'C.C.- evaluation',
+    kst_fore: 'Forecast',
+    invoice: 'Invoice',
+  },
+
   invoice: {
     payment_within: 'To pay within',
     payment_within_duration: '30 Days',
