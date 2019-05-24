@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { FormView } from './formView';
+import FormView from './formView';
 
 /**
  * Base of a Form which can be inherited

@@ -41,7 +41,13 @@ export default class FormController {
     const field = this.inputFields.find(element => element.attr_key === key);
     const { endpoint } = field;
     // Saving all items in a const
-    const result = await endpoint.getFullList({ sort: 'default' });
+    let result = [];
+
+    try {
+      result = await endpoint.getFullList({ sort: 'default' });
+    } catch (e) {
+      console.log(e);
+    }
 
     // Default for empty request
     if (result.length === 0) {

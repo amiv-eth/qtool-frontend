@@ -38,6 +38,8 @@ export default class Session {
    * @returns {*} Successful promise of http-request.
    */
   post(url, data) {
+    console.log(data);
+    console.log(this.headers);
     return m
       .request({
         method: 'POST',

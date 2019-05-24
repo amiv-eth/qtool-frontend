@@ -22,7 +22,13 @@ export default class DataListController extends ResourceHandler {
     const new_query = query ? JSON.parse(JSON.stringify(query)) : {}; // To enforce to copy the object
     new_query.page = 1;
 
-    const value = await this.get(new_query);
+    let value = {};
+
+    try {
+      value = await this.get(new_query);
+    } catch (e) {
+      console.log(e);
+    }
 
     const result = {};
     result.meta = value.meta;
@@ -42,7 +48,13 @@ export default class DataListController extends ResourceHandler {
         })
       );
     }
-    await Promise.all(requests); // Waiting till all promises are fulfilled
+
+    try {
+      await Promise.all(requests); // Waiting till all promises are fulfilled
+    } catch (e) {
+      console.log(e);
+    }
+
     for (let i = 1; i <= max_pages; i += 1) {
       result.items = result.items.concat(page_content[i].items); // Assembling one array of all results
     }
