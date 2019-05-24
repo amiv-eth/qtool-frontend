@@ -15,6 +15,7 @@ const APISession = {
   amiv_token: '',
   qtool_token: '',
   nethz: '',
+  id: 0,
   rights: {
     beleg: [],
     invoice: [],
@@ -39,6 +40,8 @@ function resetSession() {
   APISession.authenticated = false;
   APISession.amiv_token = '';
   APISession.qtool_token = '';
+  APISession.nethz = '';
+  APISession.id = 0;
   localStorage.remove('amiv_token');
   localStorage.remove('qtool_token');
   window.location.replace(oauth.token.getUri()); // Redirect to get token.
@@ -123,6 +126,9 @@ export async function checkAuthenticated() {
     APISession.nethz = qtool_api_response[0].nethz
       ? qtool_api_response[0].nethz
       : qtool_api_response.nethz;
+    APISession.id = qtool_api_response[0].user_id
+      ? qtool_api_response[0].user_id
+      : qtool_api_response.user_id;
     APISession.authenticated = true;
     return true;
   }
@@ -143,7 +149,7 @@ export async function getSession() {
     {
       'X-AMIV-API-TOKEN': APISession.qtool_token,
     },
-    () => resetSession()
+    e => console.log(e)
   );
 }
 
