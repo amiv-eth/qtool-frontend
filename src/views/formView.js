@@ -25,16 +25,21 @@ export default class FormView {
   /**
    * Prepare the Dropdown Data and fill all
    */
-  oninit(/* vnode */) {
+  async oninit(/* vnode */) {
     const dropDowns = this.fields.filter(field => field.type === INPUT_TYPES.drop);
     dropDowns.forEach(dropDown => {
       this.result.set(dropDown.attr_key, []);
     });
+    const requests = [];
     dropDowns.forEach(dropDown => {
-      this.controller.getDropDownData(dropDown.attr_key).then(res => {
-        this.result.set(dropDown.attr_key, res);
-      });
+      requests.push(
+        this.controller.getDropDownData(dropDown.attr_key).then(res => {
+          this.result.set(dropDown.attr_key, res);
+        })
+      );
     });
+    await Promise.all(requests); // Redraw as soon as all dropdowns are loaded since otherwise the view doesn't handle the display in time
+    m.redraw();
   }
 
   /**
@@ -75,7 +80,9 @@ export default class FormView {
       this.result
         .get(attr_key)
         .map(option =>
-          m('option', { value: option.key, style: option.style ? option.style : '' }, option.text)
+          m(
+            m('option', { value: option.key, style: option.style ? option.style : '' }, option.text)
+          )
         )
     );
   }
@@ -156,4 +163,4 @@ export default class FormView {
   }
 }
 
-export { FormView, INPUT_TYPES };
+export { INPUT_TYPES };

@@ -15,8 +15,9 @@ export default class ForecastController extends TableController {
    * @returns {Promise<*>} To array of List items
    */
   async getPageData(pageNum) {
-    this.query.page = pageNum;
-    const result = await this.endpoint.getItems(this.query); // gets them items
+    const query_copy = JSON.parse(JSON.stringify(this.query));
+    query_copy.page = pageNum;
+    const result = await this.endpoint.getItems(query_copy); // gets them items
     this.totalPages = result.meta.last_page;
     result.items.map(_item => {
       const item = Object.assign({}, _item);
