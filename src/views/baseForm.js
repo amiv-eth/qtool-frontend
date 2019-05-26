@@ -1,5 +1,6 @@
 import m from 'mithril';
 import FormView from './formView';
+import { i18n } from '../models/language';
 
 /**
  * Base of a Form which can be inherited
@@ -7,14 +8,15 @@ import FormView from './formView';
  * for view and controller.
  */
 export default class BaseForm {
-  constructor(FormController, inputfields, buttons) {
-    this.inputFields = inputfields;
-    this.buttons = buttons;
+  constructor(FormController, inputFields, buttons) {
+    this.buttons = buttons.map(button => ({
+      label_key: i18n(button.label_key), // Probably there needs to be done much more in future
+    }));
 
     this.fields_view_data = []; // Data for the view containing all the info to display
     this.fields_ctrl_data = []; // Data for the controller used to make the request.
 
-    this.inputFields.forEach(pos => {
+    inputFields.forEach(pos => {
       // Adding all the data to the different arrays.
       this.fields_ctrl_data.push({
         endpoint: pos.endpoint,
@@ -24,7 +26,7 @@ export default class BaseForm {
         value: pos.value,
       });
       this.fields_view_data.push({
-        label: pos.label,
+        label_key: pos.label_key,
         type: pos.type,
         attr_key: pos.attr_key,
       });

@@ -13,12 +13,21 @@ export default {
   email: 'Mail',
   date: 'Date',
 
+  search: 'Search',
+
   currency: {
     chf: 'CHF',
   },
 
   position: {
     treasurer: 'treasurer',
+  },
+
+  button: {
+    confirm: 'Confirm',
+    print_all: 'Print all',
+    print_selected: 'Print selected',
+    unselect_all: 'Unselect all',
   },
 
   menu: {
@@ -30,6 +39,45 @@ export default {
     kst_fore: 'Forecast',
     invoice: 'Invoice',
   },
+
+  transaction: {
+    id: 'ID',
+    desc: 'Description',
+    category: 'Category',
+    budget_post: 'Cost center',
+    payment_method: 'Payment method',
+    account: 'Account',
+    currency: 'Currency',
+    amount: 'Amount',
+    comment: 'Comment',
+    amount_chf: 'Amount in CHF',
+    valid: 'valid',
+    name: 'Name',
+    ezag: 'EZAG',
+
+    code: 'Code',
+    group: 'Group',
+    expenditure: 'Expenditure',
+    revenue: 'Revenue',
+    difference: 'Difference',
+    budgeted: 'budgeted',
+    confirmed: 'confirmed',
+    forecasted: 'forecasted',
+
+    expenditure_budgeted: '$t(transaction.expenditure) $t(transaction.budgeted)',
+    expenditure_confirmed: '$t(transaction.expenditure) $t(transaction.confirmed)',
+    expenditure_calculated: '$t(transaction.expenditure) $t(transaction.forecasted)',
+
+    revenue_budgeted: '$t(transaction.revenue) $t(transaction.budgeted)',
+    revenue_confirmed: '$t(transaction.revenue) $t(transaction.confirmed)',
+    revenue_calculated: '$t(transaction.revenue) $t(transaction.forecasted)',
+
+    difference_budgeted: '$t(transaction.difference) $t(transaction.budgeted)',
+    difference_confirmed: '$t(transaction.difference) $t(transaction.confirmed)',
+    difference_calculated: '$t(transaction.difference) $t(transaction.forecasted)',
+  },
+
+  kst: {},
 
   invoice: {
     payment_within: 'To pay within',

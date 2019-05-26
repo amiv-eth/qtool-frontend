@@ -7,59 +7,59 @@ import { amountFormatter } from '../models/language';
  * @type {*[]}
  */
 const table_setup = [
-  { key: 'budgetitem_code', title: 'Code', style: { width: '4em' } },
+  { key: 'budgetitem_code', title_key: 'transaction.code', style: { width: '4em' } },
   {
     key: 'budgetitem_name',
-    title: 'Beschreibung',
+    title_key: 'transaction.desc',
     style: { width: 'calc(100% - 80em)', minWidth: '10em' },
   },
-  { key: 'budgetgroup', title: 'Gruppe', style: { width: '8em' } },
+  { key: 'budgetgroup', title_key: 'transaction.group', style: { width: '8em' } },
   {
     key: 'expenditure_budgeted',
-    title: 'Ausgaben budgetiert',
+    title_key: 'transaction.expenditure_budgeted',
     style: { width: '6em', textAlign: 'right' },
     formatting: item => amountFormatter(item),
   },
   {
     key: 'expenditure_confirmed',
-    title: 'Ausgaben berechnet',
+    title_key: 'transaction.expenditure_confirmed',
     style: { width: '6em', textAlign: 'right' },
     conditional_tags: item =>
-      item.expenditure_calculated > item.expenditure_budgeted ? 'red' : 'green',
+      item.expenditure_confirmed > item.expenditure_budgeted ? 'red' : 'green',
     formatting: item => amountFormatter(item),
   },
   {
     key: 'revenue_budgeted',
-    title: 'Ertrag budgetiert',
+    title_key: 'transaction.revenue_budgeted',
     style: { width: '6em', textAlign: 'right' },
     formatting: item => amountFormatter(item),
   },
   {
     key: 'revenue_confirmed',
-    title: 'Ertrag berechnet',
+    title_key: 'transaction.revenue_confirmed',
     style: { width: '6em', textAlign: 'right' },
-    conditional_tags: item => (item.revenue_calculated < item.revenue_budgeted ? 'red' : 'green'),
+    conditional_tags: item => (item.revenue_confirmed < item.revenue_budgeted ? 'red' : 'green'),
     formatting: item => amountFormatter(item),
   },
   {
     key: 'difference_budgeted',
-    title: 'Differenz budgetiert',
+    title_key: 'transaction.difference_budgeted',
     style: { width: '6em', textAlign: 'right' },
     formatting: item => amountFormatter(item),
   },
   {
     key: 'difference_confirmed',
-    title: 'Differenz berechnet',
+    title_key: 'transaction.difference_confirmed',
     style: { width: '6em', textAlign: 'right' },
     conditional_tags: item =>
-      item.difference_budgeted <= item.difference_calculated ? 'green' : 'red',
+      item.difference_budgeted <= item.difference_confirmed ? 'green' : 'red',
     formatting: item => amountFormatter(item),
   },
 ];
 
 const buttons = [
   {
-    label: 'Print all shown',
+    label_key: 'button.print_all',
   },
 ];
 

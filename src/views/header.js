@@ -1,8 +1,9 @@
 import m from 'mithril';
 import { Button } from 'polythene-mithril';
-import MainNavigation from '../models/mainNavigation';
+import { mainNavigation } from '../models/mainNavigation';
 import logos from '../../res/images/logos';
 import { deleteSession } from '../auth';
+import { i18n, currentLanguage, changeLanguage } from '../models/language';
 
 /**
  * Header of the Website
@@ -19,6 +20,26 @@ export default class Header {
         ),
         this.constructor._mainMenu,
         this.constructor._profileMenu,
+
+        m('div.language-selector', [
+          m(Button, {
+            label: 'en',
+            className: 'bordered-button',
+            border: currentLanguage() === 'en',
+            inactive: currentLanguage() === 'en',
+            tone: 'dark',
+            events: { onclick: () => changeLanguage('en') },
+          }),
+          m(Button, {
+            label: 'de',
+            className: 'bordered-button',
+            border: currentLanguage() === 'de',
+            inactive: currentLanguage() === 'de',
+            tone: 'dark',
+            events: { onclick: () => changeLanguage('de') },
+          }),
+        ]),
+
       ])
     );
   }
@@ -31,43 +52,45 @@ export default class Header {
   static get _mainMenu() {
     return m(
       'ul.mainmenu',
-      MainNavigation.map((item, index) =>
-        m(
-          'li',
-          {
-            class: MainNavigation.selectedIndex === index ? 'active' : '',
-          },
-          [
-            m(
-              'a',
+      mainNavigation.map((item, index) =>
+        item.key
+          ? m(
+              'li',
               {
-                href: item.path,
+                class: mainNavigation.selectedIndex === index ? 'active' : '',
               },
-              item.name
-            ),
-            item.submenu
-              ? [
-                  m('div.phantomElement'),
-                  m('ul.submenu', [
-                    item.submenu.map((subitem, subindex) =>
-                      m(
-                        'li',
-                        { class: item.submenu.selectedIndex === subindex ? 'active' : '' },
-                        m(
-                          'a',
-                          {
-                            href: subitem.path,
-                            onupdate: subitem.onupdate,
-                          },
-                          subitem.name
-                        )
-                      )
-                    ),
-                  ]),
-                ]
-              : m(''),
-          ]
-        )
+              [
+                m(
+                  'a',
+                  {
+                    href: `${item.getLink()}`,
+                  },
+                  i18n(item.key)
+                ),
+                item.submenu
+                  ? [
+                      m('div.phantomElement'),
+                      m('ul.submenu', [
+                        item.submenu.map((subitem, subindex) =>
+                          m(
+                            'li',
+                            { class: item.submenu.selectedIndex === subindex ? 'active' : '' },
+                            m(
+                              'a',
+                              {
+                                href: `${subitem.getLink()}`,
+                                onupdate: subitem.onupdate,
+                              },
+                              i18n(subitem.key)
+                            )
+                          )
+                        ),
+                      ]),
+                    ]
+                  : m(''),
+              ]
+            )
+          : ''
       )
     );
   }

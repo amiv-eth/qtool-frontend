@@ -10,12 +10,12 @@ import BaseForm from '../views/baseForm';
  */
 const inputFields = [
   {
-    label: 'Description',
+    label_key: 'transaction.desc',
     type: INPUT_TYPES.plain,
     attr_key: 'description',
   },
   {
-    label: 'Category',
+    label_key: 'transaction.category',
     type: INPUT_TYPES.drop,
     endpoint: new DataListController('transaction_category'),
     attr_key: 'category_id',
@@ -23,7 +23,7 @@ const inputFields = [
     text_key: 'category_name',
   },
   {
-    label: 'Budgetposten',
+    label_key: 'transaction.budget_post',
     type: INPUT_TYPES.drop,
     endpoint: new DataListController('transaction_budgetitem'),
     attr_key: 'budgetitem_id',
@@ -31,7 +31,7 @@ const inputFields = [
     text_key: 'budgetitem_name',
   },
   {
-    label: 'Zahlungsart',
+    label_key: 'transaction.payment_method',
     type: INPUT_TYPES.drop,
     endpoint: new DataListController('transaction_type'),
     attr_key: 'type_id',
@@ -39,7 +39,7 @@ const inputFields = [
     text_key: 'type_name',
   },
   {
-    label: 'Account',
+    label_key: 'transaction.account',
     type: INPUT_TYPES.drop,
     endpoint: new DataListController('transaction_account'),
     attr_key: 'account_id',
@@ -47,7 +47,7 @@ const inputFields = [
     text_key: 'account_name',
   },
   {
-    label: 'Currency',
+    label_key: 'transaction.currency',
     type: INPUT_TYPES.drop,
     endpoint: new DataListController('transaction_currency'),
     attr_key: 'currency_id',
@@ -55,12 +55,12 @@ const inputFields = [
     text_key: 'currency_name',
   },
   {
-    label: 'Amount',
+    label_key: 'transaction.amount',
     type: INPUT_TYPES.number,
     attr_key: 'amount',
   },
   {
-    label: 'Kommentar',
+    label_key: 'transaction.comment',
     type: INPUT_TYPES.plain,
     attr_key: 'comment',
   },
@@ -88,11 +88,11 @@ const inputFields = [
 
 /**
  * Collection of all used buttons
- * @type {{label: string}[]}
+ * @type {{label_key: string}[]}
  */
 const buttons = [
   {
-    label: 'Confirm',
+    label_key: 'button.confirm',
   },
 ];
 

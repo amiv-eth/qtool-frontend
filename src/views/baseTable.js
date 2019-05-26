@@ -27,7 +27,7 @@ export default class BaseTable {
   oninit() {
     this.table_setup.forEach(pos => {
       this.title_arr.push({
-        text: pos.title,
+        title_key: pos.title_key,
         style: pos.style,
         conditional_tags: item => (pos.conditional_tags ? pos.conditional_tags(item) : false),
         formatting: item => (pos.formatting ? pos.formatting(item) : item),
@@ -36,7 +36,7 @@ export default class BaseTable {
         sort: pos.sort ? pos.sort : pos.key, // TODO: temporary till API ready
       });
       this.print_table_info.push({
-        text: pos.title,
+        title_key: pos.title_key,
         key: pos.key,
         text_keys: pos.text_keys,
       });

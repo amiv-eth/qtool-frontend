@@ -13,12 +13,21 @@ export default {
   email: 'E-Mail',
   date: 'Datum',
 
+  search: 'Suche',
+
   currency: {
     chf: 'CHF',
   },
 
   position: {
     treasurer: 'Quästor',
+  },
+
+  button: {
+    confirm: 'Bestätigen',
+    print_all: 'Alles drucken',
+    print_selected: 'Gewählte drucken',
+    unselect_all: 'Auswahl löschen',
   },
 
   menu: {
@@ -29,6 +38,43 @@ export default {
     kst_eval: 'KST-Auswertung',
     kst_fore: 'Prognose',
     invoice: 'Rechung',
+  },
+
+  transaction: {
+    id: 'ID',
+    desc: 'Beschreibung',
+    category: 'Kategorie',
+    budget_post: 'Budgetposten',
+    payment_method: 'Zahlungsart',
+    account: 'Account',
+    currency: 'Währung',
+    amount: 'Betrag',
+    comment: 'Kommentar',
+    amount_chf: 'Betrag in CHF',
+    valid: 'gültig',
+    name: 'Name',
+    ezag: 'EZAG',
+
+    code: 'Code',
+    group: 'Gruppe',
+    expenditure: 'Ausgabe',
+    revenue: 'Ertrag',
+    difference: 'Differenz',
+    budgeted: 'budgetiert',
+    confirmed: 'bestätigt',
+    forecasted: 'prognostiziert',
+
+    expenditure_budgeted: '$t(transaction.expenditure) $t(transaction.budgeted)',
+    expenditure_confirmed: '$t(transaction.expenditure) $t(transaction.confirmed)',
+    expenditure_calculated: '$t(transaction.expenditure) $t(transaction.forecasted)',
+
+    revenue_budgeted: '$t(transaction.revenue) $t(transaction.budgeted)',
+    revenue_confirmed: '$t(transaction.revenue) $t(transaction.confirmed)',
+    revenue_calculated: '$t(transaction.revenue) $t(transaction.forecasted)',
+
+    difference_budgeted: '$t(transaction.difference) $t(transaction.budgeted)',
+    difference_confirmed: '$t(transaction.difference) $t(transaction.confirmed)',
+    difference_calculated: '$t(transaction.difference) $t(transaction.forecasted)',
   },
 
   invoice: {
