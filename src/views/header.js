@@ -39,7 +39,6 @@ export default class Header {
             events: { onclick: () => changeLanguage('de') },
           }),
         ]),
-
       ])
     );
   }

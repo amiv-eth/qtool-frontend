@@ -77,6 +77,8 @@ export default {
     difference_calculated: '$t(transaction.difference) $t(transaction.forecasted)',
   },
 
+  kst: {},
+
   invoice: {
     payment_within: 'Zahlungsziel',
     payment_within_duration: '30 Tage',
@@ -95,7 +97,7 @@ export default {
     salutation_male: 'Sehr geehrter $t(invoice.pronoun.mr)',
 
     intro:
-      'Wir erlauben uns für die unten aufgeführten Leistungen folgenden Betrag in Rechnung zu stellen.',
+      'Wir erlauben uns für die unten aufgeführten Leistungen folgenden Betrag in Rechnung zu stellen. Bei Fragen melden Sie sich gerne.',
 
     services: {
       pos: 'Pos',

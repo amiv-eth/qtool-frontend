@@ -96,7 +96,8 @@ export default {
     salutation: 'Dear {{pronoun}}',
     salutation_male: '$t(salutation)',
 
-    intro: 'For the services listed below we do venture to invoice the following amount',
+    intro:
+      'For the services enlisted below we do venture to invoice the following amount. Should there be questions please contact us. ',
 
     services: {
       pos: 'Pos',

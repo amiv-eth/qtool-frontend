@@ -147,4 +147,4 @@ export const mainNavigation = new Navigation([
     oncreate: m.route.link,
     view: TestInvoice,
   },
-])
+]);
