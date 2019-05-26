@@ -10,7 +10,7 @@ import * as localStorage from './localStorage';
  * Saves all fields retreived from the api
  * @type {{authenticated: boolean, nethz: string, amiv_token: string, rights: {invoice: Array, user: Array, beleg: Array}, qtool_token: string}}
  */
-const APISession = {
+export const APISession = {
   authenticated: false,
   amiv_token: '',
   qtool_token: '',
@@ -34,9 +34,28 @@ const oauth = new ClientOAuth2({
 });
 
 /**
+ * Deletes the qtool session (and temporary redirects to login, needed until profile page is finished)
+ */
+export function deleteSession() {
+  // delete the AMIV API session if possible.
+  const amiv_session = new Session(
+    network_config.amiv_api_address,
+    { Authorization: APISession.amiv_token },
+    () => {
+      APISession.authenticated = false;
+    }
+  );
+  amiv_session.delete(`sessions/${APISession.amiv_token}`).then(() => {
+    APISession.authenticated = false;
+  });
+
+  // TODO: Delete qtool token
+}
+
+/**
  * Set the session back to clear
  */
-function resetSession() {
+function resetAPISession() {
   APISession.authenticated = false;
   APISession.amiv_token = '';
   APISession.qtool_token = '';
@@ -44,7 +63,16 @@ function resetSession() {
   APISession.id = 0;
   localStorage.remove('amiv_token');
   localStorage.remove('qtool_token');
-  window.location.replace(oauth.token.getUri()); // Redirect to get token.
+}
+
+export function logout() {
+  console.log('Called')
+  deleteSession();
+  resetAPISession();
+}
+
+export function login() {
+  window.location.replace(oauth.token.getUri()); // Redirect to get amiv token.
 }
 
 /**
@@ -79,9 +107,9 @@ function checkQtoolToken(token) {
  */
 async function resetQtoolToken() {
   if (!APISession.amiv_token) {
-    return resetSession();
+    return login();
   }
-  const qtool_session = new Session(network_config.qtool_api_address(), {}, () => resetSession());
+  const qtool_session = new Session(network_config.qtool_api_address(), {}, () => login());
 
   return qtool_session
     .post('Session/session', { amivapi_session_token: APISession.amiv_token })
@@ -142,7 +170,7 @@ export async function checkAuthenticated() {
 export async function getSession() {
   const authenticated = await checkAuthenticated();
   if (!authenticated) {
-    resetSession();
+    login();
   }
   return new Session(
     network_config.qtool_api_address(),
@@ -151,25 +179,6 @@ export async function getSession() {
     },
     e => console.log(e)
   );
-}
-
-/**
- * Deletes the qtool session (and temporary redirects to login, needed until profile page is finished)
- */
-export function deleteSession() {
-  // delete the AMIV API session if possible.
-  const amiv_session = new Session(
-    network_config.amiv_api_address,
-    { Authorization: APISession.amiv_token },
-    () => {
-      APISession.authenticated = false;
-      return resetSession();
-    }
-  );
-  amiv_session.delete(`sessions/${APISession.amiv_token}`).then(() => {
-    APISession.authenticated = false;
-    return resetSession();
-  });
 }
 
 /**
@@ -182,6 +191,14 @@ export async function getNethz() {
     return '';
   }
   return APISession.nethz;
+}
+
+/**
+ * returns true if the user is logged in
+ * @returns {boolean}
+ */
+export function isLoggedIn() {
+  return APISession.authenticated;
 }
 
 /**
@@ -303,12 +320,11 @@ export class OauthRedirect {
   oninit() {
     oauth.token.getToken(m.route.get()).then(auth => {
       localStorage.set('amiv_token', auth.accessToken);
-      checkAuthenticated()
+      checkAuthenticated().then(console.log(APISession))
         .then(() => m.route.set('/'))
         .catch();
     });
   }
-
   // eslint-disable-next-line class-methods-use-this
   view() {
     return 'redirecting...';

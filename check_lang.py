@@ -20,7 +20,7 @@ def main(argv):
             print('Error at line ', count, ':')
             print(line.split(':')[0])
             print(line2.split(':')[0])
-            sys.exit(2)
+            sys.exit(1)
 
     print('Everything ok')
 

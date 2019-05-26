@@ -38,6 +38,10 @@ export default {
     kst_eval: 'C.C.- evaluation',
     kst_fore: 'Forecast',
     invoice: 'Invoice',
+
+    profile: 'Profile',
+    logout: 'Logout',
+    login: 'Login',
   },
 
   transaction: {

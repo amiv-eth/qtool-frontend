@@ -38,6 +38,10 @@ export default {
     kst_eval: 'KST-Auswertung',
     kst_fore: 'Prognose',
     invoice: 'Rechung',
+
+    profile: 'Profil',
+    logout: 'Logout',
+    login: 'Login',
   },
 
   transaction: {
