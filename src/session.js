@@ -22,6 +22,7 @@ export default class Session {
    * @returns {*} Successful promise of http-request.
    */
   get(url, query = false) {
+    console.log(`${this.baseUrl}/${url}${query ? `?${query}` : ''}`);
     return m
       .request({
         method: 'GET',

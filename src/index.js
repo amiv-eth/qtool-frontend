@@ -28,8 +28,8 @@ function layoutWith(view) {
 loadLanguage();
 
 const items = {};
+
 mainNavigation.items.forEach(item => {
-  items['/'] = layoutWith(Home);
   if (item.path && item.view) {
     items[`/:language${item.path}`] = layoutWith(item.view);
   }
@@ -42,6 +42,7 @@ mainNavigation.items.forEach(item => {
   }
 });
 
+items['/'] = layoutWith(Home);
 items['/oauthcallback'] = OauthRedirect;
 
 m.route.prefix('');

@@ -5,6 +5,7 @@ import TransactionTableView from '../transaction/transactionTableView';
 import ForecastTableView from '../kst/budgetTableView';
 import ConfirmedTableView from '../kst/confirmedTableView';
 import TestInvoice from '../invoice/testInvoice';
+import Profile from '../views/profile';
 import { currentLanguage } from './language';
 
 export default class Navigation {
@@ -146,5 +147,11 @@ export const mainNavigation = new Navigation([
     addLanguagePrefix: true,
     oncreate: m.route.link,
     view: TestInvoice,
+  },
+  {
+    path: '/profile',
+    addLanguagePrefix: true,
+    oncreate: m.route.link,
+    view: Profile,
   },
 ]);

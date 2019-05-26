@@ -66,7 +66,6 @@ function resetAPISession() {
 }
 
 export function logout() {
-  console.log('Called')
   deleteSession();
   resetAPISession();
 }
@@ -188,9 +187,17 @@ export async function getSession() {
 export async function getNethz() {
   const authenticated = await checkAuthenticated();
   if (!authenticated) {
-    return '';
+    return undefined;
   }
   return APISession.nethz;
+}
+
+export async function getId() {
+  const authenticated = await checkAuthenticated();
+  if (!authenticated) {
+    return undefined;
+  }
+  return APISession.id;
 }
 
 /**
@@ -320,11 +327,12 @@ export class OauthRedirect {
   oninit() {
     oauth.token.getToken(m.route.get()).then(auth => {
       localStorage.set('amiv_token', auth.accessToken);
-      checkAuthenticated().then(console.log(APISession))
+      checkAuthenticated()
         .then(() => m.route.set('/'))
         .catch();
     });
   }
+
   // eslint-disable-next-line class-methods-use-this
   view() {
     return 'redirecting...';
