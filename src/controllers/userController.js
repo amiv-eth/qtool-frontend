@@ -5,10 +5,9 @@ export default class UserController {
     this.resourceHandler = new ResourceHandler('user');
   }
 
-  async getUserName() {
-    console.log(await getId());
+  async getUser() {
     const user = await this.resourceHandler.getId(await getId());
     console.log(user);
-    return user.name;
+    return user;
   }
 }
