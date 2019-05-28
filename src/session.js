@@ -7,7 +7,13 @@ export default class Session {
    * @param headers headers to be send along
    * @param errorCallback Callback function when the request fails.
    */
-  constructor(baseUrl, headers, errorCallback) {
+  constructor(
+    baseUrl,
+    headers,
+    errorCallback = e => {
+      console.log(e);
+    }
+  ) {
     this.baseUrl = baseUrl;
     this.headers = headers;
     this.headers['Content-Type'] = 'application/json';
@@ -22,14 +28,13 @@ export default class Session {
    * @returns {*} Successful promise of http-request.
    */
   get(url, query = false) {
-    console.log(`${this.baseUrl}/${url}${query ? `?${query}` : ''}`);
     return m
       .request({
         method: 'GET',
         url: `${this.baseUrl}/${url}${query ? `?${query}` : ''}`,
         headers: this.headers,
       })
-      .catch(e => this.errorCallback(e));
+      .catch(e => this.errorCallback(e)).then(res=>{return res});
   }
 
   /**

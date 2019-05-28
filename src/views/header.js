@@ -2,7 +2,7 @@ import m from 'mithril';
 import { Button } from 'polythene-mithril';
 import { mainNavigation } from '../models/mainNavigation';
 import logos from '../../res/images/logos';
-import { isLoggedIn, login } from '../auth';
+import { isLoggedIn, login, logout } from '../auth';
 import { i18n, currentLanguage, changeLanguage } from '../models/language';
 
 /**
@@ -121,11 +121,7 @@ export default class Header {
             ),
             m(
               'li',
-              m(
-                'a',
-                { href: `/${currentLanguage()}/logout`, onclick: m.route.link },
-                i18n('menu.logout')
-              )
+              m('a', { href: '/', onclick: () => logout().then(m.route.link) }, i18n('menu.logout'))
             ),
           ]
         : [

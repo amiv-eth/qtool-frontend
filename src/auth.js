@@ -36,22 +36,15 @@ const oauth = new ClientOAuth2({
 /**
  * Deletes the qtool session (and temporary redirects to login, needed until profile page is finished)
  */
-export function deleteSession() {
+export async function deleteSession() {
   // delete the AMIV API session if possible.
-  const amiv_session = new Session(
-    network_config.amiv_api_address,
-    { Authorization: APISession.amiv_token },
-    () => {
-      APISession.authenticated = false;
-    }
-  );
-  amiv_session.delete(`sessions/${APISession.amiv_token}`).then(() => {
-    APISession.authenticated = false;
+  const amiv_session = new Session(network_config.amiv_api_address, {
+    Authorization: APISession.amiv_token,
   });
+  return amiv_session.delete(`sessions/${APISession.amiv_token}`);
 
   // TODO: Delete qtool token
 }
-
 /**
  * Set the session back to clear
  */
@@ -65,9 +58,8 @@ function resetAPISession() {
   localStorage.remove('qtool_token');
 }
 
-export function logout() {
-  deleteSession();
-  resetAPISession();
+export async function logout() {
+  return deleteSession().then(resetAPISession);
 }
 
 export function login() {
@@ -175,8 +167,7 @@ export async function getSession() {
     network_config.qtool_api_address(),
     {
       'X-AMIV-API-TOKEN': APISession.qtool_token,
-    },
-    e => console.log(e)
+    }
   );
 }
 
