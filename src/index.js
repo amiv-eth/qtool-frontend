@@ -5,7 +5,7 @@ import 'polythene-css-dialog';
 import { mainNavigation } from './models/mainNavigation';
 import Home from './views/home';
 import { loadLanguage } from './models/language';
-import { OauthRedirect } from './auth';
+import { OauthRedirect } from './authentication';
 
 /**
  * Puts all the page-layout around a view

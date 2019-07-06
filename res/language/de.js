@@ -21,6 +21,7 @@ export default {
 
   position: {
     treasurer: 'Quästor',
+    undefined: 'Qtool-User',
   },
 
   button: {
@@ -101,7 +102,7 @@ export default {
     salutation_male: 'Sehr geehrter $t(invoice.pronoun.mr)',
 
     intro:
-      'Wir erlauben uns für die unten aufgeführten Leistungen folgenden Betrag in Rechnung zu stellen. Bei Fragen melden Sie sich gerne.',
+      'Wir erlauben uns für die unten aufgeführten Leistungen folgenden Betrag in Rechnung zu stellen. \nBei Fragen melden Sie sich gerne.',
 
     services: {
       pos: 'Pos',

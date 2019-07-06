@@ -1,4 +1,4 @@
-import ResourceHandler from '../auth';
+import ResourceHandler from '../resourceHandler';
 
 /**
  * DataListController adds additional functions used for tables extending existing Resource-Handler functions

@@ -5,7 +5,7 @@ import TransactionTableView from '../transaction/transactionTableView';
 import ForecastTableView from '../kst/budgetTableView';
 import ConfirmedTableView from '../kst/confirmedTableView';
 import TestInvoice from '../invoice/testInvoice';
-import Profile from '../views/profile';
+import Profile from '../user/profile';
 import { currentLanguage } from './language';
 
 export default class Navigation {
@@ -97,6 +97,8 @@ export default class Navigation {
  * key: displayed key for the i18n, path: to the page, oncreate/onupdate: , view: the given View to the Element, submenu:
  * array of entries in the same style.
  */
+
+
 export const mainNavigation = new Navigation([
   {
     path: '/',

@@ -36,6 +36,7 @@ export default function generateInvoice(invoice, lang) {
 
   doc.setFont(font.type, font.style);
 
+
   // Logo
   const logo_width = 70;
   doc.addImage(logos.amivData, 'PNG', left_border, 15, logo_width, (logo_width / 489) * 150);
@@ -354,6 +355,7 @@ export default function generateInvoice(invoice, lang) {
     line_end
   );
 
-  doc.save(`${invoice.nr}.pdf`);
   setLanguage(current_lang);
+
+  doc.save(`${invoice.nr}.pdf`);
 }

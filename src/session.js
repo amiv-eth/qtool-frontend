@@ -34,7 +34,10 @@ export default class Session {
         url: `${this.baseUrl}/${url}${query ? `?${query}` : ''}`,
         headers: this.headers,
       })
-      .catch(e => this.errorCallback(e)).then(res=>{return res});
+      .catch(e => this.errorCallback(e))
+      .then(res => {
+        return res;
+      });
   }
 
   /**

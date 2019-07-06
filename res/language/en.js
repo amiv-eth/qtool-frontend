@@ -21,6 +21,7 @@ export default {
 
   position: {
     treasurer: 'treasurer',
+    undefined: 'Qtool-User',
   },
 
   button: {
@@ -101,7 +102,7 @@ export default {
     salutation_male: '$t(salutation)',
 
     intro:
-      'For the services enlisted below we do venture to invoice the following amount. Should there be questions please contact us. ',
+      'For the services enlisted below we do venture to invoice the following amount. \nShould there be questions please contact us. ',
 
     services: {
       pos: 'Pos',

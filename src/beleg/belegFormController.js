@@ -1,5 +1,5 @@
 import FormController from '../controllers/formController';
-import ResourceHandler from '../auth';
+import ResourceHandler from '../resourceHandler';
 
 /**
  * Form Controller with added submit function
