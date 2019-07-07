@@ -2,7 +2,7 @@ import m from 'mithril';
 import { Button } from 'polythene-mithril';
 import { mainNavigation } from '../models/mainNavigation';
 import logos from '../../res/images/logos';
-import { isLoggedIn, login, logout } from '../authentication';
+import { isLoggedInSync, login, logout } from '../authentication';
 import { i18n, currentLanguage, changeLanguage } from '../models/language';
 
 /**
@@ -64,6 +64,13 @@ export default class Header {
                   {
                     href: `${item.getLink()}`,
                     oncreate: m.route.link,
+                    onupdate: m.route.link,
+                    onclick: e => {
+                      if (item.getLink().startsWith('/')) {
+                        m.route.set(item.getLink());
+                        e.preventDefault();
+                      }
+                    },
                   },
                   i18n(item.key)
                 ),
@@ -99,7 +106,7 @@ export default class Header {
   static get _profileMenu() {
     return m(
       'ul.profile',
-      isLoggedIn()
+      isLoggedInSync()
         ? [
             m(
               'li',
@@ -108,13 +115,21 @@ export default class Header {
               },
               m(
                 'a',
-                { href: `/${currentLanguage()}/profile`, onupdate: m.route.link },
+                {
+                  href: `/${currentLanguage()}/profile`,
+                  onupdate: m.route.link,
+                  oncreate: m.route.link,
+                },
                 i18n('menu.profile')
               )
             ),
             m(
               'li',
-              m('a', { href: '/', onclick: () => logout().then(m.route.link) }, i18n('menu.logout'))
+              m(
+                'a',
+                { href: '/', oncreate: m.route.link, onclick: () => logout().then(m.route.link) },
+                i18n('menu.logout')
+              )
             ),
           ]
         : [

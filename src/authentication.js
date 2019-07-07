@@ -9,7 +9,7 @@ import * as localStorage from './localStorage';
  * Saves all fields retreived from the api
  * @type {{authenticated: boolean, nethz: string, amiv_token: string, rights: {invoice: Array, user: Array, beleg: Array}, qtool_token: string}}
  */
-const APISession = {
+export const APISession = {
   authenticated: false,
   amiv_token: '',
   qtool_token: '',
@@ -22,11 +22,15 @@ const APISession = {
   },
 };
 
+// Last time the authentication was checked
+
+let last_checked = 0;
+
 /**
  * Oauth handler
  * @type {ClientOAuth2}
  */
-const oauth = new ClientOAuth2({
+let oauth = new ClientOAuth2({
   clientId: network_config.oAuthID,
   authorizationUri: `${network_config.amiv_api_address}/oauth`,
   redirectUri: `${network_config.own_url}/oauthcallback`,
@@ -44,6 +48,7 @@ export async function deleteSession() {
 
   // TODO: Delete qtool token
 }
+
 /**
  * Set the session back to clear
  */
@@ -53,18 +58,34 @@ function resetAPISession() {
   APISession.qtool_token = '';
   APISession.nethz = '';
   APISession.id = 0;
+  APISession.rights = {};
   localStorage.remove('amiv_token');
   localStorage.remove('qtool_token');
 }
 
 export async function logout() {
   return deleteSession()
-    .then(resetAPISession)
-    .catch(resetAPISession);
+    .then(() => {
+      resetAPISession();
+      console.log(APISession);
+      m.route.set('/');
+    })
+    .catch(() => {
+      resetAPISession();
+      console.log(APISession);
+      m.route.set('/');
+    });
 }
 
-export function login() {
+export function login(redirectUrl = window.location.pathname) {
   console.log('Logging in');
+  oauth = new ClientOAuth2({
+    clientId: network_config.oAuthID,
+    authorizationUri: `${network_config.amiv_api_address}/oauth`,
+    redirectUri: `${network_config.own_url}/oauthcallback${
+      redirectUrl ? `?redir=${redirectUrl}` : ''
+    }`,
+  });
   window.location.replace(oauth.token.getUri()); // Redirect to get amiv token.
 }
 
@@ -95,63 +116,73 @@ function checkQtoolToken(token) {
 }
 
 /**
- * Resets the qtool token, and even the AMIV session if needed.
+ * Resets the qtool token, valid AMIV session needed.
  * @returns {Promise<void|*>}
  */
 async function resetQtoolToken() {
   if (!APISession.amiv_token) {
-    return login();
+    return null;
   }
-  const qtool_session = new Session(network_config.qtool_api_address(), {}, () => login());
+  const qtool_session = new Session(network_config.qtool_api_address(), {});
 
   return qtool_session
-    .post('Session/session', { amivapi_session_token: APISession.amiv_token })
+    .post('Session/session', { amivapi_session_token: APISession.amiv_token }, () =>
+      console.log('errorrrr')
+    )
     .then(res => {
       localStorage.set('qtool_token', res.qtool_session_token);
       return res;
-    });
+    })
+    .catch(console.log('Shit happens'));
 }
 
 /**
  * Checks if the user is authenticated and retrieves new tokens if needed
  * @returns {Promise<boolean>}
  */
-export async function checkAuthenticated(enforce = false) {
+export async function checkAuthenticated(enforce_API_check = false) {
   if (APISession.authenticated) return true;
 
-  const amiv_token = localStorage.get('amiv_token');
-  let qtool_token = localStorage.get('qtool_token');
+  const d = new Date();
 
-  if (amiv_token === '') {
-    return false;
-  }
+  if (enforce_API_check || d.getTime() - last_checked > 5000) {
+    const amiv_token = localStorage.get('amiv_token');
+    let qtool_token = localStorage.get('qtool_token');
 
-  const amiv_api_response = await checkAmivToken(amiv_token); // TODO:  Maybe move to backend...
+    if (amiv_token === '') {
+      return false;
+    }
 
-  if (amiv_api_response) {
-    APISession.amiv_token = amiv_token;
-  }
+    const amiv_api_response = await checkAmivToken(amiv_token); // TODO:  Maybe move to backend...
 
-  let qtool_api_response = await checkQtoolToken(qtool_token);
+    if (amiv_api_response) {
+      APISession.amiv_token = amiv_token;
+    }
 
-  // Just in case ONLY the qtool-token was deleted. Not sure about the use-case unless someone manually deletes the token
-  if (amiv_api_response && !qtool_api_response) {
-    await resetQtoolToken();
-    qtool_token = localStorage.get('qtool_token');
-    qtool_api_response = await checkQtoolToken(qtool_token);
-  }
+    let qtool_api_response = await checkQtoolToken(qtool_token);
 
-  // setting the API Session.
-  if (amiv_api_response && qtool_api_response) {
-    APISession.qtool_token = qtool_token;
-    APISession.nethz = qtool_api_response[0].nethz
-      ? qtool_api_response[0].nethz
-      : qtool_api_response.nethz;
-    APISession.id = qtool_api_response[0].user_id
-      ? qtool_api_response[0].user_id
-      : qtool_api_response.user_id;
-    APISession.authenticated = true;
-    return true;
+    // Just in case ONLY the qtool-token was deleted. Not sure about the use-case unless someone manually deletes the token
+    if (amiv_api_response && !qtool_api_response) {
+      await resetQtoolToken();
+      qtool_token = localStorage.get('qtool_token');
+      qtool_api_response = await checkQtoolToken(qtool_token);
+    }
+
+    const date = new Date();
+    last_checked = date.getTime();
+
+    // setting the API Session.
+    if (amiv_api_response && qtool_api_response) {
+      APISession.qtool_token = qtool_token;
+      APISession.nethz = qtool_api_response[0].nethz
+        ? qtool_api_response[0].nethz
+        : qtool_api_response.nethz;
+      APISession.id = qtool_api_response[0].user_id
+        ? qtool_api_response[0].user_id
+        : qtool_api_response.user_id;
+      APISession.authenticated = true;
+      return true;
+    }
   }
   return false;
 }
@@ -165,9 +196,16 @@ export async function getSession() {
   if (!authenticated) {
     login();
   }
-  return new Session(network_config.qtool_api_address(), {
-    'X-AMIV-API-TOKEN': APISession.qtool_token,
-  });
+  return new Session(
+    network_config.qtool_api_address(),
+    {
+      'X-AMIV-API-TOKEN': APISession.qtool_token,
+    },
+    e => {
+      console.log(e);
+      checkAuthenticated(true);
+    }
+  );
 }
 
 /**
@@ -194,10 +232,21 @@ export async function getId() {
  * returns true if the user is logged in
  * @returns {boolean}
  */
-export function isLoggedIn() {
+export async function isLoggedIn() {
+  const authenticated = await checkAuthenticated();
+  if (!authenticated) {
+    return false;
+  }
   return APISession.authenticated;
 }
 
+/**
+ * returns true if the user is logged in in a less optimal manner but synchronous
+ * @returns {boolean}
+ */
+export function isLoggedInSync() {
+  return APISession.authenticated;
+}
 /**
  * Landing Page after completed login TODO: redirect to the last page.
  */
@@ -207,7 +256,11 @@ export class OauthRedirect {
     oauth.token.getToken(m.route.get()).then(auth => {
       localStorage.set('amiv_token', auth.accessToken);
       checkAuthenticated()
-        .then(() => m.route.set('/'))
+        .then(() => {
+          const urlParams = new URLSearchParams(window.location.search);
+
+          m.route.set(urlParams.has('redir') ? urlParams.get('redir') : '/');
+        })
         .catch();
     });
   }
