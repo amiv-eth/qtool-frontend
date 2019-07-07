@@ -245,7 +245,9 @@ export async function isLoggedIn() {
  * @returns {boolean}
  */
 export function isLoggedInSync() {
-  return APISession.authenticated;
+  return (
+    APISession.authenticated || (localStorage.get('amiv_token') && localStorage.get('qtool_token'))
+  );
 }
 /**
  * Landing Page after completed login TODO: redirect to the last page.

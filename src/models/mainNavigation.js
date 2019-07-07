@@ -98,7 +98,6 @@ export default class Navigation {
  * array of entries in the same style.
  */
 
-
 export const mainNavigation = new Navigation([
   {
     path: '/',

@@ -1,5 +1,5 @@
 import ResourceHandler from '../resourceHandler';
-import {getId} from '../authentication';
+import { getId } from '../authentication';
 
 export default class UserController {
   constructor() {

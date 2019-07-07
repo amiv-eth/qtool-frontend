@@ -92,7 +92,9 @@ export default class ResourceHandler {
    * @param query used query containing all the information to be sent to the api
    */
   get(query = false) {
-    return getSession().then(session => session.get(this.conf.path, query ? this.buildQueryString(query) : null));
+    return getSession().then(session =>
+      session.get(this.conf.path, query ? this.buildQueryString(query) : null)
+    );
   }
 
   /**

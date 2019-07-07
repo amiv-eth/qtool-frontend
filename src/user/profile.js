@@ -8,7 +8,13 @@ const userController = new UserController();
 
 export default class Profile {
   constructor() {
-    //this.user = { name: 'dude', role: 'roledude', amiv_mail: 'dudemail', nethz: 'dudenethz' ,iban: '98765tzuhn'};
+    this.user = {
+      name: 'dude',
+      role: 'roledude',
+      amiv_mail: 'dudemail',
+      nethz: 'dudenethz',
+      iban: '98765tzuhn',
+    };
   }
 
   static oninit() {

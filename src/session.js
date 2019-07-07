@@ -35,9 +35,7 @@ export default class Session {
         headers: this.headers,
       })
       .catch(e => this.errorCallback(e))
-      .then(res => {
-        return res;
-      });
+      .then(res => res);
   }
 
   /**
