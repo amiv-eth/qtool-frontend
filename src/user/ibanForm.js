@@ -1,5 +1,6 @@
 import m from 'mithril';
 import { TextField, Button } from 'polythene-mithril';
+import { isValid } from 'iban';
 import { i18n } from '../models/language';
 
 export default class IbanForm {
@@ -9,18 +10,17 @@ export default class IbanForm {
 
   view() {
     const { iban } = this.userController;
-    console.log(iban);
     return m('div.rfid', [
       m(TextField, {
-        label: i18n('profile.rfid'),
+        label: i18n('profile.iban'),
         floatingLabel: true,
         error: i18n('profile.rfidError'),
         valid: this.valid,
         value: iban,
         events: {
           oninput: e => {
-            this.rfid = e.target.value;
-            this.valid = /^\d{6}$/g.test(this.rfid) || this.rfid === '';
+            this.iban = e.target.value;
+            this.valid = isValid(this.iban) || this.iban === '';
           },
         },
       }),

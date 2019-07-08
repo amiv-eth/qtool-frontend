@@ -1,24 +1,19 @@
 import m from 'mithril';
 import { Card } from 'polythene-mithril';
+
+import { DropdownCard } from 'amiv-web-ui-components';
+
 import UserController from '../controllers/userController';
 import UserInfo from './userInfo';
 import IbanForm from './ibanForm';
+import { i18n } from '../models/language';
 
 const userController = new UserController();
 
 export default class Profile {
-  constructor() {
-    this.user = {
-      name: 'dude',
-      role: 'roledude',
-      amiv_mail: 'dudemail',
-      nethz: 'dudenethz',
-      iban: '98765tzuhn',
-    };
-  }
-
-  static oninit() {
-    userController.init();
+  static async oninit() {
+    await userController.init();
+    m.redraw();
   }
 
   static view() {
@@ -28,8 +23,12 @@ export default class Profile {
         content: m(UserInfo, { userController }),
       }),
       m('div.settings', [
-        m(Card, {
-          className: 'iban',
+        m(DropdownCard, {
+          title: `IBAN: ${userController.user.iban || i18n('profile.rfidNotSet')}`,
+          style: {
+            margin: '16px 0',
+            borderRadius: '4px',
+          },
           content: m(IbanForm, { userController }),
         }),
       ]),

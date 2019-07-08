@@ -18,6 +18,9 @@ export default class UserController {
   }
 
   get iban() {
+    if (typeof this._user === 'undefined') {
+      return null;
+    }
     return this._user.iban;
   }
 }

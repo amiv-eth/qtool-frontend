@@ -1,6 +1,12 @@
 stages:
   - test
 
+check_lang:
+  stage: test
+  image: node:latest
+  script:
+    - python check_lang.py res/language/de.js res/language/en.js
+
 eslint:
   stage: test
   image: node:latest

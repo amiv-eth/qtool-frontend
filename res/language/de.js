@@ -45,6 +45,10 @@ export default {
     login: 'Login',
   },
 
+  profile: {
+    iban: 'IBAN',
+  },
+
   transaction: {
     id: 'ID',
     desc: 'Beschreibung',
