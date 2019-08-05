@@ -1,4 +1,4 @@
-export default {
+let stuff = {
   amiv: 'AMIV',
   amiv_eth: 'AMIV an der ETH',
   street: 'Universitätstrasse 6',
@@ -21,7 +21,7 @@ export default {
 
   position: {
     treasurer: 'treasurer',
-    undefined: 'Qtool-User',
+    default: 'Qtool-User',
   },
 
   button: {
@@ -149,3 +149,5 @@ export default {
     12: 'December',
   },
 };
+
+console.log(JSON.stringify(stuff));

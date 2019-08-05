@@ -1,4 +1,4 @@
-export default {
+const stuff = {
   amiv: 'AMIV',
   amiv_eth: 'AMIV an der ETH',
   street: 'Universitätstrasse 6',
@@ -21,7 +21,7 @@ export default {
 
   position: {
     treasurer: 'Quästor',
-    undefined: 'Qtool-User',
+    defaul: 'Qtool-User',
   },
 
   button: {
@@ -149,3 +149,5 @@ export default {
     12: 'Dezember',
   },
 };
+
+console.log(JSON.stringify(stuff));

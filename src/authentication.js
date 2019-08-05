@@ -132,8 +132,7 @@ async function resetQtoolToken() {
     .then(res => {
       localStorage.set('qtool_token', res.qtool_session_token);
       return res;
-    })
-    .catch(console.log('Shit happens'));
+    });
 }
 
 /**
