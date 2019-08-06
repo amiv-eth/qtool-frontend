@@ -17,7 +17,7 @@
   },
   "position": {
     "treasurer": "Quästor",
-    "defaul": "Qtool-User"
+    "default": "Qtool-User"
   },
   "button": {
     "confirm": "Bestätigen",

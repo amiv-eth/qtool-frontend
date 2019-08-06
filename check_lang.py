@@ -22,13 +22,15 @@ def check_rec(dict1, dict2, pre_key=''):
     """
 
     # generate dict from all differences of the two dictionaries
-    res = {pre_key + k: dict2[k] for k in set(dict2) - set(dict1)}
+    res = {k: dict2[k] for k in set(dict2) - set(dict1)}
 
     for key in dict1.keys():
         #ignore all simple values or keys which have been caught by the previous iteration
         if key not in res and isinstance(dict1[key], dict):
             # append all new inconsitencies
-            res.update(check_rec(dict1[key], dict2[key], pre_key + key + '.')) 
+            inner_res = check_rec(dict1[key], dict2[key], key)
+            if inner_res != {}:
+                res.update({key: inner_res}) 
 
     return res
 
