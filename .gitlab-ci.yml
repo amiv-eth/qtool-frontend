@@ -3,9 +3,9 @@ stages:
 
 check_lang:
   stage: test
-  image: node:latest
+  image: python:latest
   script:
-          - python3 check_lang.py res/language/de.json res/language/en.json
+          - python check_lang.py res/language/de.json res/language/en.json
 
 eslint:
   stage: test
