@@ -1,8 +1,9 @@
 function getNested(data, key) {
-  let nested_data = data;
-  if (!key || !data) {
+  if (data === undefined || key === undefined) {
     return undefined;
   }
+  let nested_data = data;
+  console.log(nested_data);
   key.split('.').forEach(subKey => {
     nested_data = nested_data[subKey];
   });
