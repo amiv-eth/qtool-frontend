@@ -12,19 +12,23 @@
   "email": "E-Mail",
   "date": "Datum",
   "search": "Suche",
+
   "currency": {
     "chf": "CHF"
   },
+
   "position": {
     "treasurer": "Quästor",
     "default": "Qtool-User"
   },
+
   "button": {
     "confirm": "Bestätigen",
     "print_all": "Alles drucken",
     "print_selected": "Gewählte drucken",
     "unselect_all": "Auswahl löschen"
   },
+
   "menu": {
     "home": "Home",
     "receipt_form": "Belegformular",
@@ -37,9 +41,11 @@
     "logout": "Logout",
     "login": "Login"
   },
+
   "profile": {
     "iban": "IBAN"
   },
+
   "transaction": {
     "id": "ID",
     "desc": "Beschreibung",
@@ -72,6 +78,7 @@
     "difference_confirmed": "$t(transaction.difference) $t(transaction.confirmed)",
     "difference_calculated": "$t(transaction.difference) $t(transaction.forecasted)"
   },
+
   "kst": {},
   "invoice": {
     "payment_within": "Zahlungsziel",
@@ -83,6 +90,7 @@
       "comp": "Firma",
       "general": "Damen und Herren"
     },
+
     "invoice": "Rechnung",
     "no": "Nr.",
     "salutation": "Sehr geehrte {{pronoun}}",
@@ -99,6 +107,7 @@
       "tot_vat": "Gesamt Steuer $t(currency.chf)",
       "tot_gros": "Gesamt Brutto $t(currency.chf)"
     },
+
     "outro": "Bitte Überweisen Sie den Betrag bis am {{till}} ohne Abzüge unter Angabe der Rechnungsnummer \nauf unser unten aufgeführtes Bankkonto.",
     "thanks": "Besten Dank für Ihr Vertrauen.\n",
     "greetings": "Mit freundlichen Grüssen",
@@ -110,6 +119,7 @@
     "iban": "IBAN: CH80 0900 0000 8000 3210 5",
     "bic": "BIC: POFICHBEXXX"
   },
+  
   "months": {
     "1": "Januar",
     "2": "Februar",

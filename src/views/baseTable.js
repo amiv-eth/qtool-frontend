@@ -52,6 +52,7 @@ export default class BaseTable {
     const row = [];
     this.title_arr.forEach(pos => {
       // Access nested data
+      // TODO way to inefficient get Nested is called for every row of the table sevetral times
       const nested_data = getNested(data, pos.key);
       const nested_texts = pos.text_keys ? pos.text_keys.map(key => getNested(data, key)) : null;
       // Assemble the pre_text

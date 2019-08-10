@@ -17,7 +17,7 @@ export default class UserInfo {
         ),
       ]),
       m('div.amiv', [
-        m('div', m('b', i18n(`position.${user.role ? user.role : 'undefined'}`))),
+        m('div', m('b', i18n(`position.${user.role ? user.role : 'default'}`))),
         m('div.email', user.amiv_mail ? user.amiv_mail : ''),
       ]),
     ];

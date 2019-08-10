@@ -1,8 +1,8 @@
 import m from 'mithril';
 import i18next from 'i18next';
 import LngDetector from 'i18next-browser-languagedetector';
-import german from '../../res/language/de';
-import english from '../../res/language/en';
+import german from '../../res/language/de.json';
+import english from '../../res/language/en.json';
 
 function setLanguageAttribute() {
   document.documentElement.setAttribute('lang', i18next.language);

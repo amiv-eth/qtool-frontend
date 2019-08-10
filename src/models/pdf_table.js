@@ -10,7 +10,7 @@ import { getNested } from '../utils';
  * @param filename String of the filename
  * @param title Displayed title of
  */
-export default function generateTable(header, body_data, filename = false, title = false) {
+export default function generateTable(header, body_data, filename = 'table', title = false) {
   const doc = new JsPDF({
     orientation: 'landscape',
   });
@@ -29,6 +29,9 @@ export default function generateTable(header, body_data, filename = false, title
     new_header.push({ header: element.header, dataKey: i });
   });
 
+  console.log(header);
+  console.log(body_data);
+
   // Filling a new body with dataKey being the new int.
   const new_body = [];
   body_data.forEach(row => {
@@ -41,7 +44,6 @@ export default function generateTable(header, body_data, filename = false, title
     });
     new_body.push(new_row);
   });
-
   // Generating the table
   doc.autoTable({
     margin: { top: 20 },
@@ -99,5 +101,5 @@ export default function generateTable(header, body_data, filename = false, title
     doc.putTotalPages(totalPagesExp);
   }
 
-  doc.save(`${filename}.pdf` || 'table.pdf');
+  doc.save(`${filename}.pdf`);
 }

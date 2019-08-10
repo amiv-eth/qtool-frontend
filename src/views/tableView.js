@@ -69,6 +69,7 @@ export default class TableView {
     // default if tile content was not defined
     return this.titles.map(elem => {
       // Access a nested key, indicated by dot-notation
+      // TODO: Might be quite inefficient
       let nestedData = data;
       elem.key.split('.').forEach(subKey => {
         nestedData = nestedData[subKey];
