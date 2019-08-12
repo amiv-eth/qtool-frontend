@@ -59,6 +59,7 @@ export default class DataListController extends ResourceHandler {
       result.items = result.items.concat(page_content[i].items); // Assembling one array of all results
     }
     result.meta = page_content[max_pages].meta; // Meta is the one from the last page
+
     return result;
   }
 
@@ -67,15 +68,16 @@ export default class DataListController extends ResourceHandler {
    * @param ids array filled with every requested id
    * @returns {Promise<*[]>} Promise to the requested data as array assembled from all ids.
    */
-  async getIds(ids) {
+  async getIds(ids, query = false) {
+    const new_query = query ? JSON.parse(JSON.stringify(query)) : {};
     if (ids.length === 0) {
       return [];
     }
     if (ids.length === 1) {
-      return [await this.getId(ids)];
+      return [await this.getId(ids, new_query)];
     }
 
-    const value = await this.getId(ids[0]); // Waiting till promise is fulfilled
+    const value = await this.getId(ids[0], new_query); // Waiting till promise is fulfilled
 
     let result = [];
 
@@ -86,11 +88,12 @@ export default class DataListController extends ResourceHandler {
 
     for (let id = 1; id < max_ids; id += 1) {
       requests.push(
-        this.getId(ids[id]).then(res => {
+        this.getId(ids[id], new_query).then(res => {
           content[id] = res;
         })
       );
     }
+
     await Promise.all(requests); // Waiting till all promise from requests are fulfilled
     for (let i = 0; i < max_ids; i += 1) {
       result = result.concat(content[i]); // assembling array tobe returned

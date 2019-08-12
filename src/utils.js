@@ -3,9 +3,13 @@ function getNested(data, key) {
     return undefined;
   }
   let nested_data = data;
-  console.log(nested_data);
   key.split('.').forEach(subKey => {
-    nested_data = nested_data[subKey];
+    try {
+      nested_data = nested_data[subKey];
+    } catch (e) {
+      console.log(e);
+      console.log('Probably a nested key was defined but no fitting data was found');
+    }
   });
   return nested_data;
 }

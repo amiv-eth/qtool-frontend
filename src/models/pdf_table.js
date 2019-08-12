@@ -1,6 +1,7 @@
 import JsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { getNested } from '../utils';
+import { i18n } from './language';
 //  import logos from '../../res/logos';
 
 /**
@@ -26,18 +27,15 @@ export default function generateTable(header, body_data, filename = 'table', tit
   // Mapping the title to this number =>the int is the new DataKey
   header.forEach((element, i) => {
     header_map.set(i, element.dataKey);
-    new_header.push({ header: element.header, dataKey: i });
+    new_header.push({ header: i18n(element.header_key), dataKey: i });
   });
-
-  console.log(header);
-  console.log(body_data);
 
   // Filling a new body with dataKey being the new int.
   const new_body = [];
   body_data.forEach(row => {
     const new_row = {};
     header_map.forEach((key, val) => {
-      new_row[val] = getNested(row, key);
+      new_row[val] = getNested(row, key, false);
       if (!new_row[val]) {
         new_row[val] = 'not defined';
       }

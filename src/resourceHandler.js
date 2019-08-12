@@ -100,9 +100,12 @@ export default class ResourceHandler {
   /**
    * Returns object to a given id
    * @param id of the object
+   * @param query
    */
-  getId(id) {
-    return getSession().then(session => session.get(`${this.conf.path}/${id}`));
+  getId(id, query = false) {
+    return getSession().then(session =>
+      session.get(`${this.conf.path}/${id}`, query ? this.buildQueryString(query) : null)
+    );
   }
 
   /**

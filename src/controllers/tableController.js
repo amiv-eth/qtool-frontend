@@ -134,7 +134,7 @@ export default class TableController {
     try {
       const result = await this.endpoint.getFullList(this.query);
       generateTable(
-        header_info.map(entry => ({ header: entry.text, dataKey: entry.key })),
+        header_info.map(entry => ({ header_key: entry.title_key, dataKey: entry.key })),
         result.items,
         filename,
         title
@@ -152,11 +152,12 @@ export default class TableController {
    * @returns {Promise<void>} Pomise to save a PDF
    */
   async printSelected(header_info, title = 'Table', filename = false) {
+    // WAIT for API to work properly again ======================================================
     if (this.selected.length > 0) {
-      const result = await this.endpoint.getIds(this.selected);
+      const result = await this.endpoint.getIds(this.selected, this.query);
 
       generateTable(
-        header_info.map(entry => ({ header: entry.text, dataKey: entry.key })),
+        header_info.map(entry => ({ header_key: entry.title_key, dataKey: entry.key })),
         result,
         filename,
         title
