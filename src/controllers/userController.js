@@ -23,4 +23,8 @@ export default class UserController {
     }
     return this._user.iban;
   }
+
+  async set_iban(iban) {
+    return this.resourceHandler.patch(await getId(), { iban });
+  }
 }

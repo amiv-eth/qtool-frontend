@@ -69,4 +69,21 @@ export default class Session {
       })
       .catch(e => this.errorCallback(e));
   }
+
+  /**
+   * PATCH-Request
+   * @param url specific url for the request. baseurl will be added
+   * @param data payload
+   * @returns {*|Promise<Response | void>|Promise<T | void>|undefined} Successful promise of http-request.
+   */
+  patch(url, data) {
+    return m
+      .request({
+        method: 'PATCH',
+        url: `${this.baseUrl}/${url}`,
+        headers: this.headers,
+        data,
+      })
+      .catch(e => this.errorCallback(e));
+  }
 }

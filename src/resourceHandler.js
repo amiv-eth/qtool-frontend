@@ -110,9 +110,20 @@ export default class ResourceHandler {
 
   /**
    * Post request
-   * @param data the payload
+   * @param data the returned payload
    */
   post(data) {
     return getSession().then(session => session.post(this.conf.path, data));
+  }
+
+  /**
+   * Patch request
+   * @param id id tobe patched
+   * @param data Payload
+   * @returns {Promise<Session>}
+   */
+  patch(id, data) {
+    console.log('patching', id, data);
+    return getSession().then(session => session.patch(`${this.conf.path}/${id}`, data));
   }
 }

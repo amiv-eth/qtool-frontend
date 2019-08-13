@@ -4,8 +4,26 @@ import { isValid } from 'iban';
 import { i18n } from '../models/language';
 
 export default class IbanForm {
+  constructor() {
+    this.iban = null;
+    this.valid = true;
+  }
+
   oninit(vnode) {
     this.userController = vnode.attrs.userController;
+  }
+
+  submit() {
+    if (this.valid) {
+      this.savedIban = this.iban;
+      this.userController
+        .set_iban(this.savedIban)
+        .then(() => {
+          this.iban = this.savedIban;
+          m.redraw(); // TODO: view is not updated after submitting.
+        })
+        .catch();
+    }
   }
 
   view() {
@@ -24,7 +42,12 @@ export default class IbanForm {
           },
         },
       }),
-      m(Button, { label: i18n('confirm') }),
+      m(Button, {
+        label: i18n('confirm'),
+        events: {
+          onclick: () => this.submit(),
+        },
+      }),
     ]);
   }
 }
