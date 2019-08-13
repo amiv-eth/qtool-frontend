@@ -1,0 +1,5 @@
+- use of the theme of the amiv-website
+- better solution for the buttons in transaction-table-view
+- integrate ui-components
+- search for sandro in whole project
+- logging solution, for client to server, mailgun?
