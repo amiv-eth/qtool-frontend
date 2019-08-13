@@ -32,6 +32,8 @@
     "kst": "Cost center",
     "kst_eval": "C.C.- evaluation",
     "kst_fore": "Forecast",
+    "test": "Test",
+    "ezag": "EZAG",
     "invoice": "Invoice",
     "profile": "Profile",
     "logout": "Logout",

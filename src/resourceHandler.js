@@ -124,7 +124,7 @@ export default class ResourceHandler {
    * @returns {Promise<Session>}
    */
   patch(id, data) {
-    console.log('patching', id, data);
+    log.debug('patching', id, data);
     return getSession().then(session => session.patch(`${this.conf.path}/${id}`, data));
   }
 }

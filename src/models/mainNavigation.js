@@ -5,6 +5,7 @@ import TransactionTableView from '../transaction/transactionTableView';
 import ForecastTableView from '../kst/budgetTableView';
 import ConfirmedTableView from '../kst/confirmedTableView';
 import TestInvoice from '../invoice/testInvoice';
+import TestEzag from '../ezag/testEzag';
 import Profile from '../user/profile';
 import { currentLanguage } from './language';
 import { log } from '../utils';
@@ -146,11 +147,27 @@ export const mainNavigation = new Navigation([
     ]),
   },
   {
-    key: 'menu.invoice',
-    path: '/invoice',
+    key: 'menu.test',
+    path: '/test',
     addLanguagePrefix: true,
     oncreate: m.route.link,
-    view: TestInvoice,
+    view: Home,
+    submenu: new Navigation([
+      {
+        key: 'menu.invoice',
+        path: '/test/invoice',
+        addLanguagePrefix: true,
+        oncreate: m.route.link,
+        view: TestInvoice,
+      },
+      {
+        key: 'menu.ezag',
+        path: '/test/ezag',
+        addLanguagePrefix: true,
+        oncreate: m.route.link,
+        view: TestEzag,
+      },
+    ]),
   },
   {
     path: '/profile',

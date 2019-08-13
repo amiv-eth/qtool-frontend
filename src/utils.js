@@ -17,3 +17,9 @@ export function getNested(data, key) {
   });
   return nested_data;
 }
+
+export function addDays(date, days) {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}

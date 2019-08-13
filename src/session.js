@@ -23,7 +23,7 @@ export default class Session {
           String(e) === 'Error' ? 'No good Message given, API might be down' : e
         }`
       );
-      errorCallback(e);
+      return errorCallback(e);
     };
   }
 
@@ -48,7 +48,7 @@ export default class Session {
 
   /**
    * POST-Request
-   * @param url specific url for the request. baseurl will be added
+   * @param url specific url for the request. baseUrl will be added
    * @param data to be transmitted
    * @returns {*} Successful promise of http-request.
    */

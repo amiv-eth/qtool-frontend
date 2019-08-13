@@ -1,0 +1,8 @@
+{
+  "title": "Document xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.six-interbank-clearing.com/de/pain.001.001.03.ch.02.xsd\" xsi:schemaLocation=\"http://www.six-interbank-clearing.com/de/pain.001.001.03.ch.02.xsd pain.001.001.03.ch.02.xsd\"",
+  "name": "AMIV an der ETH",
+  "payment_method": "TRF",
+  "debitor": "$t(name)",
+  "debitor_IBAN": "CH8009000000800032105",
+  "debitor_BIC": "POFICHBEXXX"
+}

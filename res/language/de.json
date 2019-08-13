@@ -36,6 +36,8 @@
     "kst": "Kostenstelle",
     "kst_eval": "KST-Auswertung",
     "kst_fore": "Prognose",
+    "test": "Test",
+    "ezag": "EZAG",
     "invoice": "Rechung",
     "profile": "Profil",
     "logout": "Logout",

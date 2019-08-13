@@ -5,8 +5,3 @@ warn: faulty/undefined parameters
 error: failed requests
 silent:
 
-
-
-import { log } from './utils';
-
-log.debug(`Constructing new session with baseUrl ${this.baseUrl} and header ${this.headers}`);
