@@ -1,4 +1,7 @@
 import m from 'mithril';
+import getLogger from 'webpack-log';
+
+const log = getLogger({ name: 'session logger', level: 'debug', timestamp: true });
 
 export default class Session {
   /**
@@ -11,14 +14,18 @@ export default class Session {
     baseUrl,
     headers,
     errorCallback = e => {
-      console.log(e);
+      log.error(`Error resolving request. Error:${e}`);
     }
   ) {
     this.baseUrl = baseUrl;
     this.headers = headers;
     this.headers['Content-Type'] = 'application/json';
     this.headers.Accept = 'application/json';
-    this.errorCallback = e => errorCallback(e);
+    this.errorCallback = e => {
+      log.error(`Error resolving request. Error:${e}`);
+      errorCallback(e);
+    };
+    log.debug(`new session with baseUrl ${this.baseUrl} and header ${this.headers}`);
   }
 
   /**
@@ -28,6 +35,7 @@ export default class Session {
    * @returns {*} Successful promise of http-request.
    */
   get(url, query = false) {
+    log.info(`GET-request to ${this.baseUrl}/${url}${query ? `?${query}` : ''}`);
     return m
       .request({
         method: 'GET',
@@ -45,6 +53,7 @@ export default class Session {
    * @returns {*} Successful promise of http-request.
    */
   post(url, data) {
+    log.info(`POST-request to ${this.baseUrl}/${url} payload: ${data}`);
     return m
       .request({
         method: 'POST',
@@ -61,6 +70,7 @@ export default class Session {
    * @returns {*} Successful promise of http-request.
    */
   delete(url) {
+    log.info(`DELETE-request to ${this.baseUrl}/${url}`);
     return m
       .request({
         method: 'GET',
@@ -77,6 +87,7 @@ export default class Session {
    * @returns {*|Promise<Response | void>|Promise<T | void>|undefined} Successful promise of http-request.
    */
   patch(url, data) {
+    log.info(`PATCH-request to ${this.baseUrl}/${url} payload: ${data}`);
     return m
       .request({
         method: 'PATCH',

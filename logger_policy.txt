@@ -1,0 +1,8 @@
+[
+  'trace':
+  'debug': constructors
+  'info': requests, important methods called, long calculations
+  'warn': faulty/undefined parameters
+  'error': failed requests
+  'silent'
+]
