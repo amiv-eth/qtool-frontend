@@ -5,10 +5,9 @@ import { log } from '../utils';
  * DataListController adds additional functions used for tables extending existing Resource-Handler functions
  */
 export default class DataListController extends ResourceHandler {
-  constructor() {
+  constructor(resource) {
     log.debug(`Constructing new DataListController`);
-
-    super();
+    super(resource);
   }
 
   async getItems(query = false) {
