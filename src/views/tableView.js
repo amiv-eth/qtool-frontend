@@ -4,6 +4,7 @@ import { List, ListTile, Toolbar, Search, Button, Icon } from 'polythene-mithril
 import { styler } from 'polythene-core-css';
 import { icons } from '../../res/images/elements';
 import { i18n } from '../models/language';
+import { log } from '../utils';
 
 const tableStyles = [
   {
@@ -52,6 +53,8 @@ export default class TableView {
       // Filters
     },
   }) {
+    log.debug(`Constructing new TableView with ${controller}, ${titles}`);
+
     this.controller = controller;
     this.titles = titles || [];
     this.tileContent = tileContent;

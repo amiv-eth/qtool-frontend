@@ -7,9 +7,12 @@ import ConfirmedTableView from '../kst/confirmedTableView';
 import TestInvoice from '../invoice/testInvoice';
 import Profile from '../user/profile';
 import { currentLanguage } from './language';
+import { log } from '../utils';
 
 export default class Navigation {
   constructor(items) {
+    log.debug(`Constructing new Naviagtion`);
+
     this._items = items.map(item => {
       const newItem = Object.assign({}, item);
       if (newItem.url) {

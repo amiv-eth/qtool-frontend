@@ -1,6 +1,7 @@
 import m from 'mithril';
 import FormView from './formView';
 import { i18n } from '../models/language';
+import { log } from '../utils';
 
 /**
  * Base of a Form which can be inherited
@@ -9,6 +10,8 @@ import { i18n } from '../models/language';
  */
 export default class BaseForm {
   constructor(FormController, inputFields, buttons) {
+    log.debug(`Constructing new BaseTable with inputfields ${inputFields} and buttons ${buttons}`);
+
     this.buttons = buttons.map(button => ({
       label_key: i18n(button.label_key), // Probably there needs to be done much more in future
     }));

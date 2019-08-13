@@ -1,6 +1,7 @@
 import ForecastController from './forecastController';
 import BaseTable from '../views/baseTable';
 import { amountFormatter } from '../models/language';
+import { log } from '../utils';
 
 /**
  * Collection of all Displayed fields.
@@ -63,8 +64,10 @@ const buttons = [
   },
 ];
 
-export default class ConfirmedTableView extends BaseTable {
+export default class BudgetTableView extends BaseTable {
   constructor() {
+    log.debug(`Constructing new BudgetTableView`);
+
     super(ForecastController, table_setup, buttons);
     this.searchable = true;
 

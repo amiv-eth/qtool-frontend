@@ -2,6 +2,7 @@ import m from 'mithril';
 import network_config from './network_config';
 import resource_config from './resource_config';
 import { getSession } from './authentication';
+import { log } from './utils';
 
 /**
  * Resourcehandler handles all the communication between front- and backend
@@ -13,8 +14,10 @@ export default class ResourceHandler {
    */
   constructor(resource) {
     this.resource = resource;
+
+    log.debug(`Constructing new session with baseUrl ${this.resource}`);
     this.conf = resource_config[this.resource];
-    this.qtool_api = `${network_config.qtool_api_address()}/${this.conf.path}`; // TODO Not solved clever enough
+    // this.qtool_api = `${network_config.qtool_api_address()}/${this.conf.path}`; // TODO Not solved clever enough
   }
 
   /**

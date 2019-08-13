@@ -1,6 +1,7 @@
 import TransactionTableController from './transactionTableController';
 import BaseTable from '../views/baseTable';
 import { amountFormatter } from '../models/language';
+import { log } from '../utils';
 
 /**
  * Setup of the transaction Table
@@ -67,6 +68,8 @@ const buttons = [
 
 export default class TransactionTableView extends BaseTable {
   constructor() {
+    log.debug(`Constructing new TransactionTableView`);
+
     super(TransactionTableController, table_setup, buttons);
     // Defintion of all table attributes
     this.selectable = true;

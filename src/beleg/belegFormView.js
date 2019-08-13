@@ -1,7 +1,7 @@
 import { INPUT_TYPES } from '../views/formView';
 import BelegFormController from './belegFormController';
 import DataListController from '../controllers/dataListController';
-
+import { log } from '../utils';
 import BaseForm from '../views/baseForm';
 
 /**
@@ -101,6 +101,8 @@ export default class BelegFormView extends BaseForm {
    * Initializing super and adding onclick functions to the buttons
    */
   constructor() {
+    log.debug(`Constructing new BelegFormView`);
+
     super(BelegFormController, inputFields, buttons);
 
     // Adding the corresponding functions to the buttons

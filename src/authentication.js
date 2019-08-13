@@ -4,6 +4,9 @@ import ClientOAuth2 from 'client-oauth2';
 import Session from './session';
 import network_config from './network_config';
 import * as localStorage from './localStorage';
+import { log } from './utils';
+
+log.debug(`Initializing Authentication`);
 
 /**
  * Saves all fields retreived from the api

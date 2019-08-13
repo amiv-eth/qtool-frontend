@@ -1,7 +1,12 @@
 import m from 'mithril';
 import { i18n } from '../models/language';
+import { log } from '../utils';
 
 export default class UserInfo {
+  constructor() {
+    log.debug(`Constructing new UserInfo`);
+  }
+
   oninit(vnode) {
     this.userController = vnode.attrs.userController;
   }

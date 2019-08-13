@@ -3,6 +3,9 @@ import i18next from 'i18next';
 import LngDetector from 'i18next-browser-languagedetector';
 import german from '../../res/language/de.json';
 import english from '../../res/language/en.json';
+import { log } from '../utils';
+
+log.debug(`Initializing language`);
 
 function setLanguageAttribute() {
   document.documentElement.setAttribute('lang', i18next.language);

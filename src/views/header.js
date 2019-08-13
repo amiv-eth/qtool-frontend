@@ -4,11 +4,16 @@ import { mainNavigation } from '../models/mainNavigation';
 import logos from '../../res/images/logos';
 import { isLoggedInSync, login, logout } from '../authentication';
 import { i18n, currentLanguage, changeLanguage } from '../models/language';
+import { log } from '../utils';
 
 /**
  * Header of the Website
  */
 export default class Header {
+  constructor() {
+    log.debug(`Constructing new header`);
+  }
+
   view() {
     return m(
       'header',

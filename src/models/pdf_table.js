@@ -1,8 +1,10 @@
 import JsPDF from 'jspdf';
 import 'jspdf-autotable';
-import { getNested } from '../utils';
+import { getNested, log } from '../utils';
 import { i18n } from './language';
 //  import logos from '../../res/logos';
+
+log.debug(`Initializing pdf table`);
 
 /**
  * generates a PDF-table from given data

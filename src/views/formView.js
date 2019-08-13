@@ -2,6 +2,7 @@ import m from 'mithril';
 import 'polythene-css';
 import { Toolbar, Button } from 'polythene-mithril';
 import { i18n } from '../models/language';
+import { log } from '../utils';
 
 // import { icons } from './elements';
 
@@ -17,6 +18,8 @@ const INPUT_TYPES = { static: 0, plain: 1, number: 2, drop: 3 /* radio: 3, check
  */
 export default class FormView {
   constructor({ attrs: { controller, fields = false, buttons = false } }) {
+    log.debug(`Constructing new FormView with fields ${fields} and buttons ${buttons}`);
+
     this.controller = controller;
     this.fields = fields;
     this.buttons = buttons;

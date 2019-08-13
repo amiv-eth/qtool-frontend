@@ -2,6 +2,7 @@ import m from 'mithril';
 import Stream from 'mithril/stream';
 import { Dialog, Button } from 'polythene-mithril';
 import generateTable from '../models/pdf_table';
+import { log } from '../utils';
 
 /**
  * Generic Controller for a table, it provides Printing function and prepares
@@ -12,6 +13,8 @@ export default class TableController {
    * @param endpoint a controller which supports the methods getItems() and getFullList()
    */
   constructor(endpoint) {
+    log.debug(`Constructing new TableController with endpoints: ${endpoint}`);
+
     this.stateCounter = Stream(0);
     this.endpoint = endpoint;
     // keep track of the total number of pages

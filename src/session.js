@@ -1,7 +1,6 @@
 import m from 'mithril';
-import getLogger from 'webpack-log';
 
-const log = getLogger({ name: 'session logger', level: 'debug', timestamp: true });
+import { log } from './utils';
 
 export default class Session {
   /**
@@ -17,6 +16,8 @@ export default class Session {
       log.error(`Error resolving request. Error:${e}`);
     }
   ) {
+    log.debug(`Constructing new session with baseUrl ${baseUrl} and header ${headers}`);
+
     this.baseUrl = baseUrl;
     this.headers = headers;
     this.headers['Content-Type'] = 'application/json';
@@ -25,7 +26,6 @@ export default class Session {
       log.error(`Error resolving request. Error:${e}`);
       errorCallback(e);
     };
-    log.debug(`new session with baseUrl ${this.baseUrl} and header ${this.headers}`);
   }
 
   /**

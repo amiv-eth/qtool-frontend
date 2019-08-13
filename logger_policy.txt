@@ -1,8 +1,12 @@
-[
-  'trace':
-  'debug': constructors
-  'info': requests, important methods called, long calculations
-  'warn': faulty/undefined parameters
-  'error': failed requests
-  'silent'
-]
+trace: only for desperate times!
+debug: constructors
+info: requests, important methods called, long calculations
+warn: faulty/undefined parameters
+error: failed requests
+silent:
+
+
+
+import { log } from './utils';
+
+log.debug(`Constructing new session with baseUrl ${this.baseUrl} and header ${this.headers}`);

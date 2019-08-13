@@ -2,9 +2,12 @@ import m from 'mithril';
 import { TextField, Button } from 'polythene-mithril';
 import { isValid } from 'iban';
 import { i18n } from '../models/language';
+import { log } from '../utils';
 
 export default class IbanForm {
   constructor() {
+    log.debug(`Constructing new ibanForm`);
+
     this.iban = null;
     this.valid = true;
   }

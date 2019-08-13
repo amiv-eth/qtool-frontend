@@ -1,11 +1,14 @@
 import DataListController from '../controllers/dataListController';
 import TableController from '../controllers/tableController';
+import { log } from '../utils';
 
 /**
  * Controller for the forecast Table
  */
 export default class ForecastController extends TableController {
   constructor() {
+    log.debug(`Constructing new ForecastController`);
+
     super(new DataListController('transaction_budgetitem'));
   }
 

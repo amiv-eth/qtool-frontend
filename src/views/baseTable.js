@@ -1,6 +1,6 @@
 import m from 'mithril';
 import TableView from './tableView';
-import { getNested } from '../utils';
+import { getNested, log } from '../utils';
 
 /**
  * Base of a TableView which can be inherited
@@ -9,6 +9,8 @@ import { getNested } from '../utils';
  */
 export default class BaseTable {
   constructor(Controller, table_setup, buttons = false) {
+    log.debug(`Constructing new BaseTable with table setup: ${table_setup}`);
+
     this.ctrl = new Controller();
     this.table_setup = table_setup;
     this.buttons = buttons;

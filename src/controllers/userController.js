@@ -1,8 +1,11 @@
 import ResourceHandler from '../resourceHandler';
 import { getId } from '../authentication';
+import { log } from '../utils';
 
 export default class UserController {
   constructor() {
+    log.debug(`Constructing new UserController`);
+
     this.resourceHandler = new ResourceHandler('user');
   }
 

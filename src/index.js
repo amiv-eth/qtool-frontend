@@ -6,6 +6,7 @@ import { mainNavigation } from './models/mainNavigation';
 import Home from './views/home';
 import { loadLanguage } from './models/language';
 import { OauthRedirect } from './authentication';
+import { log } from './utils';
 
 /**
  * Puts all the page-layout around a view
@@ -24,6 +25,7 @@ function layoutWith(view) {
  * Assembles the whole page
  * @type {{}}
  */
+log.info(`Starting website`);
 // Loading Language
 loadLanguage();
 

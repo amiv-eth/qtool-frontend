@@ -1,9 +1,16 @@
 import ResourceHandler from '../resourceHandler';
+import { log } from '../utils';
 
 /**
  * DataListController adds additional functions used for tables extending existing Resource-Handler functions
  */
 export default class DataListController extends ResourceHandler {
+  constructor() {
+    log.debug(`Constructing new DataListController`);
+
+    super();
+  }
+
   async getItems(query = false) {
     const result = await this.get(query);
     result.items.forEach(item => {
