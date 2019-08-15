@@ -1,4 +1,6 @@
 #!/bin/bash
+# add to git hooks via the following commands
+# ln pre-commit .git/hooks/pre-commit
 
 npm run format
 status1=$?
