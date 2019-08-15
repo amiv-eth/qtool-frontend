@@ -31,7 +31,7 @@ export default function generateEZAG(ezag_id, payments) {
   ezag.Document.CstmrCdtTrfInitn.GrpHdr.MsgId._text = `Msg-${ezag_id}`;
   ezag.Document.CstmrCdtTrfInitn.GrpHdr.CreDtTm._text = credttm;
   ezag.Document.CstmrCdtTrfInitn.GrpHdr.NbOfTxs._text = payments.length;
-  ezag.Document.CstmrCdtTrfInitn.GrpHdr.CtrlSum._text = control_sum.toFixed(2);;
+  ezag.Document.CstmrCdtTrfInitn.GrpHdr.CtrlSum._text = control_sum.toFixed(2);
 
   const required_execution_date = addDays(date, 1)
     .toISOString()
