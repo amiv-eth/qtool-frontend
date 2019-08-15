@@ -2,7 +2,7 @@ import { log } from './utils';
 
 // Get something stored at key from local storage
 export function get(key) {
-  log.info(`reading key: ${key} to loacal storage`)
+  log.info(`reading key: ${key} to loacal storage`);
   const longStorage = window.sessionStorage.getItem(`glob-${key}`);
   if (!longStorage || longStorage === '') {
     // If longStorage is empty, look in short storage

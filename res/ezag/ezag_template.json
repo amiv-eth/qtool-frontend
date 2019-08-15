@@ -1,0 +1,70 @@
+{
+  "_declaration": {
+    "_attributes": {
+      "version": "1.0",
+      "encoding": "UTF-8"
+    }
+  },
+  "Document": {
+    "_attributes": {
+      "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+      "xmlns": "http://www.six-interbank-clearing.com/de/pain.001.001.03.ch.02.xsd",
+      "xsi:schemaLocation": "http://www.six-interbank-clearing.com/de/pain.001.001.03.ch.02.xsd pain.001.001.03.ch.02.xsd"
+    },
+    "CstmrCdtTrfInitn": {
+      "GrpHdr": {
+        "MsgId": {
+          "_text": null
+        },
+        "CreDtTm": {
+          "_text": null
+        },
+        "NbOfTxs": {
+          "_text": null
+        },
+        "CtrlSum": {
+          "_text": null
+        },
+        "InitgPty": {
+          "Nm": {
+            "_text": "AMIV an der ETH"
+          }
+        }
+      },
+      "PmtInf": {
+        "PmtInfId": {
+          "_text": null
+        },
+        "PmtMtd": {
+          "_text": "TRF"
+        },
+        "BtchBookg": {
+          "_text": "false"
+        },
+        "ReqdExctnDt": {
+          "_text": null
+        },
+        "Dbtr": {
+          "Nm": {
+            "_text": "AMIV an der ETH"
+          }
+        },
+        "DbtrAcct": {
+          "Id": {
+            "IBAN": {
+              "_text": "CH8009000000800032105"
+            }
+          }
+        },
+        "DbtrAgt": {
+          "FinInstnId": {
+            "BIC": {
+              "_text": "POFICHBEXXX"
+            }
+          }
+        },
+        "CdtTrfTxInf": []
+      }
+    }
+  }
+}

@@ -1,54 +1,48 @@
-// import jsonXmlConverter from 'xml-js';
-import ezag_info from '../../res/ezag_info';
-import { addDays } from '../utils';
-//  import logos from '../../res/logos';
+import { js2xml } from 'xml-js';
+import { addDays, log } from '../utils';
+import ezag_template from '../../res/ezag/ezag_template';
+import ezag_payment_template from '../../res/ezag/ezag_payment_template';
 
 function generate_payment(payment, ezag_id, serial_id) {
-  const result = {
-    CdtTrfTxInf: {
-      PmtId: { InstrId: `InstrId-${ezag_id}-${serial_id}`, EndToEndId: payment.code },
-      Amt: payment.amount,
-      CdtrAgt: { FinInstnId: { BIC: payment.bic } },
-      Cdtr: { Nm: payment.name },
-      CdtrAcct: { Id: { IBAN: payment.iban } },
-    },
-  };
-  return JSON.parse(JSON.stringify(result)); // Just to be safe
+  const res = ezag_payment_template;
+  res.PmtId.InstrId._text = `InstrId-${ezag_id}-${serial_id}`;
+  res.PmtId.EndToEndId._text = payment.code;
+  res.Amt.InstdAmt._attributes.Ccy = payment.currency;
+  res.Amt.InstdAmt._text = payment.amount;
+  res.CdtrAgt.FinInstnId.BIC._text = payment.bic;
+  res.Cdtr.Nm._text = payment.name;
+  res.CdtrAcct.Id.IBAN._text = payment.iban;
+
+  return JSON.parse(JSON.stringify(res));
 }
 
 export default function generateEZAG(ezag_id, payments) {
-  // TODO EUROS Euros Euros Euros
-  const ezag_id_temp = '190613';
-
+  const ezag = ezag_template;
   let control_sum = 0;
+
   const payment_list = payments.map((payment, i) => {
-    control_sum += payment.amount;
-    return generate_payment(payment, ezag_id_temp, i);
+    control_sum += Number(payment.amount);
+    return generate_payment(payment, ezag_id, i);
   });
 
   const date = new Date();
-  const credttm = date.format('isoDateTime');
-  const group_header = {
-    MsgId: `Msg-${ezag_id_temp}`,
-    CreDtTm: credttm,
-    NbOfTxs: payments.size(),
-    CtrlSum: control_sum,
-    InitgPty: { Nm: ezag_info.name },
-  };
+  const credttm = date.toISOString().substr(0, 19);
 
-  const required_execution_date = addDays(date, 1).format('isoDateTime');
+  ezag.Document.CstmrCdtTrfInitn.GrpHdr.MsgId._text = `Msg-${ezag_id}`;
+  ezag.Document.CstmrCdtTrfInitn.GrpHdr.CreDtTm._text = credttm;
+  ezag.Document.CstmrCdtTrfInitn.GrpHdr.NbOfTxs._text = payments.length;
+  ezag.Document.CstmrCdtTrfInitn.GrpHdr.CtrlSum._text = control_sum.toFixed(2);;
 
-  const payment_info = {
-    PmtInfId: `PmtInf-${ezag_id_temp}`,
-    PmtMtd: ezag_info.payment_method,
-    BtchBookg: false, // For reasons...
-    ReqdExctnDt: required_execution_date,
-    Dbtr: { Nm: ezag_info.debitor },
-    DbtrAcct: { Id: { IBAN: ezag_info.debitor_IBAN } },
-    DbtrAgt: { DbtrAgt: { BIC: ezag_info.debitor_BIC } },
-    CdtTrfTxInf: payment_list,
-  };
+  const required_execution_date = addDays(date, 1)
+    .toISOString()
+    .substr(0, 10);
+  ezag.Document.CstmrCdtTrfInitn.PmtInf.PmtInfId._text = `PmtInf-${ezag_id}`;
+  ezag.Document.CstmrCdtTrfInitn.PmtInf.ReqdExctnDt._text = required_execution_date;
 
-  const file = {};
-  file[ezag_info.title] = { CstmrCdtTrfInitn: { GrpHdr: group_header, PmtInf: payment_info } };
+  ezag.Document.CstmrCdtTrfInitn.PmtInf.CdtTrfTxInf = payment_list;
+
+  const options = { compact: true, ignoreComment: true, spaces: 4 };
+  const result = js2xml(ezag, options);
+
+  log.warn(result);
 }

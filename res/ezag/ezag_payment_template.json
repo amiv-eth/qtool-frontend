@@ -1,0 +1,37 @@
+{
+  "PmtId": {
+    "InstrId": {
+      "_text": null
+    },
+    "EndToEndId": {
+      "_text": null
+    }
+  },
+  "Amt": {
+    "InstdAmt": {
+      "_attributes": {
+        "Ccy": null
+      },
+      "_text": null
+    }
+  },
+  "CdtrAgt": {
+    "FinInstnId": {
+      "BIC": {
+        "_text": null
+      }
+    }
+  },
+  "Cdtr": {
+    "Nm": {
+      "_text": null
+    }
+  },
+  "CdtrAcct": {
+    "Id": {
+      "IBAN": {
+        "_text": null
+      }
+    }
+  }
+}
