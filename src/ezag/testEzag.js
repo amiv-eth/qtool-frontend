@@ -41,7 +41,7 @@ export default class TestEzag {
       m(Button, {
         className: 'blue-button',
         border: true,
-        label: 'PDF',
+        label: 'Download EZAG',
         events: {
           onclick: () => {
             generateEZAG('190805', this.ezag_data);

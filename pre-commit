@@ -2,8 +2,8 @@
 # add to git hooks via the following commands
 # ln pre-commit .git/hooks/pre-commit
 
-npm run format
-status1=$?
+#npm run format
+status1=0  #$?
 npm run lint
 status2=$?
 python check_lang.py res/language/de.json res/language/en.json

@@ -1,4 +1,5 @@
 import { js2xml } from 'xml-js';
+import { save } from 'save-file';
 import { addDays, log } from '../utils';
 import ezag_template from '../../res/ezag/ezag_template';
 import ezag_payment_template from '../../res/ezag/ezag_payment_template';
@@ -16,7 +17,7 @@ function generate_payment(payment, ezag_id, serial_id) {
   return JSON.parse(JSON.stringify(res));
 }
 
-export default function generateEZAG(ezag_id, payments) {
+export default async function generateEZAG(ezag_id, payments) {
   const ezag = ezag_template;
   let control_sum = 0;
 
@@ -44,5 +45,7 @@ export default function generateEZAG(ezag_id, payments) {
   const options = { compact: true, ignoreComment: true, spaces: 4 };
   const result = js2xml(ezag, options);
 
-  log.warn(result);
+  log.info('generated Xml file', result);
+
+  await save(result, `Msg-${ezag_id}.xml`);
 }
