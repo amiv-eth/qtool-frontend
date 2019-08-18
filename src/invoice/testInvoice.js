@@ -1,6 +1,7 @@
 import m from 'mithril';
 import { Button } from 'polythene-mithril';
 import generateInvoice from '../models/pdf_invoice';
+import { log } from '../utils';
 
 export default class TestInvoice {
   /**
@@ -9,6 +10,8 @@ export default class TestInvoice {
    */
 
   constructor() {
+    log.debug(`Constructing new Testinvoice`);
+
     this.inv_data = {
       customer: {
         first_name: 'Katarina',

@@ -1,6 +1,9 @@
 import JsPDF from 'jspdf';
 import { i18n, setLanguage, amountFormatter, dateTextFormatter, currentLanguage } from './language';
 import logos from '../../res/images/logos';
+import { log } from '../utils';
+
+log.debug(`Initializing pdf invoice`);
 
 export default function generateInvoice(invoice, lang) {
   // TODO Multipage Support
@@ -354,6 +357,7 @@ export default function generateInvoice(invoice, lang) {
     line_end
   );
 
-  doc.save(`${invoice.nr}.pdf`);
   setLanguage(current_lang);
+
+  doc.save(`${invoice.nr}.pdf`);
 }

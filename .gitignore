@@ -79,5 +79,11 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
-#Webstorm
+# Webstorm
 .idea/
+
+# VScode
+.vscode/
+
+#Python
+venv/

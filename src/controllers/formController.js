@@ -1,9 +1,13 @@
+import { log } from '../utils';
+
 export default class FormController {
   /**
    * Controller for a generic Form
    * Should contain: GetDropdownContent, Patching, Submiting,
    */
   constructor(inputFields) {
+    log.debug(`Constructing new FormController with inputfields: ${inputFields}`);
+
     this.inputFields = inputFields;
 
     this.formData = {}; // content of the Form to be saved

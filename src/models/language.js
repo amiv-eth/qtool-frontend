@@ -1,7 +1,11 @@
 import m from 'mithril';
 import i18next from 'i18next';
-import german from '../../res/language/de';
-import english from '../../res/language/en';
+import LngDetector from 'i18next-browser-languagedetector';
+import german from '../../res/language/de.json';
+import english from '../../res/language/en.json';
+import { log } from '../utils';
+
+log.debug(`Initializing language`);
 
 function setLanguageAttribute() {
   document.documentElement.setAttribute('lang', i18next.language);
@@ -9,7 +13,7 @@ function setLanguageAttribute() {
 
 function loadLanguage() {
   i18next
-    // .use(LngDetector)
+    .use(LngDetector)
     .init({
       fallbackLng: 'de',
       whitelist: ['en', 'de'],
@@ -52,7 +56,7 @@ function currentLanguage() {
  */
 function changeLanguage(language) {
   i18next.changeLanguage(language);
-  document.documentElement.setAttribute('lang', currentLanguage);
+  setLanguageAttribute();
   m.route.set(`/${currentLanguage()}${m.route.get().substring(3)}`);
 }
 

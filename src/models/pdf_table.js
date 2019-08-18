@@ -1,7 +1,10 @@
 import JsPDF from 'jspdf';
 import 'jspdf-autotable';
-import { getNested } from '../utils';
+import { getNested, log } from '../utils';
+import { i18n } from './language';
 //  import logos from '../../res/logos';
+
+log.debug(`Initializing pdf table`);
 
 /**
  * generates a PDF-table from given data
@@ -10,7 +13,7 @@ import { getNested } from '../utils';
  * @param filename String of the filename
  * @param title Displayed title of
  */
-export default function generateTable(header, body_data, filename = false, title = false) {
+export default function generateTable(header, body_data, filename = 'table', title = false) {
   const doc = new JsPDF({
     orientation: 'landscape',
   });
@@ -26,7 +29,7 @@ export default function generateTable(header, body_data, filename = false, title
   // Mapping the title to this number =>the int is the new DataKey
   header.forEach((element, i) => {
     header_map.set(i, element.dataKey);
-    new_header.push({ header: element.header, dataKey: i });
+    new_header.push({ header: i18n(element.header_key), dataKey: i });
   });
 
   // Filling a new body with dataKey being the new int.
@@ -34,14 +37,13 @@ export default function generateTable(header, body_data, filename = false, title
   body_data.forEach(row => {
     const new_row = {};
     header_map.forEach((key, val) => {
-      new_row[val] = getNested(row, key);
+      new_row[val] = getNested(row, key, false);
       if (!new_row[val]) {
         new_row[val] = 'not defined';
       }
     });
     new_body.push(new_row);
   });
-
   // Generating the table
   doc.autoTable({
     margin: { top: 20 },
@@ -99,5 +101,5 @@ export default function generateTable(header, body_data, filename = false, title
     doc.putTotalPages(totalPagesExp);
   }
 
-  doc.save(`${filename}.pdf` || 'table.pdf');
+  doc.save(`${filename}.pdf`);
 }

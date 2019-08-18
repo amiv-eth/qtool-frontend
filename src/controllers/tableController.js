@@ -2,6 +2,7 @@ import m from 'mithril';
 import Stream from 'mithril/stream';
 import { Dialog, Button } from 'polythene-mithril';
 import generateTable from '../models/pdf_table';
+import { log } from '../utils';
 
 /**
  * Generic Controller for a table, it provides Printing function and prepares
@@ -12,6 +13,8 @@ export default class TableController {
    * @param endpoint a controller which supports the methods getItems() and getFullList()
    */
   constructor(endpoint) {
+    log.debug(`Constructing new TableController with endpoints: ${endpoint}`);
+
     this.stateCounter = Stream(0);
     this.endpoint = endpoint;
     // keep track of the total number of pages
@@ -134,7 +137,7 @@ export default class TableController {
     try {
       const result = await this.endpoint.getFullList(this.query);
       generateTable(
-        header_info.map(entry => ({ header: entry.text, dataKey: entry.key })),
+        header_info.map(entry => ({ header_key: entry.title_key, dataKey: entry.key })),
         result.items,
         filename,
         title
@@ -152,11 +155,12 @@ export default class TableController {
    * @returns {Promise<void>} Pomise to save a PDF
    */
   async printSelected(header_info, title = 'Table', filename = false) {
+    // WAIT for API to work properly again ======================================================
     if (this.selected.length > 0) {
-      const result = await this.endpoint.getIds(this.selected);
+      const result = await this.endpoint.getIds(this.selected, this.query);
 
       generateTable(
-        header_info.map(entry => ({ header: entry.text, dataKey: entry.key })),
+        header_info.map(entry => ({ header_key: entry.title_key, dataKey: entry.key })),
         result,
         filename,
         title

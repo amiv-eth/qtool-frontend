@@ -1,48 +1,54 @@
 import TransactionTableController from './transactionTableController';
 import BaseTable from '../views/baseTable';
 import { amountFormatter } from '../models/language';
+import { log } from '../utils';
 
 /**
  * Setup of the transaction Table
  * @type {*[]}
  */
 const table_setup = [
-  { key: 'id', title: 'ID', style: { width: '4em' } },
-  { key: 'user.name', sort: 'user_id', title: 'Name', style: { width: '12em' } },
+  { key: 'id', title_key: 'transaction.id', style: { width: '4em' } },
+  { key: 'user.name', sort: 'user_id', title_key: 'transaction.name', style: { width: '12em' } },
   {
     key: 'description',
-    title: 'Beschreibung',
+    title_key: 'transaction.desc',
     style: { width: '100%', display: 'flex' },
   },
   {
     key: 'category.category_name',
     sort: 'category_id',
-    title: 'Kategorie',
+    title_key: 'transaction.category',
     style: { width: '20em' },
   },
   {
     key: 'budgetitem.budgetitem_name',
     text_keys: ['budgetitem.budgetitem_code'],
     sort: 'budgetitem_id',
-    title: 'Budgetposten',
+    title_key: 'transaction.budget_post',
     style: { width: '20em' },
   },
   {
     key: 'amount',
     text_keys: ['currency.currency_shortcut'],
-    title: 'Betrag',
+    title_key: 'transaction.amount',
     style: { width: '8em' },
     formatting: item => amountFormatter(item),
   },
   {
     key: 'amount_in_chf',
-    title: 'Betrag CHF',
+    title_key: 'transaction.amount_chf',
     style: { width: '8em' },
     formatting: item => amountFormatter(item),
   },
-  { key: 'type.type_name', sort: 'type_id', title: 'Zahlungsmethode', style: { width: '20em' } },
-  { key: 'is_valid', title: 'Gültig', style: { width: '10em' } },
-  { key: 'ezag', title: 'EZAG', style: { width: '10em' } },
+  {
+    key: 'type.type_name',
+    sort: 'type_id',
+    title_key: 'transaction.payment_method',
+    style: { width: '20em' },
+  },
+  { key: 'is_valid', title_key: 'transaction.valid', style: { width: '10em' } },
+  { key: 'ezag', title_key: 'transaction.ezag', style: { width: '10em' } },
 ];
 /**
  * Collection of all buttons function must be added in the inherited constructor
@@ -50,25 +56,27 @@ const table_setup = [
  */
 const buttons = [
   {
-    label: 'Print all shown',
+    label_key: 'button.print_all',
   },
   {
-    label: 'Print selected',
+    label_key: 'button.print_selected',
   },
   {
-    label: 'Unselect all',
+    label_key: 'button.unselect_all',
   },
 ];
 
 export default class TransactionTableView extends BaseTable {
   constructor() {
+    log.debug(`Constructing new TransactionTableView`);
+
     super(TransactionTableController, table_setup, buttons);
     // Defintion of all table attributes
     this.selectable = true;
     this.sortable = true;
     this.searchable = true;
 
-    // Adding Button functionality
+    // Adding Button functionality TODO: solve better is really hacky solution
     buttons[0].onclick = () => {
       this.ctrl.printAll(this.print_table_info, 'Transaction_Table', 'All Transactions');
     };

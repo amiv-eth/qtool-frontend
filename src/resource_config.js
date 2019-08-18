@@ -37,4 +37,7 @@ export default {
   transaction_currency: {
     path: `utility/currency`,
   },
+  user: {
+    path: `People/user`,
+  },
 };

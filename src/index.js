@@ -2,9 +2,11 @@ import m from 'mithril';
 import layout from './views/layout';
 import './styles/base.less';
 import 'polythene-css-dialog';
-import MainNavigation from './models/mainNavigation';
+import { mainNavigation } from './models/mainNavigation';
+import Home from './views/home';
 import { loadLanguage } from './models/language';
-import { OauthRedirect } from './auth';
+import { OauthRedirect } from './authentication';
+import { log } from './utils';
 
 /**
  * Puts all the page-layout around a view
@@ -23,23 +25,26 @@ function layoutWith(view) {
  * Assembles the whole page
  * @type {{}}
  */
+log.info(`Starting website`);
 // Loading Language
 loadLanguage();
 
 const items = {};
-MainNavigation.forEach(item => {
-  if (item.path && item.name && item.view) {
-    items[item.path] = layoutWith(item.view);
+
+mainNavigation.items.forEach(item => {
+  if (item.path && item.view) {
+    items[`/:language${item.path}`] = layoutWith(item.view);
   }
   if (item.submenu) {
-    item.submenu.forEach(sub_item => {
-      if (sub_item.path && sub_item.name && sub_item.view) {
-        items[sub_item.path] = layoutWith(sub_item.view);
+    item.submenu.items.forEach(sub_item => {
+      if (sub_item.path && sub_item.view) {
+        items[`/:language${sub_item.path}`] = layoutWith(sub_item.view);
       }
     });
   }
 });
 
+items['/'] = layoutWith(Home);
 items['/oauthcallback'] = OauthRedirect;
 
 m.route.prefix('');

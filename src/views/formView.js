@@ -1,6 +1,8 @@
 import m from 'mithril';
 import 'polythene-css';
 import { Toolbar, Button } from 'polythene-mithril';
+import { i18n } from '../models/language';
+import { log } from '../utils';
 
 // import { icons } from './elements';
 
@@ -16,6 +18,8 @@ const INPUT_TYPES = { static: 0, plain: 1, number: 2, drop: 3 /* radio: 3, check
  */
 export default class FormView {
   constructor({ attrs: { controller, fields = false, buttons = false } }) {
+    log.debug(`Constructing new FormView with fields ${fields} and buttons ${buttons}`);
+
     this.controller = controller;
     this.fields = fields;
     this.buttons = buttons;
@@ -80,9 +84,7 @@ export default class FormView {
       this.result
         .get(attr_key)
         .map(option =>
-          m(
-            m('option', { value: option.key, style: option.style ? option.style : '' }, option.text)
-          )
+          m('option', { value: option.key, style: option.style ? option.style : '' }, option.text)
         )
     );
   }
@@ -117,7 +119,7 @@ export default class FormView {
           m(Button, {
             className: 'blue-button',
             border: true,
-            label: button.label,
+            label: i18n(button.label_key),
             events: {
               onclick: () => {
                 button.onclick();
@@ -152,7 +154,7 @@ export default class FormView {
           this.fields
             ? this.fields.map(field =>
                 m('div.field', [
-                  m('div.field.desc', field.label),
+                  m('div.field.desc', i18n(field.label_key)),
                   this.getInputField(field.type, field.attr_key),
                 ])
               )

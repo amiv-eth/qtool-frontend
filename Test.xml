@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.six-interbank-clearing.com/de/pain.001.001.03.ch.02.xsd" xsi:schemaLocation="http://www.six-interbank-clearing.com/de/pain.001.001.03.ch.02.xsd pain.001.001.03.ch.02.xsd">
+  <CstmrCdtTrfInitn>
+    <GrpHdr>
+      <MsgId>Msg-190805</MsgId>
+      <CreDtTm>2019-08-05T17:41:08</CreDtTm>
+      <NbOfTxs>3</NbOfTxs>
+      <CtrlSum>214.10</CtrlSum>
+      <InitgPty>
+        <Nm>AMIV an der ETH</Nm>
+      </InitgPty>
+    </GrpHdr>
+    <PmtInf>
+      <PmtInfId>PmtInf-190805</PmtInfId>
+      <PmtMtd>TRF</PmtMtd>
+      <BtchBookg>false</BtchBookg>
+      <ReqdExctnDt>2019-08-06</ReqdExctnDt>
+      <Dbtr>
+        <Nm>AMIV an der ETH</Nm>
+      </Dbtr>
+      <DbtrAcct>
+        <Id>
+          <IBAN>CH8009000000800032105</IBAN>
+        </Id>
+      </DbtrAcct>
+      <DbtrAgt>
+        <FinInstnId>
+          <BIC>POFICHBEXXX</BIC>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtTrfTxInf>
+        <PmtId>
+          <InstrId>InstrId-190805-0</InstrId>
+          <EndToEndId>B-309K-190626-232617</EndToEndId>
+        </PmtId>
+        <Amt>
+          <InstdAmt Ccy="CHF">184.90</InstdAmt>
+        </Amt>
+        <CdtrAgt>
+          <FinInstnId>
+            <BIC>ZKBKCHZZ80A</BIC>
+          </FinInstnId>
+        </CdtrAgt>
+        <Cdtr>
+          <Nm>Mavi Polatoglu</Nm>
+        </Cdtr>
+        <CdtrAcct>
+          <Id>
+            <IBAN>CH7100700110006863150</IBAN>
+          </Id>
+        </CdtrAcct>
+      </CdtTrfTxInf>
+      <CdtTrfTxInf>
+        <PmtId>
+          <InstrId>InstrId-190805-1</InstrId>
+          <EndToEndId>B-114A-190728-231548</EndToEndId>
+        </PmtId>
+        <Amt>
+          <InstdAmt Ccy="CHF">14.30</InstdAmt>
+        </Amt>
+        <CdtrAgt>
+          <FinInstnId>
+            <BIC>UBSWCHZH88A</BIC>
+          </FinInstnId>
+        </CdtrAgt>
+        <Cdtr>
+          <Nm>Lioba Heimbach</Nm>
+        </Cdtr>
+        <CdtrAcct>
+          <Id>
+            <IBAN>CH830021421410656640R</IBAN>
+          </Id>
+        </CdtrAcct>
+      </CdtTrfTxInf>
+      <CdtTrfTxInf>
+        <PmtId>
+          <InstrId>InstrId-190805-2</InstrId>
+          <EndToEndId>B-114A-190728-231633</EndToEndId>
+        </PmtId>
+        <Amt>
+          <InstdAmt Ccy="CHF">14.90</InstdAmt>
+        </Amt>
+        <CdtrAgt>
+          <FinInstnId>
+            <BIC>UBSWCHZH88A</BIC>
+          </FinInstnId>
+        </CdtrAgt>
+        <Cdtr>
+          <Nm>Lioba Heimbach</Nm>
+        </Cdtr>
+        <CdtrAcct>
+          <Id>
+            <IBAN>CH830021421410656640R</IBAN>
+          </Id>
+        </CdtrAcct>
+      </CdtTrfTxInf>
+    </PmtInf>
+  </CstmrCdtTrfInitn>
+</Document>

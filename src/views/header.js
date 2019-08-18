@@ -1,13 +1,19 @@
 import m from 'mithril';
 import { Button } from 'polythene-mithril';
-import MainNavigation from '../models/mainNavigation';
+import { mainNavigation } from '../models/mainNavigation';
 import logos from '../../res/images/logos';
-import { deleteSession } from '../auth';
+import { isLoggedInSync, login, logout } from '../authentication';
+import { i18n, currentLanguage, changeLanguage } from '../models/language';
+import { log } from '../utils';
 
 /**
  * Header of the Website
  */
 export default class Header {
+  constructor() {
+    log.debug(`Constructing new header`);
+  }
+
   view() {
     return m(
       'header',
@@ -19,6 +25,25 @@ export default class Header {
         ),
         this.constructor._mainMenu,
         this.constructor._profileMenu,
+
+        m('div.language-selector', [
+          m(Button, {
+            label: 'en',
+            className: 'bordered-button',
+            border: currentLanguage() === 'en',
+            inactive: currentLanguage() === 'en',
+            tone: 'dark',
+            events: { onclick: () => changeLanguage('en') },
+          }),
+          m(Button, {
+            label: 'de',
+            className: 'bordered-button',
+            border: currentLanguage() === 'de',
+            inactive: currentLanguage() === 'de',
+            tone: 'dark',
+            events: { onclick: () => changeLanguage('de') },
+          }),
+        ]),
       ])
     );
   }
@@ -31,43 +56,54 @@ export default class Header {
   static get _mainMenu() {
     return m(
       'ul.mainmenu',
-      MainNavigation.map((item, index) =>
-        m(
-          'li',
-          {
-            class: MainNavigation.selectedIndex === index ? 'active' : '',
-          },
-          [
-            m(
-              'a',
+      mainNavigation.map((item, index) =>
+        item.key
+          ? m(
+              'li',
               {
-                href: item.path,
+                class: mainNavigation.selectedIndex === index ? 'active' : '',
               },
-              item.name
-            ),
-            item.submenu
-              ? [
-                  m('div.phantomElement'),
-                  m('ul.submenu', [
-                    item.submenu.map((subitem, subindex) =>
-                      m(
-                        'li',
-                        { class: item.submenu.selectedIndex === subindex ? 'active' : '' },
-                        m(
-                          'a',
-                          {
-                            href: subitem.path,
-                            onupdate: subitem.onupdate,
-                          },
-                          subitem.name
-                        )
-                      )
-                    ),
-                  ]),
-                ]
-              : m(''),
-          ]
-        )
+              [
+                m(
+                  'a',
+                  {
+                    href: `${item.getLink()}`,
+                    oncreate: m.route.link,
+                    onupdate: m.route.link,
+                    onclick: e => {
+                      if (item.getLink().startsWith('/')) {
+                        m.route.set(item.getLink());
+                        e.preventDefault();
+                      }
+                    },
+                  },
+                  i18n(item.key)
+                ),
+                item.submenu
+                  ? [
+                      m('div.phantomElement'),
+                      m('ul.submenu', [
+                        item.submenu.map((subitem, subindex) =>
+                          m(
+                            'li',
+                            { class: item.submenu.selectedIndex === subindex ? 'active' : '' },
+                            m(
+                              'a',
+                              {
+                                href: `${subitem.getLink()}`,
+                                oncreate: m.route.link,
+                                onupdate: subitem.onupdate,
+                              },
+                              i18n(subitem.key)
+                            )
+                          )
+                        ),
+                      ]),
+                    ]
+                  : m(''),
+              ]
+            )
+          : ''
       )
     );
   }
@@ -75,57 +111,46 @@ export default class Header {
   static get _profileMenu() {
     return m(
       'ul.profile',
-      [
-        m(Button, {
-          className: 'blue-button',
-          border: true,
-          label: 'logout',
-          events: {
-            onclick: () => {
-              deleteSession();
-            },
-          },
-        }),
-      ]
-      /* isLoggedIn()
+      isLoggedInSync()
         ? [
-          m(
-            'li',
-            {
-              class: m.route.get().includes(`/profile`) ? 'active' : '',
-            },
             m(
-              'a',
-              { href: `/${currentLanguage()}/profile`, onupdate: m.route.link },
-              i18n('mainMenu.profile')
-            )
-          ),
-          m(
-            'li',
-            m(
-              'a',
-              { href: `/${currentLanguage()}/logout`, onupdate: m.route.link },
-              i18n('mainMenu.logout')
-            )
-          ),
-        ]
-        : [
-          m(
-            'li',
-            { class: 'not-logged-in' },
-            m(
-              'a',
+              'li',
               {
-                href: `/${currentLanguage()}/profile`,
-                onclick: e => {
-                  login(`/${currentLanguage()}/profile`);
-                  e.preventDefault();
-                },
+                class: m.route.get().includes(`/profile`) ? 'active' : '',
               },
-              m('span', i18n('mainMenu.login'))
-            )
-          ),
-        ] */
+              m(
+                'a',
+                {
+                  href: `/${currentLanguage()}/profile`,
+                  onupdate: m.route.link,
+                  oncreate: m.route.link,
+                },
+                i18n('menu.profile')
+              )
+            ),
+            m(
+              'li',
+              m(
+                'a',
+                { href: '/', oncreate: m.route.link, onclick: () => logout().then(m.route.link) },
+                i18n('menu.logout')
+              )
+            ),
+          ]
+        : [
+            m(
+              'li',
+              { class: 'not-logged-in' },
+              m(
+                'a',
+                {
+                  // href: `/${currentLanguage()}/profile`,
+                  onclick: () => login(),
+                },
+                m('span', i18n('menu.login'))
+              )
+            ),
+          ]
     );
   }
 }

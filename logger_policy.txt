@@ -1,0 +1,7 @@
+trace: only for desperate times!
+debug: constructors
+info: requests, important methods called, long calculations
+warn: faulty/undefined parameters
+error: failed requests
+silent:
+

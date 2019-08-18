@@ -1,6 +1,9 @@
 import m from 'mithril';
 import { Dialog } from 'polythene-mithril';
 import header from './header';
+import { log } from '../utils';
+
+log.debug(`Initializing layout`);
 
 /**
  * Assembles the layout of the website

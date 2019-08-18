@@ -1,28 +1,29 @@
 import ForecastController from './forecastController';
 import BaseTable from '../views/baseTable';
 import { amountFormatter } from '../models/language';
+import { log } from '../utils';
 
 /**
  * Collection of all Displayed fields.
  * @type {*[]}
  */
 const table_setup = [
-  { key: 'budgetitem_code', title: 'Code', style: { width: '4em' } },
+  { key: 'budgetitem_code', title_key: 'transaction.code', style: { width: '4em' } },
   {
     key: 'budgetitem_name',
-    title: 'Beschreibung',
+    title_key: 'transaction.desc',
     style: { width: 'calc(100% - 80em)', minWidth: '10em' },
   },
-  { key: 'budgetgroup', title: 'Gruppe', style: { width: '8em' } },
+  { key: 'budgetgroup', title_key: 'transaction.group', style: { width: '8em' } },
   {
     key: 'expenditure_budgeted',
-    title: 'Ausgaben budgetiert',
+    title_key: 'transaction.expenditure_budgeted',
     style: { width: '6em', textAlign: 'right' },
     formatting: item => amountFormatter(item),
   },
   {
     key: 'expenditure_calculated',
-    title: 'Ausgaben berechnet',
+    title_key: 'transaction.expenditure_calculated',
     style: { width: '6em', textAlign: 'right' },
     conditional_tags: item =>
       item.expenditure_calculated > item.expenditure_budgeted ? 'red' : 'green',
@@ -30,26 +31,26 @@ const table_setup = [
   },
   {
     key: 'revenue_budgeted',
-    title: 'Ertrag budgetiert',
+    title_key: 'transaction.revenue_budgeted',
     style: { width: '6em', textAlign: 'right' },
     formatting: item => amountFormatter(item),
   },
   {
     key: 'revenue_calculated',
-    title: 'Ertrag berechnet',
+    title_key: 'transaction.revenue_calculated',
     style: { width: '6em', textAlign: 'right' },
     conditional_tags: item => (item.revenue_calculated < item.revenue_budgeted ? 'red' : 'green'),
     formatting: item => amountFormatter(item),
   },
   {
     key: 'difference_budgeted',
-    title: 'Differenz budgetiert',
+    title_key: 'transaction.difference_budgeted',
     style: { width: '6em', textAlign: 'right' },
     formatting: item => amountFormatter(item),
   },
   {
     key: 'difference_calculated',
-    title: 'Differenz berechnet',
+    title_key: 'transaction.difference_calculated',
     style: { width: '6em', textAlign: 'right' },
     conditional_tags: item =>
       item.difference_budgeted <= item.difference_calculated ? 'green' : 'red',
@@ -59,12 +60,14 @@ const table_setup = [
 
 const buttons = [
   {
-    label: 'Print all shown',
+    label_key: 'button.print_all',
   },
 ];
 
-export default class ConfirmedTableView extends BaseTable {
+export default class BudgetTableView extends BaseTable {
   constructor() {
+    log.debug(`Constructing new BudgetTableView`);
+
     super(ForecastController, table_setup, buttons);
     this.searchable = true;
 

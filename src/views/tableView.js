@@ -3,6 +3,8 @@ import infinite from 'mithril-infinite';
 import { List, ListTile, Toolbar, Search, Button, Icon } from 'polythene-mithril';
 import { styler } from 'polythene-core-css';
 import { icons } from '../../res/images/elements';
+import { i18n } from '../models/language';
+import { log } from '../utils';
 
 const tableStyles = [
   {
@@ -51,6 +53,8 @@ export default class TableView {
       // Filters
     },
   }) {
+    log.debug(`Constructing new TableView with ${controller}, ${titles}`);
+
     this.controller = controller;
     this.titles = titles || [];
     this.tileContent = tileContent;
@@ -68,6 +72,7 @@ export default class TableView {
     // default if tile content was not defined
     return this.titles.map(elem => {
       // Access a nested key, indicated by dot-notation
+      // TODO: Might be quite inefficient
       let nestedData = data;
       elem.key.split('.').forEach(subKey => {
         nestedData = nestedData[subKey];
@@ -142,7 +147,7 @@ export default class TableView {
             searchable
               ? m(Search, {
                   textfield: {
-                    label: 'Search',
+                    label: i18n('search'),
                     onChange: ({ value }) => {
                       if (value !== this.searchValue) controller.setSearch(value);
                       this.searchValue = value;
@@ -157,7 +162,7 @@ export default class TableView {
                     ? m(Button, {
                         className: 'blue-button',
                         border: true,
-                        label: button.label,
+                        label: i18n(button.label_key),
                         events: {
                           onclick: () => {
                             button.onclick();
@@ -202,7 +207,7 @@ export default class TableView {
                         : { width: `${98 / this.tableKeys.length}%` },
                     },
                     [
-                      title.style.width ? title.text : title,
+                      title.style.width ? i18n(title.title_key) : title,
                       (controller.getSort().split('.')[0] === title.key ||
                         controller.getSort().split('.')[0] === title.sort) &&
                       sortable

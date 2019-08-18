@@ -1,0 +1,20 @@
+#!/bin/bash
+# add to git hooks via the following commands
+# ln pre-commit .git/hooks/pre-commit
+
+#npm run format
+status1=0  #$?
+npm run lint
+status2=$?
+python check_lang.py res/language/de.json res/language/en.json
+status3=$?
+
+if [ "$status1" -eq 0 -a "$status2" -eq 0 -a "$status3" -eq 0 ]
+then 
+	echo "All test successful"
+	exit 0
+else
+	echo "errors occured during testing"
+	echo "format: $status1, lint: $status2, lang: $status3"
+	exit 1
+fi
