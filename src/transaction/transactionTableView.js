@@ -76,7 +76,7 @@ export default class TransactionTableView extends BaseTable {
     this.sortable = true;
     this.searchable = true;
 
-    // Adding Button functionality
+    // Adding Button functionality TODO: solve better is really hacky solution
     buttons[0].onclick = () => {
       this.ctrl.printAll(this.print_table_info, 'Transaction_Table', 'All Transactions');
     };

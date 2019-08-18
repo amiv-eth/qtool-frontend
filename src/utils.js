@@ -1,6 +1,6 @@
 import getLogger from 'webpack-log';
 
-export const log = getLogger({ name: 'qTool-Logger', level: 'info', timestamp: true });
+export const log = getLogger({ name: 'qTool-Logger', level: 'debug', timestamp: true });
 
 export function getNested(data, key) {
   if (data === undefined || key === undefined) {
