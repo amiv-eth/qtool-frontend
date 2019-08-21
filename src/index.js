@@ -45,7 +45,7 @@ mainNavigation.items.forEach(item => {
 });
 
 items['/'] = layoutWith(Home);
-items['/oauthcallback'] = OauthRedirect;
+items['/oauthcallback'] = new OauthRedirect();
 
-m.route.prefix('');
+m.route.prefix = '';
 m.route(document.body, '/', items);

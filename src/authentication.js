@@ -262,7 +262,8 @@ export class OauthRedirect {
       checkAuthenticated()
         .then(() => {
           const urlParams = new URLSearchParams(window.location.search);
-          m.route.set(urlParams.has('redir') ? urlParams.get('redir') : '/');
+          log.warn(`landed here, new url: ${urlParams}`);
+          // m.route.set(urlParams.has('redir') ? urlParams.get('redir') : '/');
         })
         .catch();
     });
