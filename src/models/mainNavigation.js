@@ -104,12 +104,6 @@ export default class Navigation {
 
 export const mainNavigation = new Navigation([
   {
-    path: '/',
-    addLanguagePrefix: true,
-    oncreate: m.route.link,
-    view: Home,
-  },
-  {
     key: 'menu.receipt_form',
     path: '/belegformular',
     oncreate: m.route.link,

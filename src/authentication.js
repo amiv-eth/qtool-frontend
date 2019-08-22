@@ -263,14 +263,16 @@ export class OauthRedirect {
         .then(() => {
           const urlParams = new URLSearchParams(window.location.search);
           log.warn(`landed here, new url: ${urlParams}`);
-          // m.route.set(urlParams.has('redir') ? urlParams.get('redir') : '/');
+          log.warn(urlParams.has('redir') ? urlParams.get('redir') : '/');
+          m.route.set(urlParams.has('redir') ? urlParams.get('redir') : '/');
+          // m.route.set('/');
         })
-        .catch();
+        .catch(() => {});
     });
   }
 
   // eslint-disable-next-line class-methods-use-this
-  view() {
+  static view() {
     return 'redirecting...';
   }
 }
