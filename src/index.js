@@ -6,7 +6,8 @@ import Home from './views/home';
 import { loadLanguage } from './models/language';
 import { OauthRedirect } from './authentication';
 import { log } from './utils';
-import './style';
+import 'polythene-css';
+// import './style';
 // import 'polythene-css/dist/polythene.css';
 
 /**
