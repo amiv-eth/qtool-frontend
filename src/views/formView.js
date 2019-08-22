@@ -60,9 +60,9 @@ export default class FormView {
       type_string = 'number';
     }
     return m(`input.form-control[type=${type_string}]`, {
-      oninput: m.withAttr('value', value => {
-        this.controller.setData(attr_key, value);
-      }),
+      oninput: ev => {
+        this.controller.setData(attr_key, ev.target.value);
+      },
       value: this.controller.getData(attr_key),
       // TODO: helptext
     });
@@ -77,9 +77,9 @@ export default class FormView {
     return m(
       'select',
       {
-        onchange: m.withAttr('value', key => {
-          this.controller.setData(attr_key, key);
-        }),
+        onchange: ev => {
+          this.controller.setData(attr_key, ev.target.value);
+        },
       },
       this.result
         .get(attr_key)
