@@ -1,5 +1,4 @@
 import m from 'mithril';
-import 'polythene-css';
 import { Toolbar, Button } from 'polythene-mithril';
 import { i18n } from '../models/language';
 import { log } from '../utils';

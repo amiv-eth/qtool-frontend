@@ -1,5 +1,5 @@
 import { ButtonCSS, addTypography, CardCSS, ShadowCSS } from 'polythene-css';
-import { styler } from 'polythene-core-css';
+// import { styler } from 'polythene-core-css';
 
 addTypography();
 
@@ -51,7 +51,7 @@ ShadowCSS.addStyle('.pe-shadow', {
 });
 
 // style for general containers
-const style = [
+/* const style = [
   {
     '.maincontainer': {
       padding: '0 5px',
@@ -74,4 +74,4 @@ const style = [
     },
   },
 ];
-styler.add('containers', style);
+styler.add('containers', style); */

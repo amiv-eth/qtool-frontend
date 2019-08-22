@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { Card } from 'polythene-mithril';
+import { Card, TextField } from 'polythene-mithril';
 import { DropdownCard } from 'amiv-web-ui-components';
 import UserController from '../controllers/userController';
 import UserInfo from './userInfo';
@@ -24,6 +24,11 @@ export default class Profile {
       m(Card, {
         className: 'info-container',
         content: m(UserInfo, { userController }),
+      }),
+      m(TextField, {
+        label: 'Name',
+        floatingLabel: true,
+        dense: true,
       }),
       m('div.settings', [
         m(DropdownCard, {

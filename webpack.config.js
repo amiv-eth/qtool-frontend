@@ -1,11 +1,12 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const RobotstxtPlugin = require('robotstxt-webpack-plugin').default;
 const path = require('path');
 
 const config = {
   context: `${__dirname}/src`, // `__dirname` is root of project and `src` is source
 
-  entry: ['@babel/polyfill', './index.js'],
+  entry: './index.js',
 
   output: {
     path: `${__dirname}/dist`, // `dist` is the destination
@@ -32,7 +33,9 @@ const config = {
           {
             loader: 'babel-loader',
             options: {
-              presets: [['@babel/preset-env', { targets: 'last 2 years' }]],
+              presets: [
+                ['@babel/preset-env', { useBuiltIns: 'usage', corejs: 3, targets: 'last 2 years' }],
+              ],
               plugins: ['@babel/plugin-proposal-object-rest-spread'],
             },
           },
@@ -91,11 +94,12 @@ const config = {
     },
   },*/
 
+  mode: 'development',
   devtool: 'eval-source-map', // Default development sourcemap
 
   optimization: {
-    usedExports: true,
-    sideEffects: true,
+    usedExports: true, //True is better
+    sideEffects: false, // False is the better option here, don't ask why, it's a mistery
     splitChunks: {
       chunks: 'all',
       automaticNameDelimiter: '-',
@@ -112,6 +116,7 @@ const config = {
       filename: 'index.html',
       template: 'index.html',
     }),
+    new BundleAnalyzerPlugin(),
   ],
 };
 

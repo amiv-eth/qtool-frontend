@@ -1,12 +1,13 @@
 import m from 'mithril';
 import layout from './views/layout';
 import './styles/base.less';
-import 'polythene-css-dialog';
 import { mainNavigation } from './models/mainNavigation';
 import Home from './views/home';
 import { loadLanguage } from './models/language';
 import { OauthRedirect } from './authentication';
 import { log } from './utils';
+import './style';
+// import 'polythene-css/dist/polythene.css';
 
 /**
  * Puts all the page-layout around a view
