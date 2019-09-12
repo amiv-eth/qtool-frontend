@@ -46,8 +46,8 @@ mainNavigation.items.forEach(item => {
   }
 });
 
-items['/'] = layoutWith(Home);
 items['/oauthcallback'] = OauthRedirect;
+items['/'] = layoutWith(Home);
 
-m.route.prefix('');
+m.route.prefix = '';
 m.route(document.body, '/', items);

@@ -14,7 +14,7 @@ module.exports = {
     'no-underscore-dangle': 0,
     'no-console': 0,
     'import/prefer-default-export': 0,
-    'import/no-extraneous-dependencies': ['warning', { peerDependencies: true }],
+    'import/no-extraneous-dependencies': [ 'warn', { peerDependencies: true }],
     camelcase: 0,
     'prettier/prettier': 'error',
   },

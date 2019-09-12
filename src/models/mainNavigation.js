@@ -15,7 +15,7 @@ export default class Navigation {
     log.debug(`Constructing new Naviagtion`);
 
     this._items = items.map(item => {
-      const newItem = Object.assign({}, item);
+      const newItem = { ...item };
       if (newItem.url) {
         newItem.getLink = () => Navigation._getUrlLink(newItem.url);
       } else if (newItem.addLanguagePrefix) {
@@ -103,12 +103,6 @@ export default class Navigation {
  */
 
 export const mainNavigation = new Navigation([
-  {
-    path: '/',
-    addLanguagePrefix: true,
-    oncreate: m.route.link,
-    view: Home,
-  },
   {
     key: 'menu.receipt_form',
     path: '/belegformular',

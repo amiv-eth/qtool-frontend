@@ -23,7 +23,7 @@ export default class ForecastController extends TableController {
     const result = await this.endpoint.getItems(query_copy); // gets them items
     this.totalPages = result.meta.last_page;
     result.items.map(_item => {
-      const item = Object.assign({}, _item);
+      const item = { ..._item };
       item.expenditure_budgeted = _item.expenditure_budgeted.toFixed(2);
       item.expenditure_calculated = _item.expenditure_calculated.toFixed(2);
       item.revenue_budgeted = _item.revenue_budgeted.toFixed(2);
