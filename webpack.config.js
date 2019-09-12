@@ -1,5 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const RobotstxtPlugin = require('robotstxt-webpack-plugin');
 
 const path = require('path');
@@ -88,18 +88,18 @@ const config = {
   },
 
   // Dynamically include config
-  /*resolve: {
+  /* resolve: {
     alias: {
       config: `${__dirname}/config.js`,
       'polythene-theme': `${__dirname}/theme.js`, // when config is in the project root
     },
-  },*/
+  }, */
 
   mode: 'development',
   devtool: 'eval-source-map', // Default development sourcemap
 
   optimization: {
-    usedExports: true, //True is better
+    usedExports: true, // True is better
     sideEffects: false, // False is the better option here, don't ask why, it's a mistery
     splitChunks: {
       chunks: 'all',
@@ -117,7 +117,7 @@ const config = {
       filename: 'index.html',
       template: 'index.html',
     }),
-    new BundleAnalyzerPlugin(),
+    // new BundleAnalyzerPlugin(),
   ],
 };
 
